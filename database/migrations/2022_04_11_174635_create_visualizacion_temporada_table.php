@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('seguimiento', function (Blueprint $table) {
+        Schema::create('visualizacion_temporada', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('audiovisual_id');
+            $table->unsignedBigInteger('temporada_id');
             $table->unsignedBigInteger('persona_id');
-            $table->integer('estado');
+            $table->boolean('vista');
 
-            $table->foreign('audiovisual_id')->references('id')->on('audiovisual');
+            $table->foreign('temporada_id')->references('id')->on('temporada');
             $table->foreign('persona_id')->references('id')->on('persona');
 
             $table->timestamps();
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('seguimiento');
+        Schema::dropIfExists('visualizacion_temporada');
     }
 };

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('sinopsis', 256);
             $table->string('cartel', 64);
             $table->integer('puntuacion')->default(0);
+            $table->integer('estado')->default(0);
 
             $table->foreign('tipoAudiovisual_id')->references('id')->on('tipo_audiovisual');
             $table->foreign('genero_id')->references('id')->on('genero');
