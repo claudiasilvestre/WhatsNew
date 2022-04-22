@@ -14,17 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('audiovisual', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary();
             $table->unsignedBigInteger('tipoAudiovisual_id');
-            $table->unsignedBigInteger('genero_id');
-            $table->string('titulo', 64);
-            $table->string('tituloOriginal', 64);
-            $table->integer('anno');
-            $table->string('pais', 32);
-            $table->integer('duracion');
-            $table->string('sinopsis', 256);
-            $table->string('cartel', 64);
-            $table->integer('puntuacion')->default(0);
+            $table->unsignedBigInteger('genero_id')->nullable();
+            $table->string('titulo', 64)->nullable();
+            $table->string('tituloOriginal', 64)->nullable();
+            $table->integer('anno')->nullable();
+            $table->string('pais', 32)->nullable();
+            $table->integer('duracion')->nullable();
+            $table->string('sinopsis', 1024)->nullable();
+            $table->string('cartel', 64)->nullable();
+            $table->decimal('puntuacion', $precision = 8, $scale = 1)->default(0.0);
             $table->integer('estado')->default(0);
 
             $table->foreign('tipoAudiovisual_id')->references('id')->on('tipo_audiovisual');

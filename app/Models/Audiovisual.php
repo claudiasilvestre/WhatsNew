@@ -10,4 +10,6 @@ class Audiovisual extends Model
     use HasFactory;
 
     protected $table = 'audiovisual';
+
+    public $incrementing = false;
 }

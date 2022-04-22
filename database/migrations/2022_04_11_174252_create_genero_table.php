@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('genero', function (Blueprint $table) {
-            $table->id();
+            $table->unsignedBigInteger('id')->primary();
             $table->string('nombre', 64);
             $table->timestamps();
         });
