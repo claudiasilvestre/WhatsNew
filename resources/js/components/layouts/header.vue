@@ -14,11 +14,6 @@ export default {
 }
 </script>
 
-<style scoped>
-    header {
-        background-color: black;
-        padding: 10px;
-        color: white;
-        margin: auto;
-    }
+<style>
+    @import '../assets/styles/styles.css';
 </style>

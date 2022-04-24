@@ -1,17 +1,20 @@
 <template>
     <div>
         <app-header />
+        <peliculas-populares />
     </div>
 </template>
 
 <script>
-import header from './layouts/header.vue'
+import Header from './layouts/Header.vue'
+import PeliculasPopulares from './PeliculasPopulares.vue'
 
 export default {
     name: 'Home',
 
     components: {
-        'app-header': header
+        'app-header': Header,
+        PeliculasPopulares,
     }
 }
 </script>
