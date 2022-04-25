@@ -10,6 +10,12 @@ use App\Models\Audiovisual;
 
 class AudiovisualController extends Controller
 {
+    public function index() {
+        $peliculas = Audiovisual::where('tipoAudiovisual_id', '=', 1)->orderBy('puntuacion', 'DESC')->get();
+
+        return response()->json($peliculas);
+    }
+
     public function api() {
 
         // Géneros películas

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AudiovisualController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,5 @@ Route::get('/', function () {
 });
 
 // Route::get('/', 'App\Http\Controllers\AudiovisualController@api')->name('api');
+
+Route::resource('/audiovisuales', AudiovisualController::class);
