@@ -11,9 +11,13 @@ use App\Models\Audiovisual;
 class AudiovisualController extends Controller
 {
     public function index() {
-        $peliculas = Audiovisual::where('tipoAudiovisual_id', '=', 1)->orderBy('puntuacion', 'DESC')->get();
+        $peliculas = Audiovisual::where('tipoAudiovisual_id', '=', 1)->orderBy('fechaLanzamiento', 'DESC')->get();
+        $series = Audiovisual::where('tipoAudiovisual_id', '=', 2)->orderBy('fechaLanzamiento', 'DESC')->get();
 
-        return response()->json($peliculas);
+        return response()->json([
+            'peliculas' => $peliculas,
+            'series' => $series,
+        ]);
     }
 
     public function api() {
@@ -72,7 +76,8 @@ class AudiovisualController extends Controller
                     $pelicula->titulo = $p['title'];
                     $pelicula->tituloOriginal = $p['original_title'];
                     $pelicula->sinopsis = $p['overview'];
-                    $pelicula->cartel = $p['poster_path'];
+                    $pelicula->cartel = "https://image.tmdb.org/t/p/w500".$p['poster_path'];
+                    if ($p['release_date']) $pelicula->fechaLanzamiento = $p['release_date'];
                     $pelicula->puntuacion = $p['vote_average'];
     
                     $pelicula->save();
@@ -94,7 +99,8 @@ class AudiovisualController extends Controller
                     $serie->titulo = $s['name'];
                     $serie->tituloOriginal = $s['original_name'];
                     $serie->sinopsis = $s['overview'];
-                    $serie->cartel = $s['poster_path'];
+                    $serie->cartel = "https://image.tmdb.org/t/p/w500".$s['poster_path'];
+                    $serie->fechaLanzamiento = $s['first_air_date'];
                     $serie->puntuacion = $s['vote_average'];
     
                     $serie->save();

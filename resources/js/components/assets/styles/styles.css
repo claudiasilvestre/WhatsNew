@@ -1,6 +1,20 @@
 header {
-    background-color: black;
-    padding: 10px;
-    color: white;
+    padding: 5px;
+    padding-left: 20px;
     margin: auto;
+}
+
+h3 {
+    padding-left: 20px;
+}
+
+body {
+    background-color: rgb(2, 0, 35);
+    color: white;
+}
+
+.card {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: row;
 }

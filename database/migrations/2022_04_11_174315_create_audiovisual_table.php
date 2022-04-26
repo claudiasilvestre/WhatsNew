@@ -24,6 +24,7 @@ return new class extends Migration
             $table->integer('duracion')->nullable();
             $table->string('sinopsis', 1024)->nullable();
             $table->string('cartel', 64)->nullable();
+            $table->date('fechaLanzamiento')->nullable();
             $table->decimal('puntuacion', $precision = 8, $scale = 1)->default(0.0);
             $table->integer('estado')->default(0);
 
