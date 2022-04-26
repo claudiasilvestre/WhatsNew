@@ -1,13 +1,17 @@
 <template>
     <div> 
         <h3> Películas populares </h3>
-        <div v-for="peliculaPopular in audiovisualesPopulares['peliculas']" :key="peliculaPopular.id" class=card>
-            <img v-bind:src="peliculaPopular.cartel" alt="" width="200" height="300">
+        <div class=card>
+            <div v-for="peliculaPopular in audiovisualesPopulares['peliculas']" :key="peliculaPopular.id">
+                <img :src="peliculaPopular.cartel" :alt="peliculaPopular.titulo" width="200" height="270">
+            </div>
         </div>
 
         <h3> Series populares </h3>
-        <div v-for="seriePopular in audiovisualesPopulares['series']" :key="seriePopular.id" class=card>
-            <img v-bind:src="seriePopular.cartel" alt="" width="200" height="300">
+        <div class=card>
+            <div v-for="seriePopular in audiovisualesPopulares['series']" :key="seriePopular.id">
+                <img :src="seriePopular.cartel" :alt="seriePopular.titulo" width="200" height="270">
+            </div>
         </div>
     </div>
 </template>
