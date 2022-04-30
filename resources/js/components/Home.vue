@@ -2,23 +2,21 @@
   <v-app>
     <div>
         <app-header />
-        <prueba />
+        <audiovisuales-populares />
     </div>
   </v-app>
 </template>
 
 <script>
 import Header from './layouts/Header.vue'
-import PeliculasPopulares from './PeliculasPopulares.vue'
-import Prueba from './Prueba.vue'
+import AudiovisualesPopulares from './AudiovisualesPopulares.vue'
 
 export default {
     name: 'Home',
 
     components: {
         'app-header': Header,
-        PeliculasPopulares,
-        Prueba,
+        AudiovisualesPopulares,
     }
 }
 </script>
