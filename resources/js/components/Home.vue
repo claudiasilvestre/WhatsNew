@@ -1,13 +1,16 @@
 <template>
+  <v-app>
     <div>
         <app-header />
-        <peliculas-populares />
+        <prueba />
     </div>
+  </v-app>
 </template>
 
 <script>
 import Header from './layouts/Header.vue'
 import PeliculasPopulares from './PeliculasPopulares.vue'
+import Prueba from './Prueba.vue'
 
 export default {
     name: 'Home',
@@ -15,6 +18,7 @@ export default {
     components: {
         'app-header': Header,
         PeliculasPopulares,
+        Prueba,
     }
 }
 </script>

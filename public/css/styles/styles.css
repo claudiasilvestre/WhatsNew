@@ -9,7 +9,7 @@ h3 {
 }
 
 body {
-    background-color: rgb(2, 0, 35);
+    background-color: #1e1e1e;
     color: white;
 }
 
@@ -18,8 +18,4 @@ body {
     padding-bottom: 20px;
     display: flex;
     flex-direction: row;
-}
-
-img {
-    padding-right: 15px;
 }
