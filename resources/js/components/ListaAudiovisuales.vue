@@ -10,24 +10,20 @@
         dark
       >
         <v-slide-item
-          class="ma-4"
-          v-for="peliculaPopular in audiovisualesPopulares"
-          :key="peliculaPopular.id"
+          class="ma-6"
+          v-for="audiovisualPopular in audiovisualesPopulares"
+          :key="audiovisualPopular.id"
         >
-          <v-btn
-            class="mx-3"
-            :width="185"
-            :height="270"
-          >
+          <router-link :to="{ name: 'audiovisual', params: { id: audiovisualPopular.id, audiovisual: audiovisualPopular }}">
             <v-img
               class="rounded"
-              :src="peliculaPopular.cartel"
-              :alt="peliculaPopular.titulo"
+              :src="audiovisualPopular.cartel"
+              :alt="audiovisualPopular.titulo"
               :width="185"
               :height="270"
             >
             </v-img>
-          </v-btn>
+          </router-link>
         </v-slide-item>
       </v-slide-group>
     </v-sheet>
@@ -37,9 +33,9 @@
 <script>
   export default {
     props: {
-        audiovisualesPopulares: {
-            required: true
-        }
+      audiovisualesPopulares: {
+          required: true
+      }
     }
   }
 </script>
