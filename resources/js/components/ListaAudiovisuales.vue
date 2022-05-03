@@ -11,14 +11,14 @@
       >
         <v-slide-item
           class="ma-6"
-          v-for="audiovisualPopular in audiovisualesPopulares"
-          :key="audiovisualPopular.id"
+          v-for="audiovisual in audiovisuales"
+          :key="audiovisual.id"
         >
-          <router-link :to="{ name: 'audiovisual', params: { id: audiovisualPopular.id, audiovisual: audiovisualPopular }}">
+          <router-link :to="{ name: 'audiovisual', params: { id: audiovisual.id, audiovisual: audiovisual }}">
             <v-img
               class="rounded"
-              :src="audiovisualPopular.cartel"
-              :alt="audiovisualPopular.titulo"
+              :src="audiovisual.cartel"
+              :alt="audiovisual.titulo"
               :width="185"
               :height="270"
             >
@@ -33,8 +33,9 @@
 <script>
   export default {
     props: {
-      audiovisualesPopulares: {
-          required: true
+      audiovisuales: {
+        type: Array,
+        required: true
       }
     }
   }
