@@ -34,7 +34,6 @@
   export default {
     props: {
       audiovisuales: {
-        type: Array,
         required: true
       }
     }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('audiovisual_id');
             $table->integer('numero');
             $table->string('nombre', 128);
+            $table->integer('numeroCapitulos')->nullable();
 
             $table->foreign('audiovisual_id')->references('id')->on('audiovisual');
 

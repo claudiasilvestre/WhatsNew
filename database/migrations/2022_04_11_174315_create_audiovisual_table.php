@@ -20,13 +20,14 @@ return new class extends Migration
             $table->string('titulo', 64)->nullable();
             $table->string('tituloOriginal', 64)->nullable();
             $table->integer('anno')->nullable();
-            $table->string('pais', 32)->nullable();
             $table->integer('duracion')->nullable();
-            $table->string('sinopsis', 1024)->nullable();
+            $table->string('sinopsis', 2048)->nullable();
             $table->string('cartel', 64)->nullable();
             $table->date('fechaLanzamiento')->nullable();
             $table->decimal('puntuacion', $precision = 8, $scale = 1)->default(0.0);
             $table->integer('estado')->default(0);
+            $table->integer('numeroTemporadas')->nullable();
+            $table->integer('numeroCapitulos')->nullable();
 
             $table->foreign('tipoAudiovisual_id')->references('id')->on('tipo_audiovisual');
             $table->foreign('genero_id')->references('id')->on('genero');

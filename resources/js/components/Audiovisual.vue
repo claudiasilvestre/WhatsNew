@@ -1,10 +1,7 @@
 <template>
     <div>
         <div><h1> Menú </h1></div>
-        <div><h1> {{ $route.params.audiovisual.titulo }} </h1></div>
-        <info 
-            :audiovisual="$route.params.audiovisual"
-        />
+        <div><h1> {{ $route.params.id }} </h1></div>
     </div>
 </template>
 

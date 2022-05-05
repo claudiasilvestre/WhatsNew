@@ -1,5 +1,5 @@
 <template>
-    <div> 
+    <div>
         <h3> Películas populares </h3>
         <lista-audiovisuales
             :audiovisuales="audiovisualesPopulares['peliculas']"
@@ -21,14 +21,14 @@ export default {
     },
     data() {
         return {
-            audiovisualesPopulares: []
+            audiovisualesPopulares: [],
         }
     },
-    created() {
+    mounted() {
         axios.get('/audiovisuales')
             .then(response => this.audiovisualesPopulares = response.data)
             .catch(error => { console.log(error.response) });
-    }
+    },
 }
 </script>
 
