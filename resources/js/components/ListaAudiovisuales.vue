@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <div class="list">
     <v-sheet
       class="rounded"
       dark
@@ -27,7 +27,7 @@
         </v-slide-item>
       </v-slide-group>
     </v-sheet>
-  </v-container>
+  </div>
 </template>
 
 <script>

@@ -1,11 +1,11 @@
 <template>
     <div>
-        <h3> Películas populares </h3>
+        <h4> Películas populares </h4>
         <lista-audiovisuales
             :audiovisuales="audiovisualesPopulares['peliculas']"
         />
 
-        <h3> Series populares </h3>
+        <h4> Series populares </h4>
         <lista-audiovisuales
             :audiovisuales="audiovisualesPopulares['series']"
         />

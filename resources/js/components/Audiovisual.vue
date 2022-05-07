@@ -1,16 +1,23 @@
 <template>
-    <div>
-        <div><h1> Menú </h1></div>
-        <div><h1> {{ $route.params.id }} </h1></div>
+    <div class="header">
+        <info />
+        <div class="width">
+            <header-audiovisual />
+            <menu-audiovisual />
+        </div>
     </div>
 </template>
 
 <script>
 import Info from './Info.vue'
+import MenuAudiovisual from './MenuAudiovisual.vue'
+import HeaderAudiovisual from './HeaderAudiovisual.vue'
 
 export default {
     components: {
-        Info
+        Info,
+        MenuAudiovisual,
+        HeaderAudiovisual
     }
 }
 </script>
