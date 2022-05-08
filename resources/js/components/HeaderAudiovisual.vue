@@ -9,6 +9,7 @@
                 </div>
                 <span class="item" v-if="$route.params.audiovisual.tipoAudiovisual_id=1">Película</span>
                 <span class="item" v-else>Serie</span>
+                <span class="item">{{ $route.params.audiovisual.anno }}</span>
             </div>
         </div>
     </div>

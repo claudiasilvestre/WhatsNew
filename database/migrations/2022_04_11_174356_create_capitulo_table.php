@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('temporada_id');
             $table->integer('numero');
-            $table->string('nombre', 128);
+            $table->string('nombre', 2048);
             $table->string('sinopsis', 2048);
 
             $table->foreign('temporada_id')->references('id')->on('temporada');

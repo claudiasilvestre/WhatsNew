@@ -77,7 +77,10 @@ class AudiovisualesSeeder extends Seeder
                     $pelicula->tituloOriginal = $p['original_title'];
                     $pelicula->sinopsis = $p['overview'];
                     $pelicula->cartel = "https://image.tmdb.org/t/p/w500".$p['poster_path'];
-                    if ($p['release_date']) $pelicula->fechaLanzamiento = $p['release_date'];
+                    if ($p['release_date']) {
+                        $pelicula->fechaLanzamiento = $p['release_date'];
+                        $pelicula->anno = date('Y', strtotime($p['release_date']));
+                    }
                     $pelicula->puntuacion = $p['vote_average'];
     
                     $pelicula->save();
@@ -102,7 +105,10 @@ class AudiovisualesSeeder extends Seeder
                     $serie->tituloOriginal = $s['original_name'];
                     $serie->sinopsis = $s['overview'];
                     $serie->cartel = "https://image.tmdb.org/t/p/w500".$s['poster_path'];
-                    if ($s['first_air_date']) $serie->fechaLanzamiento = $s['first_air_date'];
+                    if ($s['first_air_date']) {
+                        $serie->fechaLanzamiento = $s['first_air_date'];
+                        $serie->anno = date('Y', strtotime($s['first_air_date']));
+                    }
                     $serie->puntuacion = $s['vote_average'];
     
                     $serie->save();

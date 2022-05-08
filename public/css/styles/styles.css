@@ -53,3 +53,18 @@ body {
     flex-direction: column;
     padding-top: 20px;
 }
+
+.nav-tabs {
+    border: none !important;
+}
+
+.nav-link.active {
+    background-color: transparent !important;
+    border: 2px solid transparent !important;
+    border-bottom-color: red !important;
+}
+
+.nav-link {
+    color: #fff !important;
+    border: none !important;
+}
