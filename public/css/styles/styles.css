@@ -54,6 +54,7 @@ body {
     padding-top: 20px;
 }
 
+/* Tabs de Bootstrap */
 .nav-tabs {
     border: none !important;
 }
@@ -67,4 +68,5 @@ body {
 .nav-link {
     color: #fff !important;
     border: none !important;
+    transition: none !important;
 }
