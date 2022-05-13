@@ -1,5 +1,5 @@
-import Home from './components/Home.vue'
-import Audiovisual from './components/Audiovisual.vue'
+import Home from './components/home/Home.vue'
+import Audiovisual from './components/audiovisual/Audiovisual.vue'
 
 export default {
     mode: 'history',

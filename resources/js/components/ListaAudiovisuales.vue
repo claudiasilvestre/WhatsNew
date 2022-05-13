@@ -14,7 +14,7 @@
           v-for="audiovisual in audiovisuales"
           :key="audiovisual.id"
         >
-          <router-link :to="{ name: 'audiovisual', params: { id: audiovisual.id, audiovisual: audiovisual }}">
+          <router-link :to="{ name: 'audiovisual', params: { id: audiovisual.id }}">
             <v-img
               class="rounded"
               :src="audiovisual.cartel"

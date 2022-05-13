@@ -17,4 +17,10 @@ class AudiovisualController extends Controller
             'series' => $series,
         ]);
     }
+
+    public function show($id) {
+        $audiovisual = Audiovisual::where('id', '=', $id)->get();
+
+        return response()->json($audiovisual);
+    }
 }

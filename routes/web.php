@@ -14,10 +14,8 @@ use App\Http\Controllers\AudiovisualController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/{any}', function () {
     return view('app');
-});
-
-// Route::get('/', 'App\Http\Controllers\AudiovisualController@api')->name('api');
+})->where('any', '^((?!audiovisuales).)*$');
 
 Route::resource('/audiovisuales', AudiovisualController::class);
