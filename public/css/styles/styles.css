@@ -70,3 +70,16 @@ body {
     border: none !important;
     transition: none !important;
 }
+
+textarea {
+    background-color: #303134 !important;
+    color: #fff;
+    border-radius: 0.25rem;
+    padding: 10px;
+    width: 100%;
+    resize: both !important;
+}
+
+textarea:focus {
+    outline: none;
+}

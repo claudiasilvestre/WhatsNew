@@ -7,6 +7,8 @@
                     <span class="item">{{ audiovisual.puntuacion }}</span>
                     <b-icon icon="star-fill"></b-icon>
                 </div>
+                <span class="item" v-if="audiovisual.tipoAudiovisual_id === 2 && audiovisual.numeroTemporadas === 1">1 temporada</span>
+                <span class="item" v-else-if="audiovisual.tipoAudiovisual_id === 2 && audiovisual.numeroTemporadas > 1">{{ audiovisual.numeroTemporadas }} temporadas</span>
                 <span class="item" v-if="audiovisual.tipoAudiovisual_id === 1">Película</span>
                 <span class="item" v-else>Serie</span>
                 <span class="item">{{ audiovisual.anno }}</span>
