@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AudiovisualController;
+use App\Http\Controllers\CapituloController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,9 @@ use App\Http\Controllers\AudiovisualController;
 
 Route::get('/{any}', function () {
     return view('app');
-})->where('any', '^((?!audiovisuales).)*$');
+})->where('any', '^((?!audiovisuales|capitulos).)*$');
 
 Route::resource('/audiovisuales', AudiovisualController::class);
+
+Route::get('/capitulos/{idSerie}/{numeroTemporada}', [CapituloController::class, 'index']);
+Route::resource('/capitulos', CapituloController::class);

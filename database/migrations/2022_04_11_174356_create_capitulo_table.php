@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('numero');
             $table->string('nombre', 2048);
             $table->string('sinopsis', 2048);
+            $table->string('cartel', 64)->nullable();
 
             $table->foreign('temporada_id')->references('id')->on('temporada');
             

@@ -151,6 +151,7 @@ class AudiovisualesSeeder extends Seeder
                         $capitulo->numero = $temporadaApi['episodes'][$i]['episode_number'];
                         $capitulo->nombre = $temporadaApi['episodes'][$i]['name'];
                         $capitulo->sinopsis = $temporadaApi['episodes'][$i]['overview'];
+                        $capitulo->cartel = "https://image.tmdb.org/t/p/w500".$temporadaApi['episodes'][$i]['still_path'];
     
                         $capitulo->save();
                     }
