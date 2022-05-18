@@ -26,7 +26,7 @@ export default {
         }
     },
     created() {
-        axios.get('/audiovisuales/'+this.id, )
+        axios.get('/audiovisuales/'+this.id)
             .then(response => this.audiovisual = response.data[0])
             .catch(error => { console.log(error.response) });
     },
