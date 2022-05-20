@@ -18,11 +18,11 @@ use App\Http\Controllers\CapituloController;
 
 Route::get('/{any}', function () {
     return view('app');
-})->where('any', '^((?!audiovisuales|capitulos|temporadas).)*$');
+})->where('any', '^((?!audiovisuales|capitulos|capitulo|temporadas).)*$');
 
 Route::resource('/audiovisuales', AudiovisualController::class);
 
 Route::get('/temporadas/{idSerie}', [TemporadaController::class, 'index']);
 
-Route::get('/capitulos/{idSerie}/{numeroTemporada}', [CapituloController::class, 'index']);
-Route::resource('/capitulos', CapituloController::class);
+Route::get('/capitulos/{temporada_id}', [CapituloController::class, 'index']);
+Route::resource('/capitulo', CapituloController::class);

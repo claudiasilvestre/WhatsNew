@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app v-if="!loading">
         <div class="d-flex justify-content-between list">
             <div>
                 <v-select
@@ -9,19 +9,26 @@
                     item-text="nombre"
                     return-object
                     solo
+                    v-on:change="updateCapitulos(selected)"
                 />
             </div>
-            <div class="d-flex align-items-center">
+            <div class="d-flex align-items-start">
                 <b-button variant="dark">
                     Marcar temporada como vista
                 <b-icon icon="check-circle"></b-icon></b-button>
             </div>
         </div>
+        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id"/>
     </v-app>
 </template>
 
 <script>
+import ListaCapitulos from './ListaCapitulos.vue'
+
 export default {
+    components: {
+        ListaCapitulos
+    },
     props: {
       audiovisual: {
         required: true,
@@ -31,13 +38,30 @@ export default {
     data() {
         return {
             temporadas: [],
-            selected: { nombre: 'Temporada 1' },
+            selected: {},
+            capitulos: [],
+            loading: true,
         }
     },
     created() {
         axios.get('/temporadas/'+this.audiovisual.id)
             .then(response => this.temporadas = response.data)
-            .catch(error => { console.log(error.response) });
+            .catch(error => { console.log(error.response) })
+            .finally(() => { 
+                if (this.temporadas) this.selected = this.temporadas[0];
+
+                axios.get('/capitulos/'+this.selected.id)
+                    .then(response => this.capitulos = response.data)
+                    .catch(error => { console.log(error.response) })
+                    .finally(() => this.loading = false); 
+            });
     },
+    methods: {
+      updateCapitulos(temporada) {
+        axios.get('/capitulos/'+temporada.id)
+            .then(response => this.capitulos = response.data)
+            .catch(error => { console.log(error.response) });
+      }
+    }
 }
 </script>

@@ -1,7 +1,8 @@
 <template>
     <div class="list">
         <form>
-            <textarea v-bind:placeholder="'¿Qué te ha parecido '+audiovisual.titulo+'?'"></textarea>
+            <textarea v-if="audiovisual" v-bind:placeholder="'¿Qué te ha parecido '+audiovisual.titulo+'?'"></textarea>
+            <textarea v-else v-bind:placeholder="'¿Qué te ha parecido este capítulo?'"></textarea>
             <div class="d-flex justify-content-end">
                 <b-button variant="info" class="mt-3">Comentar</b-button>
             </div>
@@ -17,7 +18,9 @@
 export default {
     props: {
         audiovisual: {
-            required: true,
+            type: Object
+        },
+        capitulo: {
             type: Object
         }
     }

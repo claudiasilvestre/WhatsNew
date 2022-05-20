@@ -10,9 +10,8 @@ use DB;
 
 class CapituloController extends Controller
 {
-    public function index($idSerie, $numeroTemporada) {
-        $temporada = DB::table('temporada')->where('numero', $numeroTemporada)->where('audiovisual_id', $idSerie)->first();
-        $capitulos = Capitulo::where('temporada_id', $temporada->id)->get();
+    public function index($temporada_id) {
+        $capitulos = Capitulo::where('temporada_id', $temporada_id)->get();
 
         return response()->json($capitulos);
     }
