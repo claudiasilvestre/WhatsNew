@@ -1,6 +1,8 @@
 <template>
     <header>
-        <h3>{{ title }}</h3>
+        <router-link :to="{ name: 'home' }">
+            <h3>{{ title }}</h3>
+        </router-link>
     </header>
 </template>
 

@@ -17,13 +17,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('tipoPersona_id');
             $table->unsignedBigInteger('tipoParticipante_id')->default(0);
-            $table->string('nombre', 64);
-            $table->string('apellidos', 128);
-            $table->string('foto', 64);
+            $table->string('nombre', 128);
+            $table->string('foto', 64)->nullable();
             $table->string('usuario', 16)->nullable();
             $table->string('correo', 64)->nullable();
             $table->string('contrasenna', 32)->nullable();
-            $table->string('biografia', 256)->nullable();
+            $table->string('personaje', 128)->nullable();
 
             $table->foreign('tipoPersona_id')->references('id')->on('tipo_persona');
             $table->foreign('tipoParticipante_id')->references('id')->on('tipo_participante');

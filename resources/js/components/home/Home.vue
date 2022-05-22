@@ -1,8 +1,8 @@
 <template>
   <v-app>
     <div>
-        <app-header />
-        <audiovisuales-populares />
+      <app-header />
+      <audiovisuales-populares />
     </div>
   </v-app>
 </template>

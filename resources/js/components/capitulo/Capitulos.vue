@@ -1,6 +1,12 @@
 <template>
-    <v-app v-if="!loading">
-        <div class="d-flex justify-content-between list">
+    <v-app>
+        <div v-if="loading" class="d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+            <b-spinner
+                :variant="'light'"
+                :key="'light'"
+            ></b-spinner>
+        </div>
+        <div v-else class="d-flex justify-content-between list">
             <div>
                 <v-select
                     v-model="selected"
