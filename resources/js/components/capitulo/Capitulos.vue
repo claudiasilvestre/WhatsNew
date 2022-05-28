@@ -50,13 +50,13 @@ export default {
         }
     },
     created() {
-        axios.get('/temporadas/'+this.audiovisual.id)
+        axios.get('/api/temporadas/'+this.audiovisual.id)
             .then(response => this.temporadas = response.data)
             .catch(error => { console.log(error.response) })
             .finally(() => { 
                 if (this.temporadas) this.selected = this.temporadas[0];
 
-                axios.get('/capitulos/'+this.selected.id)
+                axios.get('/api/capitulos/'+this.selected.id)
                     .then(response => this.capitulos = response.data)
                     .catch(error => { console.log(error.response) })
                     .finally(() => this.loading = false); 
@@ -64,7 +64,7 @@ export default {
     },
     methods: {
       updateCapitulos(temporada) {
-        axios.get('/capitulos/'+temporada.id)
+        axios.get('/api/capitulos/'+temporada.id)
             .then(response => this.capitulos = response.data)
             .catch(error => { console.log(error.response) });
       }

@@ -36,11 +36,11 @@ export default {
         }
     },
     created() {
-        axios.get('/personas/'+this.idParticipante)
+        axios.get('/api/personas/'+this.idParticipante)
             .then(response => this.participante = response.data[0])
             .catch(error => { console.log(error.response) });
 
-        axios.get('/audiovisuales-participacion/'+this.idParticipante)
+        axios.get('/api/audiovisuales-participacion/'+this.idParticipante)
             .then(response => this.audiovisuales = response.data)
             .catch(error => { console.log(error.response) })
             .finally(() => this.loading = false);

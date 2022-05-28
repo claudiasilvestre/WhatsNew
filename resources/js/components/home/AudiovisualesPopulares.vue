@@ -34,7 +34,7 @@ export default {
         }
     },
     created() {
-        axios.get('/audiovisuales')
+        axios.get('/api/audiovisuales')
             .then(response => this.audiovisualesPopulares = response.data)
             .catch(error => { console.log(error.response) })
             .finally(() => this.loading = false);

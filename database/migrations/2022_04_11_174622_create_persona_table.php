@@ -15,14 +15,17 @@ return new class extends Migration
     {
         Schema::create('persona', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('tipoPersona_id');
-            $table->unsignedBigInteger('tipoParticipante_id')->default(0);
+            $table->unsignedBigInteger('tipoPersona_id')->default(1);
+            $table->unsignedBigInteger('tipoParticipante_id')->nullable();
             $table->string('nombre', 128);
             $table->string('foto', 64)->nullable();
-            $table->string('usuario', 16)->nullable();
-            $table->string('correo', 64)->nullable();
-            $table->string('contrasenna', 32)->nullable();
             $table->string('personaje', 128)->nullable();
+
+            $table->string('usuario', 16)->nullable()->unique();
+            $table->string('email')->nullable()->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password')->nullable();
+            $table->rememberToken();
 
             $table->foreign('tipoPersona_id')->references('id')->on('tipo_persona');
             $table->foreign('tipoParticipante_id')->references('id')->on('tipo_participante');

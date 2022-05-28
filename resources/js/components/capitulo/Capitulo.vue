@@ -42,11 +42,11 @@ export default {
         }
     },
     created() {
-        axios.get('/audiovisuales/'+this.idAudiovisual)
+        axios.get('/api/audiovisuales/'+this.idAudiovisual)
             .then(response => this.audiovisual = response.data[0])
             .catch(error => { console.log(error.response) });
 
-        axios.get('/capitulo/'+this.idCapitulo)
+        axios.get('/api/capitulo/'+this.idCapitulo)
             .then(response => this.capitulo = response.data[0])
             .catch(error => { console.log(error.response) })
             .finally(() => this.loading = false);

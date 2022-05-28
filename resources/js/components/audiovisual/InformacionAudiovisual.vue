@@ -54,7 +54,7 @@ export default {
         }
     },
     created() {
-        axios.get('/personas-participacion/'+this.audiovisual.id)
+        axios.get('/api/personas-participacion/'+this.audiovisual.id)
             .then(response => this.participaciones = response.data)
             .catch(error => { console.log(error.response) });
     },
