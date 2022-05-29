@@ -16,11 +16,14 @@
                             <p class="text-danger" v-text="errors.password"></p>
                         </div>
 
-                        <div ckass="row">
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <button @click="handleLogin" class="btn btn-primary">Iniciar sesión</button>
                                 </div>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <router-link to="/register">Crear nueva cuenta</router-link>
                             </div>
                         </div>
                     </div>

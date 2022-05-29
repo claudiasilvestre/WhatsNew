@@ -31,7 +31,7 @@
                             <p class="text-danger" v-text="errors.password_confirmation"></p>
                         </div>
 
-                        <div ckass="row">
+                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <button @click="registerUser" class="btn btn-primary">Registrarse</button>
@@ -68,7 +68,6 @@ export default {
                 console.log(response.data)
                 this.formData.nombre = this.formData.usuario = this.formData.email = this.formData.password = this.formData.password_confirmation = ''
                 this.$router.push('/login')
-                this.$toaster.success('Account created successfully')
             }).catch((errors) => {
                 this.errors = errors.response.data.errors
             });
