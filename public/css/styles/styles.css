@@ -85,7 +85,14 @@ textarea:focus {
 }
 
 .background2 {
-    background-color: #1e1e1e;
+    background-color: #1e1e1e !important;
+}
+
+input {
+    background-color: #303134 !important;
+    color: #fff;
+    width: 100%;
+    border-radius: 0.25rem !important;
 }
 
 .v-application a {

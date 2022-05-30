@@ -1,18 +1,16 @@
 <template>
     <div>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
+        <div class="row justify-content-center align-items-center" style="height:80vh;">
+            <div class="col-md-4">
+                <div class="card background2">
                     <div class="card-header">Inicio sesión</div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" v-model="formData.email">
+                            <input type="email" class="p-2" name="email" placeholder="Email" v-model="formData.email">
                             <p class="text-danger" v-text="errors.email"></p>
                         </div>
                         <div class="form-group">
-                            <label for="password">Contraseña</label>
-                            <input type="password" name="password" v-model="formData.password">
+                            <input type="password" class="p-2" name="password" placeholder="Contraseña" v-model="formData.password">
                             <p class="text-danger" v-text="errors.password"></p>
                         </div>
 

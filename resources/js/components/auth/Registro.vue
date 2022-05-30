@@ -1,33 +1,28 @@
 <template>
     <div>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
+        <div class="row justify-content-center align-items-center" style="height:80vh;">
+            <div class="col-md-4">
+                <div class="card background2">
                     <div class="card-header">Registro</div>
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" name="nombre" v-model="formData.nombre">
+                            <input type="text" class="p-2" name="nombre" placeholder="Nombre" v-model="formData.nombre">
                             <p class="text-danger" v-text="errors.nombre"></p>
                         </div>
                         <div class="form-group">
-                            <label for="usuario">Usuario</label>
-                            <input type="text" name="usuario" v-model="formData.usuario">
+                            <input type="text" class="p-2" name="usuario" placeholder="Usuario" v-model="formData.usuario">
                             <p class="text-danger" v-text="errors.usuario"></p>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" name="email" v-model="formData.email">
+                            <input type="email" class="p-2" name="email" placeholder="Email" v-model="formData.email">
                             <p class="text-danger" v-text="errors.email"></p>
                         </div>
                         <div class="form-group">
-                            <label for="password">Contraseña</label>
-                            <input type="password" name="password" v-model="formData.password">
+                            <input type="password" class="p-2" name="password" placeholder="Contraseña" v-model="formData.password">
                             <p class="text-danger" v-text="errors.password"></p>
                         </div>
                         <div class="form-group">
-                            <label for="password_confirmation">Confirmar contraseña</label>
-                            <input type="password" name="password_confirmation" v-model="formData.password_confirmation">
+                            <input type="password" class="p-2" name="password_confirmation" placeholder="Confirmar contraseña" v-model="formData.password_confirmation">
                             <p class="text-danger" v-text="errors.password_confirmation"></p>
                         </div>
 
