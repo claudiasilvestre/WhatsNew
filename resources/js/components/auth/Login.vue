@@ -38,7 +38,6 @@ export default {
             formData: {
                 email: '',
                 password: '',
-                device_name: 'browser'
             },
             errors: {}
         }
