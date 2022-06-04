@@ -8,8 +8,12 @@ use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\AuthController;
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', [AuthController::class, 'user']);
+    Route::post('/logout', [AuthController::class, 'logout']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);
@@ -23,6 +27,3 @@ Route::get('/personas-participacion/{audiovisual_id}', [PersonaController::class
 Route::get('/audiovisuales-participacion/{persona_id}', [AudiovisualController::class, 'participacion']);
 
 Route::resource('/personas', PersonaController::class);
-
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);

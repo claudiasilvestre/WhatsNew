@@ -6,6 +6,7 @@ use App\Models\Persona;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -30,17 +31,33 @@ class AuthController extends Controller
     }
 
     public function login(Request $request) {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        if (Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(Auth::user(), 200);
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
         }
-     
-        throw ValidationException::withMessages([
-            'email' => ['The provided credentials are incorrect.'],
-        ]);
+
+        $user = Auth::user();
+
+        $token = $user->createToken('token')->plainTextToken;
+
+        $cookie = cookie('jwt', $token, 60 * 24);
+
+        return response([
+            'message' => 'Success'
+        ])->withCookie($cookie);
+    }
+
+    public function user() {
+        return Auth::user();
+    }
+
+    public function logout(Request $request) {
+        $cookie = Cookie::forget('jwt');
+        $request->user()->tokens()->delete();
+
+        return response([
+            'message' => 'Success'
+        ])->withCookie($cookie);
     }
 }

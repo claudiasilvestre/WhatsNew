@@ -39,18 +39,18 @@ export default {
                 email: '',
                 password: '',
             },
-            errors: {}
+        }
+    },
+    computed: {
+        errors: {
+            get() {
+                return this.$store.state.currentUser.errors;
+            }
         }
     },
     methods: {
         handleLogin() {
-            axios.get('/sanctum/csrf-cookie').then(response => {
-                axios.post('/api/login', this.formData).then((response) => {
-                    this.$router.push('/')
-                }).catch((errors) => {
-                    this.errors = errors.response.data.errors
-                })
-            });
+            this.$store.dispatch('currentUser/loginUser', this.formData);
         }
     }
 }

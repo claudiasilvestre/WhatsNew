@@ -4,6 +4,12 @@ header {
     margin: auto;
 }
 
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 h4 {
     padding-left: 20px;
 }
