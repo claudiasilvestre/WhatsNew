@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Audiovisual;
 use Illuminate\Support\Facades\DB;
+use App\Models\Seguimiento;
 
 class AudiovisualController extends Controller
 {
@@ -32,5 +33,36 @@ class AudiovisualController extends Controller
                                 ->get();
 
         return response()->json($personas);
+    }
+
+    public function saber_seguimiento(Request $request) {
+        if (Seguimiento::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->exists()) {
+            $seguimiento = Seguimiento::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->first();
+            return $seguimiento->estado;
+        }
+
+        return 0;
+    }
+
+    public function seguimiento(Request $request) {
+        if (Seguimiento::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->exists()) {
+            $seguimiento = Seguimiento::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->first();
+            if ($seguimiento->estado === $request->tipo) {
+                $seguimiento->delete();
+                return false;
+            }
+
+            Seguimiento::where('persona_id', $request->usuario_id)
+                ->where('audiovisual_id', $request->audiovisual_id)
+                ->update(['estado' => $request->tipo]);
+        } else {
+            Seguimiento::create([
+                'audiovisual_id' => $request->audiovisual_id,
+                'persona_id' => $request->usuario_id,
+                'estado' => $request->tipo,
+            ]);
+        }
+
+        return true;
     }
 }

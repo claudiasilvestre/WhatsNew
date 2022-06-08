@@ -10,9 +10,9 @@ use App\Http\Controllers\AuthController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/user', [AuthController::class, 'user']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
@@ -27,3 +27,6 @@ Route::get('/personas-participacion/{audiovisual_id}', [PersonaController::class
 Route::get('/audiovisuales-participacion/{persona_id}', [AudiovisualController::class, 'participacion']);
 
 Route::resource('/personas', PersonaController::class);
+
+Route::get('/saber-seguimiento', [AudiovisualController::class, 'saber_seguimiento']);
+Route::post('/seguimiento', [AudiovisualController::class, 'seguimiento']);

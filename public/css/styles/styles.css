@@ -104,4 +104,12 @@ input {
 .v-application a {
     color: #fff !important;
     text-decoration: none;
-  }
+}
+
+.v-select__selections input {
+    display: none;
+}
+
+.v-select__selection--comma {
+    overflow: visible !important;
+}

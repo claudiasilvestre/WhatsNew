@@ -10,13 +10,13 @@ import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(IconsPlugin)
+Vue.use(VueRouter)
 
 const app = new Vue({
     vuetify: Vuetify,
     store,
     el: '#app',
-    router: new VueRouter(routes)
+    router: routes
 });

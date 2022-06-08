@@ -10,4 +10,10 @@ class Seguimiento extends Model
     use HasFactory;
 
     protected $table = 'seguimiento';
+
+    protected $fillable = [
+        'audiovisual_id',
+        'persona_id',
+        'estado',
+    ];
 }

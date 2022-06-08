@@ -1,3 +1,5 @@
+import VueRouter from 'vue-router'
+// import store from './store'
 import Home from './components/home/Home.vue'
 import Audiovisual from './components/audiovisual/Audiovisual.vue'
 import Capitulo from './components/capitulo/Capitulo.vue'
@@ -5,13 +7,16 @@ import Participante from './components/Participante.vue'
 import Registro from './components/auth/Registro.vue'
 import Login from './components/auth/Login.vue'
 
-export default {
+const router = new VueRouter ({
     mode: 'history',
     routes: [
         {
             path: '/',
             name: 'home',
-            component: Home
+            component: Home,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/media/:id',
@@ -38,5 +43,25 @@ export default {
             name: 'login',
             component: Login
         }
-    ]
-}
+    ],
+})
+
+/* router.beforeEach((to, from, next)=>{
+        console.log("Hola");
+        axios.get('/api/user')
+            .then(response => {
+                if (to.matched.some(rec => rec.meta.requiresAuth)) {  
+                const user = response.data; 
+                console.log(user);
+                if (user) {
+                    next()
+                } else {
+                    const login = router.push('/login')
+                    next(login)
+                }
+            }
+            next()})
+            .catch(error => { console.log(error.response) });
+}) */
+
+export default router;

@@ -3,7 +3,7 @@
         <router-link :to="{ name: 'home' }">
             <h3>{{ title }}</h3>
         </router-link>
-        <div>
+        <div v-if="currentUser">
             <span>{{ currentUser.nombre }}</span>
             <button @click="handleLogout" class="btn btn-danger">Cerrar sesión</button>
         </div>
@@ -29,11 +29,7 @@ export default {
     },
     methods: {
         handleLogout() {
-            axios.post('/api/logout')
-            .then(response => {
-                this.$router.push('/login')
-                console.log(response.data)})
-            .catch(error => console.log(error.response))
+            this.$store.dispatch('currentUser/logoutUser');
         }
     }
 }
