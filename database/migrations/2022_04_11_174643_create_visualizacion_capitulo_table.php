@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('capitulo_id');
             $table->unsignedBigInteger('persona_id');
-            $table->boolean('visto');
 
             $table->foreign('capitulo_id')->references('id')->on('capitulo');
             $table->foreign('persona_id')->references('id')->on('persona');

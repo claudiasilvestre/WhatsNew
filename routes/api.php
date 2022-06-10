@@ -30,3 +30,6 @@ Route::resource('/personas', PersonaController::class);
 
 Route::get('/saber-seguimiento', [AudiovisualController::class, 'saber_seguimiento']);
 Route::post('/seguimiento', [AudiovisualController::class, 'seguimiento']);
+
+Route::get('/visualizaciones', [CapituloController::class, 'visualizaciones']);
+Route::post('/visualizacion-capitulo', [CapituloController::class, 'visualizacion']);

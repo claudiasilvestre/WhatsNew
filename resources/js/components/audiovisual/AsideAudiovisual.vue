@@ -59,7 +59,7 @@ export default {
                     this.clicked3 = true;
                 }
             })
-            .catch(error => console.log(error.response) )
+            .catch(error => console.log(error.response))
             .finally(() => this.loading = false);
     },
     methods: {
@@ -108,7 +108,7 @@ export default {
 
                 this.clicked = true;
             })
-            .catch(error => console.log(error.response) );
+            .catch(error => console.log(error.response));
         },
     }
 }
