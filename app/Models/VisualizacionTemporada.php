@@ -10,4 +10,9 @@ class VisualizacionTemporada extends Model
     use HasFactory;
 
     protected $table = 'visualizacion_temporada';
+
+    protected $fillable = [
+        'temporada_id',
+        'persona_id',
+    ];
 }

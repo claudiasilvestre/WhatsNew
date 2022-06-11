@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('temporada_id');
             $table->unsignedBigInteger('persona_id');
-            $table->boolean('vista');
 
             $table->foreign('temporada_id')->references('id')->on('temporada');
             $table->foreign('persona_id')->references('id')->on('persona');

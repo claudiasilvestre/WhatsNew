@@ -33,3 +33,6 @@ Route::post('/seguimiento', [AudiovisualController::class, 'seguimiento']);
 
 Route::get('/visualizaciones', [CapituloController::class, 'visualizaciones']);
 Route::post('/visualizacion-capitulo', [CapituloController::class, 'visualizacion']);
+
+Route::get('/saber-visualizacion-temporada', [TemporadaController::class, 'saber_visualizacion']);
+Route::post('/visualizacion-temporada', [TemporadaController::class, 'visualizacion']);

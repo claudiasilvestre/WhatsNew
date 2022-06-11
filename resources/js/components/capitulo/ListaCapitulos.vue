@@ -29,7 +29,11 @@ export default {
       idAudiovisual: {
         required: true,
         type: Number
-      }
+      },
+      vista: {
+        required: true,
+        type: Boolean
+      },
     },
     data() {
         return {
@@ -50,6 +54,12 @@ export default {
                 })
                 .catch(error => console.log(error.response))
                 .finally(() => this.loading = false);
+        },
+        vista: function () {
+            if (this.vista)
+                this.clicked = Array(this.capitulos.length).fill(true);
+            else
+                this.clicked = Array(this.capitulos.length).fill(false);
         }
     },
     methods: {

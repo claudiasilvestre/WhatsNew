@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Temporada;
 use App\Models\Capitulo;
 use App\Models\VisualizacionCapitulo;
+use App\Models\VisualizacionTemporada;
 use DB;
 
 class CapituloController extends Controller

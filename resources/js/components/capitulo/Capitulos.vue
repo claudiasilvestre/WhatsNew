@@ -19,12 +19,12 @@
                 />
             </div>
             <div class="d-flex align-items-start">
-                <b-button variant="dark">
+                <button v-bind:class="{'btn btn-light': !clicked, 'btn btn-danger': clicked}" @click="vista(selected.id)" class="m-1">
                     Marcar temporada como vista
-                <b-icon icon="check-circle"></b-icon></b-button>
+                <b-icon icon="check-circle"></b-icon></button>
             </div>
         </div>
-        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id"/>
+        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id" :vista="clicked"/>
     </v-app>
 </template>
 
@@ -47,6 +47,7 @@ export default {
             selected: {},
             capitulos: [],
             loading: true,
+            clicked: false,
         }
     },
     created() {
@@ -58,7 +59,18 @@ export default {
 
                 axios.get('/api/capitulos/'+this.selected.id)
                     .then(response => this.capitulos = response.data)
-                    .catch(error => { console.log(error.response) })
+                    .catch(error => { console.log(error.response) });
+
+                axios.get('/api/saber-visualizacion-temporada/', {
+                    params: { 
+                        temporada_id: this.selected.id, 
+                        usuario_id: 1,
+                    }})
+                    .then(response => {
+                        if (response.data)
+                            this.clicked = true;
+                    })
+                    .catch(error => console.log(error.response))
                     .finally(() => this.loading = false); 
             });
     },
@@ -67,6 +79,21 @@ export default {
         axios.get('/api/capitulos/'+temporada.id)
             .then(response => this.capitulos = response.data)
             .catch(error => { console.log(error.response) });
+      },
+      vista(temporada_id) {
+        axios.post('/api/visualizacion-temporada/', 
+            { 
+                temporada_id, 
+                usuario_id: 1,
+                capitulos: this.capitulos
+            })
+            .then(response => {
+                if (response.data)
+                    this.clicked = true;
+                else
+                    this.clicked = false;
+            })
+            .catch(error => console.log(error.response));
       }
     }
 }

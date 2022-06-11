@@ -180,7 +180,7 @@ class AudiovisualesSeeder extends Seeder
         }
 
         // Series
-        for ($i = 1; $i <= 8; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             $series = Http::get('https://api.themoviedb.org/3/tv/popular?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES&page='.$i)['results'];
 
             foreach ($series as $s) {
