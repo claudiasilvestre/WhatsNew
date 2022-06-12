@@ -34,6 +34,14 @@ export default {
         required: true,
         type: Boolean
       },
+      cambio: {
+        required: true,
+        type: Boolean
+      },
+      noCambio: {
+        required: true,
+        type: Boolean
+      },
     },
     data() {
         return {
@@ -58,8 +66,27 @@ export default {
         vista: function () {
             if (this.vista)
                 this.clicked = Array(this.capitulos.length).fill(true);
-            else
-                this.clicked = Array(this.capitulos.length).fill(false);
+            else {
+                if (this.noCambio)
+                    this.clicked = Array(this.capitulos.length).fill(false);
+            }
+        },
+        cambio: function () {
+            if (this.cambio)
+                this.clicked = Array(this.capitulos.length).fill(true);
+            else {
+                this.loading = true;
+                axios.get('/api/visualizaciones/', {
+                    params: { 
+                        capitulos: this.capitulos,
+                        usuario_id: 1,
+                    }})
+                    .then(response => {
+                        this.clicked = response.data;
+                    })
+                    .catch(error => console.log(error.response))
+                    .finally(() => this.loading = false);
+            }
         }
     },
     methods: {
@@ -71,10 +98,16 @@ export default {
             })
             .then(response => {
                 this.loading = true;
-                if (response.data)
-                    this.clicked[index] = true;
-                else
-                    this.clicked[index] = false;
+                if (response.data['estado']) {
+                    this.clicked[index] = response.data['estado'];
+                    if (response.data['cambio'])
+                        this.$emit('comprobarVista', true);
+                }
+                else {
+                    this.clicked[index] = response.data['estado'];
+                    if (response.data['cambio'])
+                        this.$emit('comprobarVista', false);
+                }
             })
             .catch(error => console.log(error.response))
             .finally(() => this.loading = false);

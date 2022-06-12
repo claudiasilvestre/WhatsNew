@@ -42,13 +42,66 @@ class CapituloController extends Controller
                 'persona_id' => $request->usuario_id,
             ]);
 
-            return true;
+            $temporada = DB::table('temporada')
+                                ->join('capitulo', 'temporada.id', '=', 'capitulo.temporada_id')
+                                ->where('capitulo.id', $request->capitulo_id)
+                                ->get();
+                                
+            $capitulos = Capitulo::where('temporada_id', $temporada[0]->temporada_id)->get();
+            $count = 0;
+
+            foreach($capitulos as $capitulo) {
+                if (VisualizacionCapitulo::where('persona_id', $request->usuario_id)->where('capitulo_id', $capitulo->id)->exists())
+                    $count++;
+            }
+
+            if ($count === $temporada[0]->numeroCapitulos) {
+                VisualizacionTemporada::create([
+                    'temporada_id' => $temporada[0]->temporada_id,
+                    'persona_id' => $request->usuario_id,
+                ]);
+
+                $cambio = true;
+            }
+            else
+                $cambio = false;
+
+            return response()->json([
+                'estado' => true,
+                'cambio' => $cambio,
+            ]);
         } else {
+            $temporada = DB::table('temporada')
+            ->join('capitulo', 'temporada.id', '=', 'capitulo.temporada_id')
+            ->where('capitulo.id', $request->capitulo_id)
+            ->get();
+                
+            $capitulos = Capitulo::where('temporada_id', $temporada[0]->temporada_id)->get();
+            $count = 0;
+
+            foreach($capitulos as $capitulo) {
+                if (VisualizacionCapitulo::where('persona_id', $request->usuario_id)->where('capitulo_id', $capitulo->id)->exists())
+                    $count++;
+            }
+
+            if ($count === $temporada[0]->numeroCapitulos) {
+                VisualizacionTemporada::where('persona_id', $request->usuario_id)
+                ->where('temporada_id', $temporada[0]->temporada_id)
+                ->delete();
+
+                $cambio = true;
+            }
+            else
+                $cambio = false;
+            
             VisualizacionCapitulo::where('persona_id', $request->usuario_id)
                 ->where('capitulo_id', $request->capitulo_id)
                 ->delete();
 
-            return false;
+            return response()->json([
+                'estado' => false,
+                'cambio' => $cambio,
+            ]);
         }
     }
 }

@@ -19,12 +19,12 @@
                 />
             </div>
             <div class="d-flex align-items-start">
-                <button v-bind:class="{'btn btn-light': !clicked, 'btn btn-danger': clicked}" @click="vista(selected.id)" class="m-1">
+                <button v-bind:class="{'btn btn-light': !state, 'btn btn-danger': state}" @click="vista(selected.id)" class="m-1">
                     Marcar temporada como vista
                 <b-icon icon="check-circle"></b-icon></button>
             </div>
         </div>
-        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id" :vista="clicked"/>
+        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id" :vista="clicked" :cambio="cambio" :noCambio="noCambio" @comprobarVista="comprobarVista"/>
     </v-app>
 </template>
 
@@ -48,6 +48,9 @@ export default {
             capitulos: [],
             loading: true,
             clicked: false,
+            state: false,
+            cambio: true,
+            noCambio: true,
         }
     },
     created() {
@@ -67,8 +70,10 @@ export default {
                         usuario_id: 1,
                     }})
                     .then(response => {
-                        if (response.data)
+                        if (response.data) {
+                            this.state = true;
                             this.clicked = true;
+                        }
                     })
                     .catch(error => console.log(error.response))
                     .finally(() => this.loading = false); 
@@ -88,12 +93,23 @@ export default {
                 capitulos: this.capitulos
             })
             .then(response => {
-                if (response.data)
+                if (response.data) {
+                    this.state = true;
                     this.clicked = true;
-                else
+                } else {
+                    this.state = false;
                     this.clicked = false;
+                }
+                this.noCambio = true;
             })
             .catch(error => console.log(error.response));
+      },
+      comprobarVista(cambio) {
+        this.state = cambio;
+        this.cambio = cambio;
+        this.noCambio = false;
+        if (!cambio)
+            this.clicked = false;
       }
     }
 }
