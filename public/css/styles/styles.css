@@ -10,6 +10,11 @@ header {
     align-items: center;
 }
 
+.align-row {
+    display: flex;
+    justify-content: space-between;
+}
+
 h4 {
     padding-left: 20px;
 }

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Audiovisual;
 use Illuminate\Support\Facades\DB;
 use App\Models\Seguimiento;
+use App\Models\ProveedorAudiovisual;
+use App\Models\Proveedor;
 
 class AudiovisualController extends Controller
 {
@@ -64,5 +66,27 @@ class AudiovisualController extends Controller
         }
 
         return true;
+    }
+
+    public function proveedores($audiovisual_id) {
+        $proveedores = ProveedorAudiovisual::where('audiovisual_id', $audiovisual_id)->get();
+        $stream = [];
+        $alquilar = [];
+        $comprar = [];
+
+        foreach($proveedores as $proveedor) {
+            if ($proveedor->disponibilidad === 1)
+                array_push($stream, Proveedor::where('id', $proveedor->proveedor_id)->first());
+            else if ($proveedor->disponibilidad === 2)
+                array_push($alquilar, Proveedor::where('id', $proveedor->proveedor_id)->first());
+            else if ($proveedor->disponibilidad === 3)
+                array_push($comprar, Proveedor::where('id', $proveedor->proveedor_id)->first());
+        }
+
+        return response()->json([
+            'stream' => $stream,
+            'alquilar' => $alquilar,
+            'comprar' => $comprar,
+        ]);
     }
 }

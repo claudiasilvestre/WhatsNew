@@ -1,11 +1,49 @@
 <template>
     <div class="list">
-        <h5>Título original</h5>
-        <p>{{ audiovisual.tituloOriginal }}</p>
-        <h5>Estreno</h5>
-        <p>{{ audiovisual.fechaLanzamiento }}</p>
-        <h5>Sinopsis</h5>
-        <p>{{ audiovisual.sinopsis }}</p>
+      <div v-if="loading" class="d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+        <b-spinner
+            :variant="'light'"
+            :key="'light'"
+        ></b-spinner>
+      </div>
+      <div v-else>
+        <div class="align-row">
+          <div>
+            <h5>Título original</h5>
+            <p>{{ audiovisual.tituloOriginal }}</p>
+            <h5>Estreno</h5>
+            <p>{{ audiovisual.fechaLanzamiento }}</p>
+            <h5>Sinopsis</h5>
+            <p>{{ audiovisual.sinopsis }}</p>
+          </div>
+          <div>
+            <h5>Ver ahora</h5>
+              <div v-if="stream.length > 0" class="m-2">
+                <span>Stream</span>
+                <div class="d-flex flex-row">
+                  <div v-for="proveedor in stream" :key="proveedor.id" class="mr-2">
+                    <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
+                  </div>
+                </div>
+              </div>
+              <div v-if="alquilar.length > 0" class="m-2">
+                <span>Alquilar</span>
+                <div class="d-flex flex-row">
+                  <div v-for="proveedor in alquilar" :key="proveedor.id" class="mr-2">
+                    <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
+                  </div>
+                </div>
+              </div>
+              <div v-if="comprar.length > 0" class="m-2">
+                <span>Comprar</span>
+                <div class="d-flex flex-row">
+                  <div v-for="proveedor in comprar" :key="proveedor.id" class="mr-2">
+                    <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
 
         <h5>Reparto</h5>
         <div class="d-flex flex-wrap">
@@ -37,6 +75,7 @@
             </div>
           </div>
         </div>
+      </div>
     </div>
 </template>
 
@@ -51,12 +90,25 @@ export default {
     data() {
         return {
             participaciones: [],
+            stream: [],
+            alquilar: [],
+            comprar: [],
+            loading: true,
         }
     },
     created() {
         axios.get('/api/personas-participacion/'+this.audiovisual.id)
             .then(response => this.participaciones = response.data)
             .catch(error => { console.log(error.response) });
+
+        axios.get('/api/proveedores/'+this.audiovisual.id)
+            .then(response => { 
+              this.stream = response.data['stream'];
+              this.alquilar = response.data['alquilar'];
+              this.comprar = response.data['comprar'];
+            })
+            .catch(error => { console.log(error.response) })
+            .finally(() => this.loading = false);
     },
 }
 </script>

@@ -302,6 +302,7 @@ class AudiovisualesSeeder extends Seeder
                 }
             }
 
+            // Estado de la serie
             if ($detalles['in_production'])
                 $serie->estado = 1;
             else if ($detalles['status'] === "Returning Series")

@@ -36,3 +36,5 @@ Route::post('/visualizacion-capitulo', [CapituloController::class, 'visualizacio
 
 Route::get('/saber-visualizacion-temporada', [TemporadaController::class, 'saber_visualizacion']);
 Route::post('/visualizacion-temporada', [TemporadaController::class, 'visualizacion']);
+
+Route::get('/proveedores/{audiovisual_id}', [AudiovisualController::class, 'proveedores']);
