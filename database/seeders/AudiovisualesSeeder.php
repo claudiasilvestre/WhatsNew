@@ -15,6 +15,8 @@ use App\Models\Persona;
 use App\Models\TipoParticipante;
 use App\Models\TipoPersona;
 use App\Models\Participacion;
+use App\Models\Proveedor;
+use App\Models\ProveedorAudiovisual;
 
 class AudiovisualesSeeder extends Seeder
 {
@@ -90,6 +92,29 @@ class AudiovisualesSeeder extends Seeder
             $tipoParticipante = new TipoParticipante;
             $tipoParticipante->nombre = "Guionista";
             $tipoParticipante->save();
+        }
+
+        // Proveedores
+        $proveedores = Http::get('https://api.themoviedb.org/3/watch/providers/movie?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')['results'];
+        foreach ($proveedores as $proveedor) {
+            if (!Proveedor::where('id', $proveedor['provider_id'])->exists()) {
+                $pv = new Proveedor;
+                $pv->id = $proveedor['provider_id'];
+                $pv->nombre = $proveedor['provider_name'];
+                $pv->logo = "https://image.tmdb.org/t/p/w500".$proveedor['logo_path'];
+                $pv->save();
+            }
+        }
+
+        $proveedores = Http::get('https://api.themoviedb.org/3/watch/providers/tv?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')['results'];
+        foreach ($proveedores as $proveedor) {
+            if (!Proveedor::where('id', $proveedor['provider_id'])->exists()) {
+                $pv = new Proveedor;
+                $pv->id = $proveedor['provider_id'];
+                $pv->nombre = $proveedor['provider_name'];
+                $pv->logo = "https://image.tmdb.org/t/p/w500".$proveedor['logo_path'];
+                $pv->save();
+            }
         }
 
         // Películas
@@ -175,6 +200,38 @@ class AudiovisualesSeeder extends Seeder
                             }
                         }
                     }
+
+                    // Proveedores
+                    $proveedores = Http::get('https://api.themoviedb.org/3/movie/'.$pelicula->id.'/watch/providers?api_key=38430b01858c3e78910493ba6a38a8b3')['results'];
+                    if (array_key_exists("ES", $proveedores)) {
+                        if (array_key_exists("flatrate", $proveedores['ES'])) {
+                            foreach ($proveedores['ES']['flatrate'] as $proveedor) {
+                                $p_a = new ProveedorAudiovisual;
+                                $p_a->proveedor_id = $proveedor['provider_id'];
+                                $p_a->audiovisual_id = $pelicula->id;
+                                $p_a->disponibilidad = 1;
+                                $p_a->save();
+                            }
+                        }
+                        if (array_key_exists("rent", $proveedores['ES'])) {
+                            foreach ($proveedores['ES']['rent'] as $proveedor) {
+                                $p_a = new ProveedorAudiovisual;
+                                $p_a->proveedor_id = $proveedor['provider_id'];
+                                $p_a->audiovisual_id = $pelicula->id;
+                                $p_a->disponibilidad = 2;
+                                $p_a->save();
+                            }
+                        }
+                        if (array_key_exists("buy", $proveedores['ES'])) {
+                            foreach ($proveedores['ES']['buy'] as $proveedor) {
+                                $p_a = new ProveedorAudiovisual;
+                                $p_a->proveedor_id = $proveedor['provider_id'];
+                                $p_a->audiovisual_id = $pelicula->id;
+                                $p_a->disponibilidad = 3;
+                                $p_a->save();
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -203,6 +260,20 @@ class AudiovisualesSeeder extends Seeder
                     $serie->puntuacion = $s['vote_average'];
     
                     $serie->save();
+
+                    // Proveedores
+                    $proveedores = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/watch/providers?api_key=38430b01858c3e78910493ba6a38a8b3')['results'];
+                    if (array_key_exists("ES", $proveedores)) {
+                        if (array_key_exists("flatrate", $proveedores['ES'])) {
+                            foreach ($proveedores['ES']['flatrate'] as $proveedor) {
+                                $p_a = new ProveedorAudiovisual;
+                                $p_a->proveedor_id = $proveedor['provider_id'];
+                                $p_a->audiovisual_id = $serie->id;
+                                $p_a->disponibilidad = 1;
+                                $p_a->save();
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -230,6 +301,14 @@ class AudiovisualesSeeder extends Seeder
                     $temporada->save();
                 }
             }
+
+            if ($detalles['in_production'])
+                $serie->estado = 1;
+            else if ($detalles['status'] === "Returning Series")
+                $serie->estado = 2;
+            else
+                $serie->estado = 3;
+            $serie->save();
 
             // Equipo y capítulos
             $temporadas = Temporada::where('audiovisual_id', '=', $serie->id)->get();
