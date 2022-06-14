@@ -11,7 +11,7 @@
 <script>
 import InformacionAudiovisual from './InformacionAudiovisual.vue'
 import Capitulos from '../capitulo/Capitulos.vue'
-import Comentarios from '../comentarios/Comentarios.vue'
+import Comentarios from '../Comentarios.vue'
 
 export default {
     components: {

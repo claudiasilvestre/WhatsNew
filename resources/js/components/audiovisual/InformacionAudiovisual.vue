@@ -7,7 +7,7 @@
         ></b-spinner>
       </div>
       <div v-else>
-        <div class="align-row">
+        <div class="row-between">
           <div>
             <h5>Título original</h5>
             <p>{{ audiovisual.tituloOriginal }}</p>

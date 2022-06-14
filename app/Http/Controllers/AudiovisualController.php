@@ -69,19 +69,21 @@ class AudiovisualController extends Controller
     }
 
     public function proveedores($audiovisual_id) {
-        $proveedores = ProveedorAudiovisual::where('audiovisual_id', $audiovisual_id)->get();
-        $stream = [];
-        $alquilar = [];
-        $comprar = [];
-
-        foreach($proveedores as $proveedor) {
-            if ($proveedor->disponibilidad === 1)
-                array_push($stream, Proveedor::where('id', $proveedor->proveedor_id)->first());
-            else if ($proveedor->disponibilidad === 2)
-                array_push($alquilar, Proveedor::where('id', $proveedor->proveedor_id)->first());
-            else if ($proveedor->disponibilidad === 3)
-                array_push($comprar, Proveedor::where('id', $proveedor->proveedor_id)->first());
-        }
+        $stream = DB::table('proveedor')
+                                ->join('proveedor_audiovisual', 'proveedor.id', '=', 'proveedor_audiovisual.proveedor_id')
+                                ->where('proveedor_audiovisual.audiovisual_id', $audiovisual_id)
+                                ->where('disponibilidad', 1)
+                                ->get();
+        $alquilar = DB::table('proveedor')
+                                ->join('proveedor_audiovisual', 'proveedor.id', '=', 'proveedor_audiovisual.proveedor_id')
+                                ->where('proveedor_audiovisual.audiovisual_id', $audiovisual_id)
+                                ->where('disponibilidad', 2)
+                                ->get();
+        $comprar = DB::table('proveedor')
+                                ->join('proveedor_audiovisual', 'proveedor.id', '=', 'proveedor_audiovisual.proveedor_id')
+                                ->where('proveedor_audiovisual.audiovisual_id', $audiovisual_id)
+                                ->where('disponibilidad', 3)
+                                ->get();
 
         return response()->json([
             'stream' => $stream,

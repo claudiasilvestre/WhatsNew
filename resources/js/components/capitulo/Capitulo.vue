@@ -23,7 +23,7 @@
 import Header from '../layouts/Header.vue'
 import AsideAudiovisual from '../audiovisual/AsideAudiovisual.vue'
 import HeaderAudiovisual from '../audiovisual/HeaderAudiovisual.vue'
-import Comentarios from '../comentarios/Comentarios.vue'
+import Comentarios from '../Comentarios.vue'
 
 export default {
     components: {

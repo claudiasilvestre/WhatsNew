@@ -10,7 +10,7 @@ header {
     align-items: center;
 }
 
-.align-row {
+.row-between {
     display: flex;
     justify-content: space-between;
 }

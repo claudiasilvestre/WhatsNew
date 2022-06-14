@@ -10,4 +10,10 @@ class ComentarioCapitulo extends Model
     use HasFactory;
 
     protected $table = 'comentario_capitulo';
+
+    protected $fillable = [
+        'capitulo_id',
+        'persona_id',
+        'texto',
+    ];
 }

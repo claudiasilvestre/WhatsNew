@@ -7,6 +7,7 @@ use App\Http\Controllers\TemporadaController;
 use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ComentarioController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -38,3 +39,8 @@ Route::get('/saber-visualizacion-temporada', [TemporadaController::class, 'saber
 Route::post('/visualizacion-temporada', [TemporadaController::class, 'visualizacion']);
 
 Route::get('/proveedores/{audiovisual_id}', [AudiovisualController::class, 'proveedores']);
+
+Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarAudiovisual']);
+Route::post('/guardar-comentario-capitulo', [ComentarioController::class, 'guardarCapitulo']);
+Route::get('/comentario-audiovisual/{audiovisual_id}', [ComentarioController::class, 'audiovisual']);
+Route::get('/comentario-capitulo/{capitulo_id}', [ComentarioController::class, 'capitulo']);

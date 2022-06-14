@@ -10,4 +10,10 @@ class ComentarioAudiovisual extends Model
     use HasFactory;
 
     protected $table = 'comentario_audiovisual';
+
+    protected $fillable = [
+        'audiovisual_id',
+        'persona_id',
+        'texto',
+    ];
 }
