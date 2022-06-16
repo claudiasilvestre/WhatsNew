@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ComentarioAudiovisual;
 use App\Models\ComentarioCapitulo;
+use App\Models\OpinionComentarioAudiovisual;
+use App\Models\OpinionComentarioCapitulo;
 use Illuminate\Support\Facades\DB;
 
 class ComentarioController extends Controller
@@ -55,5 +57,205 @@ class ComentarioController extends Controller
                                 ->get();
 
         return response()->json($comentarios);
+    }
+
+    public function borrarAudiovisual($comentario_id) {
+        ComentarioAudiovisual::where('id', $comentario_id)
+                                ->delete();
+
+        return response()->json(['msg' => 'Comentario borrado']);
+    }
+
+    public function borrarCapitulo($comentario_id) {
+        ComentarioCapitulo::where('id', $comentario_id)
+                            ->delete();
+
+        return response()->json(['msg' => 'Comentario borrado']);
+    }
+
+    public function opinionPositivaAudiovisual(Request $request) {
+        if (!OpinionComentarioAudiovisual::where('persona_id', $request->usuario_id)->where('comentarioAudiovisual_id', $request->comentario_id)->exists()) {
+            OpinionComentarioAudiovisual::create([
+                'persona_id' => $request->usuario_id,
+                'comentarioAudiovisual_id' => $request->comentario_id,
+                'opinion' => true,
+            ]);
+
+            ComentarioAudiovisual::where('id', $request->comentario_id)
+                ->increment('votosPositivos');
+
+        } else {
+            $opinionComentario = OpinionComentarioAudiovisual::where('persona_id', $request->usuario_id)
+                                                        ->where('comentarioAudiovisual_id', $request->comentario_id)
+                                                        ->first();
+            
+            if (!$opinionComentario->opinion) {
+                $opinionComentario->opinion = true;
+                $opinionComentario->save();
+
+                ComentarioAudiovisual::where('id', $request->comentario_id)
+                    ->increment('votosPositivos');
+                ComentarioAudiovisual::where('id', $request->comentario_id)
+                    ->decrement('votosNegativos');
+            } else {
+                $opinionComentario->delete();
+
+                ComentarioAudiovisual::where('id', $request->comentario_id)
+                    ->decrement('votosPositivos');
+            }
+        }
+
+        return response()->json(['msg' => 'Comentario marcado como "Me gusta"']);
+    }
+
+    public function opinionNegativaAudiovisual(Request $request) {
+        if (!OpinionComentarioAudiovisual::where('persona_id', $request->usuario_id)->where('comentarioAudiovisual_id', $request->comentario_id)->exists()) {
+            OpinionComentarioAudiovisual::create([
+                'persona_id' => $request->usuario_id,
+                'comentarioAudiovisual_id' => $request->comentario_id,
+                'opinion' => false,
+            ]);
+
+            ComentarioAudiovisual::where('id', $request->comentario_id)
+                ->increment('votosNegativos');
+
+        } else {
+            $opinionComentario = OpinionComentarioAudiovisual::where('persona_id', $request->usuario_id)
+                                                        ->where('comentarioAudiovisual_id', $request->comentario_id)
+                                                        ->first();
+            
+            if ($opinionComentario->opinion) {
+                $opinionComentario->opinion = false;
+                $opinionComentario->save();
+
+                ComentarioAudiovisual::where('id', $request->comentario_id)
+                    ->increment('votosNegativos');
+                ComentarioAudiovisual::where('id', $request->comentario_id)
+                    ->decrement('votosPositivos');
+            } else {
+                $opinionComentario->delete();
+
+                ComentarioAudiovisual::where('id', $request->comentario_id)
+                    ->decrement('votosNegativos');
+            }
+        }
+
+        return response()->json(['msg' => 'Comentario marcado como "No me gusta"']);
+    }
+
+    public function opinionPositivaCapitulo(Request $request) {
+        if (!OpinionComentarioCapitulo::where('persona_id', $request->usuario_id)->where('comentarioCapitulo_id', $request->comentario_id)->exists()) {
+            OpinionComentarioCapitulo::create([
+                'persona_id' => $request->usuario_id,
+                'comentarioCapitulo_id' => $request->comentario_id,
+                'opinion' => true,
+            ]);
+
+            ComentarioCapitulo::where('id', $request->comentario_id)
+                ->increment('votosPositivos');
+
+        } else {
+            $opinionComentario = OpinionComentarioCapitulo::where('persona_id', $request->usuario_id)
+                                                        ->where('comentarioCapitulo_id', $request->comentario_id)
+                                                        ->first();
+            
+            if (!$opinionComentario->opinion) {
+                $opinionComentario->opinion = true;
+                $opinionComentario->save();
+
+                ComentarioCapitulo::where('id', $request->comentario_id)
+                    ->increment('votosPositivos');
+                ComentarioCapitulo::where('id', $request->comentario_id)
+                    ->decrement('votosNegativos');
+            } else {
+                $opinionComentario->delete();
+
+                ComentarioCapitulo::where('id', $request->comentario_id)
+                    ->decrement('votosPositivos');
+            }
+        }
+
+        return response()->json(['msg' => 'Comentario marcado como "Me gusta"']);
+    }
+
+    public function opinionNegativaCapitulo(Request $request) {
+        if (!OpinionComentarioCapitulo::where('persona_id', $request->usuario_id)->where('comentarioCapitulo_id', $request->comentario_id)->exists()) {
+            OpinionComentarioCapitulo::create([
+                'persona_id' => $request->usuario_id,
+                'comentarioCapitulo_id' => $request->comentario_id,
+                'opinion' => false,
+            ]);
+
+            ComentarioCapitulo::where('id', $request->comentario_id)
+                ->increment('votosNegativos');
+
+        } else {
+            $opinionComentario = OpinionComentarioCapitulo::where('persona_id', $request->usuario_id)
+                                                        ->where('comentarioCapitulo_id', $request->comentario_id)
+                                                        ->first();
+            
+            if ($opinionComentario->opinion) {
+                $opinionComentario->opinion = false;
+                $opinionComentario->save();
+
+                ComentarioCapitulo::where('id', $request->comentario_id)
+                    ->increment('votosNegativos');
+                ComentarioCapitulo::where('id', $request->comentario_id)
+                    ->decrement('votosPositivos');
+            } else {
+                $opinionComentario->delete();
+
+                ComentarioCapitulo::where('id', $request->comentario_id)
+                    ->decrement('votosNegativos');
+            }
+        }
+
+        return response()->json(['msg' => 'Comentario marcado como "No me gusta"']);
+    }
+
+    public function clickedLikeAndDislikeAudiovisual(Request $request) {
+        $clickedLike = [];
+        $clickedDislike = [];
+
+        foreach ($request->comentarios as $comentario) {
+            $comentario = json_decode($comentario);
+            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)->where('opinion', true)->exists())
+                array_push($clickedLike, true);
+            else
+                array_push($clickedLike, false);
+
+            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)->where('opinion', false)->exists())
+                array_push($clickedDislike, true);
+            else
+                array_push($clickedDislike, false);
+        }
+
+        return response()->json([
+            'clickedLike' => $clickedLike,
+            'clickedDislike' => $clickedDislike,
+        ]);
+    }
+
+    public function clickedLikeAndDislikeCapitulo(Request $request) {
+        $clickedLike = [];
+        $clickedDislike = [];
+        
+        foreach ($request->comentarios as $comentario) {
+            $comentario = json_decode($comentario);
+            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)->where('opinion', true)->exists())
+                array_push($clickedLike, true);
+            else
+                array_push($clickedLike, false);
+
+            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)->where('opinion', false)->exists())
+                array_push($clickedDislike, true);
+            else
+                array_push($clickedDislike, false);
+        }
+
+        return response()->json([
+            'clickedLike' => $clickedLike,
+            'clickedDislike' => $clickedDislike,
+        ]);
     }
 }

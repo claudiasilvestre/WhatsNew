@@ -44,3 +44,12 @@ Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'gu
 Route::post('/guardar-comentario-capitulo', [ComentarioController::class, 'guardarCapitulo']);
 Route::get('/comentario-audiovisual/{audiovisual_id}', [ComentarioController::class, 'audiovisual']);
 Route::get('/comentario-capitulo/{capitulo_id}', [ComentarioController::class, 'capitulo']);
+Route::post('/borrar-comentario-audiovisual/{comentario_id}', [ComentarioController::class, 'borrarAudiovisual']);
+Route::post('/borrar-comentario-capitulo/{comentario_id}', [ComentarioController::class, 'borrarCapitulo']);
+
+Route::post('/opinion-positiva-audiovisual', [ComentarioController::class, 'opinionPositivaAudiovisual']);
+Route::post('/opinion-negativa-audiovisual', [ComentarioController::class, 'opinionNegativaAudiovisual']);
+Route::post('/opinion-positiva-capitulo', [ComentarioController::class, 'opinionPositivaCapitulo']);
+Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinionNegativaCapitulo']);
+Route::get('/clicked-audiovisual', [ComentarioController::class, 'clickedLikeAndDislikeAudiovisual']);
+Route::get('/clicked-capitulo', [ComentarioController::class, 'clickedLikeAndDislikeCapitulo']);

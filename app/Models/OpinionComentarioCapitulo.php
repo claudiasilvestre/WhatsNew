@@ -10,4 +10,10 @@ class OpinionComentarioCapitulo extends Model
     use HasFactory;
 
     protected $table = 'opinion_comentario_capitulo';
+
+    protected $fillable = [
+        'persona_id',
+        'comentarioCapitulo_id',
+        'opinion',
+    ];
 }

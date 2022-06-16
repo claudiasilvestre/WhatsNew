@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('persona_id');
             $table->unsignedBigInteger('comentarioCapitulo_id');
-            $table->integer('opinion');
+            $table->boolean('opinion');
 
             $table->foreign('persona_id')->references('id')->on('persona');
             $table->foreign('comentarioCapitulo_id')->references('id')->on('comentario_capitulo');
