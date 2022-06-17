@@ -20,7 +20,7 @@ return new class extends Migration
             $table->boolean('opinion');
 
             $table->foreign('persona_id')->references('id')->on('persona');
-            $table->foreign('comentarioCapitulo_id')->references('id')->on('comentario_capitulo');
+            $table->foreign('comentarioCapitulo_id')->references('id')->on('comentario_capitulo')->onDelete("cascade");
 
             $table->timestamps();
         });

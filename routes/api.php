@@ -51,5 +51,3 @@ Route::post('/opinion-positiva-audiovisual', [ComentarioController::class, 'opin
 Route::post('/opinion-negativa-audiovisual', [ComentarioController::class, 'opinionNegativaAudiovisual']);
 Route::post('/opinion-positiva-capitulo', [ComentarioController::class, 'opinionPositivaCapitulo']);
 Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinionNegativaCapitulo']);
-Route::get('/clicked-audiovisual', [ComentarioController::class, 'clickedLikeAndDislikeAudiovisual']);
-Route::get('/clicked-capitulo', [ComentarioController::class, 'clickedLikeAndDislikeCapitulo']);

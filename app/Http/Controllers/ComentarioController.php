@@ -46,7 +46,26 @@ class ComentarioController extends Controller
                                 ->orderBy('comentario_audiovisual.created_at', 'desc')
                                 ->get();
 
-        return response()->json($comentarios);
+        $clickedLike = [];
+        $clickedDislike = [];
+
+        foreach ($comentarios as $comentario) {
+            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)->where('opinion', true)->exists())
+                array_push($clickedLike, true);
+            else
+                array_push($clickedLike, false);
+
+            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)->where('opinion', false)->exists())
+                array_push($clickedDislike, true);
+            else
+                array_push($clickedDislike, false);
+        }
+
+        return response()->json([
+            'comentarios' => $comentarios,
+            'clickedLike' => $clickedLike,
+            'clickedDislike' => $clickedDislike,
+        ]);
     }
 
     public function capitulo($capitulo_id) {
@@ -56,7 +75,26 @@ class ComentarioController extends Controller
                                 ->orderBy('comentario_capitulo.created_at', 'desc')
                                 ->get();
 
-        return response()->json($comentarios);
+        $clickedLike = [];
+        $clickedDislike = [];
+        
+        foreach ($comentarios as $comentario) {
+            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)->where('opinion', true)->exists())
+                array_push($clickedLike, true);
+            else
+                array_push($clickedLike, false);
+
+            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)->where('opinion', false)->exists())
+                array_push($clickedDislike, true);
+            else
+                array_push($clickedDislike, false);
+        }
+
+        return response()->json([
+            'comentarios' => $comentarios,
+            'clickedLike' => $clickedLike,
+            'clickedDislike' => $clickedDislike,
+        ]);
     }
 
     public function borrarAudiovisual($comentario_id) {
@@ -211,51 +249,5 @@ class ComentarioController extends Controller
         }
 
         return response()->json(['msg' => 'Comentario marcado como "No me gusta"']);
-    }
-
-    public function clickedLikeAndDislikeAudiovisual(Request $request) {
-        $clickedLike = [];
-        $clickedDislike = [];
-
-        foreach ($request->comentarios as $comentario) {
-            $comentario = json_decode($comentario);
-            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)->where('opinion', true)->exists())
-                array_push($clickedLike, true);
-            else
-                array_push($clickedLike, false);
-
-            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)->where('opinion', false)->exists())
-                array_push($clickedDislike, true);
-            else
-                array_push($clickedDislike, false);
-        }
-
-        return response()->json([
-            'clickedLike' => $clickedLike,
-            'clickedDislike' => $clickedDislike,
-        ]);
-    }
-
-    public function clickedLikeAndDislikeCapitulo(Request $request) {
-        $clickedLike = [];
-        $clickedDislike = [];
-        
-        foreach ($request->comentarios as $comentario) {
-            $comentario = json_decode($comentario);
-            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)->where('opinion', true)->exists())
-                array_push($clickedLike, true);
-            else
-                array_push($clickedLike, false);
-
-            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)->where('opinion', false)->exists())
-                array_push($clickedDislike, true);
-            else
-                array_push($clickedDislike, false);
-        }
-
-        return response()->json([
-            'clickedLike' => $clickedLike,
-            'clickedDislike' => $clickedDislike,
-        ]);
     }
 }

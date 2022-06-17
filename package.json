@@ -27,6 +27,7 @@
     "dependencies": {
         "bootstrap-vue": "^2.22.0",
         "jquery": "^3.6.0",
+        "moment": "^2.29.3",
         "vue-router": "^3.5.3",
         "vuetify": "^2.6.4",
         "vuetify-loader": "^1.7.3",

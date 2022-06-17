@@ -10,8 +10,8 @@
         </div>
         <b-tabs>
             <b-tab title="Más recientes" class="tabsComentarios" active>
-                <lista-comentarios v-if="audiovisual" :audiovisual="audiovisual" :clicked="clicked"/>
-                <lista-comentarios v-else :capitulo="capitulo" :clicked="clicked"/>
+                <lista-comentarios v-if="audiovisual" :audiovisual="audiovisual" :creado="clicked"/>
+                <lista-comentarios v-else :capitulo="capitulo" :creado="clicked"/>
             </b-tab>
             <b-tab title="Mejor valorados" class="tabsComentarios">Todavía no hay comentarios</b-tab>
         </b-tabs>
