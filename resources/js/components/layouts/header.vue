@@ -3,7 +3,7 @@
         <router-link :to="{ name: 'home' }">
             <h3>{{ title }}</h3>
         </router-link>
-        <div v-if="currentUser">
+        <div v-if="Object.keys(currentUser).length > 0">
             <span>{{ currentUser.nombre }}</span>
             <button @click="handleLogout" class="btn btn-danger">Cerrar sesión</button>
         </div>

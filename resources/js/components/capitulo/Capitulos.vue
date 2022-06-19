@@ -53,6 +53,13 @@ export default {
             noCambio: true,
         }
     },
+    computed: {
+        currentUser: {
+            get() {
+                return this.$store.state.currentUser.user;
+            }
+        }
+    },
     created() {
         axios.get('/api/temporadas/'+this.audiovisual.id)
             .then(response => this.temporadas = response.data)
@@ -67,7 +74,7 @@ export default {
                 axios.get('/api/saber-visualizacion-temporada/', {
                     params: { 
                         temporada_id: this.selected.id, 
-                        usuario_id: 1,
+                        usuario_id: this.currentUser.id,
                     }})
                     .then(response => {
                         if (response.data) {
@@ -89,7 +96,7 @@ export default {
         axios.post('/api/visualizacion-temporada/', 
             { 
                 temporada_id, 
-                usuario_id: 1,
+                usuario_id: this.currentUser.id,
                 capitulos: this.capitulos
             })
             .then(response => {

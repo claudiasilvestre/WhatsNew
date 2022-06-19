@@ -37,15 +37,23 @@ export default {
         return {
             formData: {
                 tipo_id: '',
-                usuario_id: 1,
+                usuario_id: '',
                 texto: '',
             },
             errors: {},
             clicked: false,
         }
     },
+    computed: {
+        currentUser: {
+            get() {
+                return this.$store.state.currentUser.user;
+            }
+        }
+    },
     methods: {
         guardarComentario() {
+            this.formData.usuario_id = this.currentUser.id;
             if (this.audiovisual) {
                 this.formData.tipo_id = this.audiovisual.id;
                 axios.post('/api/guardar-comentario-audiovisual', this.formData).then((response) => {

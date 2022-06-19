@@ -47,21 +47,16 @@ const router = new VueRouter ({
 })
 
 /* router.beforeEach((to, from, next)=>{
-        console.log("Hola");
-        axios.get('/api/user')
-            .then(response => {
-                if (to.matched.some(rec => rec.meta.requiresAuth)) {  
-                const user = response.data; 
-                console.log(user);
-                if (user) {
-                    next()
-                } else {
-                    const login = router.push('/login')
-                    next(login)
-                }
-            }
-            next()})
-            .catch(error => { console.log(error.response) });
+    if (to.matched.some(rec => rec.meta.requiresAuth)) {  
+        // Si no se ha iniciado sesión se redirecciona al login
+        if (1 === 1) {
+            next()
+        } else {
+            const login = router.push('/login')
+            next(login)
+        }
+    }
+    next()
 }) */
 
 export default router;

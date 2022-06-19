@@ -34,11 +34,7 @@ const actions = {
             .catch(error => console.log(error.response))
     }
 };
-const getters = {
-    user: state => {
-        return state.user
-    }
-};
+const getters = {};
 
 export default {
     namespaced: true,

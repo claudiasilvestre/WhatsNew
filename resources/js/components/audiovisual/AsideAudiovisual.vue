@@ -45,7 +45,7 @@ export default {
         axios.get('/api/saber-seguimiento/', {
             params: { 
                 audiovisual_id: this.audiovisual.id, 
-                usuario_id: 1,
+                usuario_id: this.currentUser.id,
             }})
             .then(response => {
                 if (response.data === 1) {
@@ -67,7 +67,7 @@ export default {
             axios.post('/api/seguimiento/', 
             { 
                 audiovisual_id: this.audiovisual.id, 
-                usuario_id: 1, 
+                usuario_id: this.currentUser.id, 
                 tipo 
             })
             .then(response => {

@@ -17,7 +17,7 @@
                     <b-icon v-else icon="hand-thumbs-down-fill"></b-icon>
                     <span>{{ comentario.votosNegativos }}</span>
                 </button>
-                <button v-if="comentario.persona_id === usuario_id" class="btn btn-danger m-1" @click="borrarComentario(comentario.id)">Borrar</button>
+                <button v-if="comentario.persona_id === currentUser.id" class="btn btn-danger m-1" @click="borrarComentario(comentario.id)">Borrar</button>
             </div>
         </div>
     </div>
@@ -42,9 +42,8 @@ export default {
     data() {
         return {
             comentarios: [],
-            usuario_id: 1,
             formData: {
-                usuario_id: 1,
+                usuario_id: '',
                 comentario_id: ''
             },
             clickedLike: [],
@@ -52,8 +51,16 @@ export default {
             moment: moment,
         }
     },
+    computed: {
+        currentUser: {
+            get() {
+                return this.$store.state.currentUser.user;
+            }
+        }
+    },
     created() {
         moment.locale('es');
+
         if (this.audiovisual) {
             this.comentariosAudiovisual();
         } else {
@@ -108,42 +115,48 @@ export default {
         },
         votoPositivo(comentario_id) {
             this.formData.comentario_id = comentario_id;
+            this.formData.usuario_id = this.currentUser.id;
             if (this.audiovisual) {
                 axios.post('/api/opinion-positiva-audiovisual', this.formData)
                 .then((response) => {
                     console.log(response.data)
                     this.formData.comentario_id = ''
                 })
-                .catch(error => console.log(error.response))
-                .finally(() => this.comentariosAudiovisual());
+                .catch(error => console.log(error.response));
+
+                this.comentariosAudiovisual()
             } else {
                 axios.post('/api/opinion-positiva-capitulo', this.formData)
                 .then((response) => {
                     console.log(response.data)
                     this.formData.comentario_id = ''
                 })
-                .catch(error => console.log(error.response))
-                .finally(() => this.comentariosCapitulo());
+                .catch(error => console.log(error.response));
+
+                this.comentariosCapitulo()
             }
         },
         votoNegativo(comentario_id) {
             this.formData.comentario_id = comentario_id;
+            this.formData.usuario_id = this.currentUser.id;
             if (this.audiovisual) {
                 axios.post('/api/opinion-negativa-audiovisual', this.formData)
                 .then((response) => {
                     console.log(response.data)
                     this.formData.comentario_id = ''
                 })
-                .catch(error => console.log(error.response))
-                .finally(() => this.comentariosAudiovisual());
+                .catch(error => console.log(error.response));
+
+                this.comentariosAudiovisual();
             } else {
                 axios.post('/api/opinion-negativa-capitulo', this.formData)
                 .then((response) => {
                     console.log(response.data)
                     this.formData.comentario_id = ''
                 })
-                .catch(error => console.log(error.response))
-                .finally(() => this.comentariosCapitulo());
+                .catch(error => console.log(error.response));
+
+                this.comentariosCapitulo()
             }
         }
     }
