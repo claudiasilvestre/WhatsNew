@@ -8,6 +8,7 @@ use App\Http\Controllers\CapituloController;
 use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComentarioController;
+use App\Http\Controllers\ActividadController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -29,8 +30,8 @@ Route::get('/audiovisuales-participacion/{persona_id}', [AudiovisualController::
 
 Route::resource('/personas', PersonaController::class);
 
-Route::get('/saber-seguimiento', [AudiovisualController::class, 'saber_seguimiento']);
-Route::post('/seguimiento', [AudiovisualController::class, 'seguimiento']);
+Route::get('/saber-seguimiento-audiovisual', [AudiovisualController::class, 'saber_seguimiento_audiovisual']);
+Route::post('/seguimiento-audiovisual', [AudiovisualController::class, 'seguimiento_audiovisual']);
 
 Route::get('/visualizaciones', [CapituloController::class, 'visualizaciones']);
 Route::post('/visualizacion-capitulo', [CapituloController::class, 'visualizacion']);
@@ -51,3 +52,5 @@ Route::post('/opinion-positiva-audiovisual', [ComentarioController::class, 'opin
 Route::post('/opinion-negativa-audiovisual', [ComentarioController::class, 'opinionNegativaAudiovisual']);
 Route::post('/opinion-positiva-capitulo', [ComentarioController::class, 'opinionPositivaCapitulo']);
 Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinionNegativaCapitulo']);
+
+Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividad_usuario']);

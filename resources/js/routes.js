@@ -6,6 +6,7 @@ import Capitulo from './components/capitulo/Capitulo.vue'
 import Participante from './components/Participante.vue'
 import Registro from './components/auth/Registro.vue'
 import Login from './components/auth/Login.vue'
+import Perfil from './components/perfil/Perfil.vue'
 
 const router = new VueRouter ({
     mode: 'history',
@@ -42,6 +43,11 @@ const router = new VueRouter ({
             path: '/login',
             name: 'login',
             component: Login
+        },
+        {
+            path: '/perfil',
+            name: 'perfil',
+            component: Perfil
         }
     ],
 })
@@ -49,7 +55,7 @@ const router = new VueRouter ({
 /* router.beforeEach((to, from, next)=>{
     if (to.matched.some(rec => rec.meta.requiresAuth)) {  
         // Si no se ha iniciado sesión se redirecciona al login
-        if (1 === 1) {
+        if (user) {
             next()
         } else {
             const login = router.push('/login')

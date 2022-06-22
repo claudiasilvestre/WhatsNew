@@ -8,6 +8,7 @@ use App\Models\Temporada;
 use App\Models\Capitulo;
 use App\Models\VisualizacionCapitulo;
 use App\Models\VisualizacionTemporada;
+use App\Models\Actividad;
 use DB;
 
 class CapituloController extends Controller
@@ -55,10 +56,22 @@ class CapituloController extends Controller
                 'persona_id' => $request->usuario_id,
             ]);
 
+            Actividad::create([
+                'persona_id' => $request->usuario_id,
+                'tipo' => 3,
+                'capitulo_id' => $request->capitulo_id,
+            ]);
+
             if ($count+1 === $temporada[0]->numeroCapitulos) {
                 VisualizacionTemporada::create([
                     'temporada_id' => $temporada[0]->temporada_id,
                     'persona_id' => $request->usuario_id,
+                ]);
+
+                Actividad::create([
+                    'persona_id' => $request->usuario_id,
+                    'tipo' => 3,
+                    'temporada_id' => $temporada[0]->temporada_id,
                 ]);
 
                 $cambio = true;

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Temporada;
 use App\Models\VisualizacionTemporada;
 use App\Models\VisualizacionCapitulo;
+use App\Models\Actividad;
 
 class TemporadaController extends Controller
 {
@@ -28,6 +29,12 @@ class TemporadaController extends Controller
             VisualizacionTemporada::create([
                 'temporada_id' => $request->temporada_id,
                 'persona_id' => $request->usuario_id,
+            ]);
+
+            Actividad::create([
+                'persona_id' => $request->usuario_id,
+                'tipo' => 3,
+                'temporada_id' => $request->temporada_id,
             ]);
 
             foreach ($request->capitulos as $capitulo) {

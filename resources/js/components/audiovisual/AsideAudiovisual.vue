@@ -42,7 +42,7 @@ export default {
         }
     },
     created() {
-        axios.get('/api/saber-seguimiento/', {
+        axios.get('/api/saber-seguimiento-audiovisual/', {
             params: { 
                 audiovisual_id: this.audiovisual.id, 
                 usuario_id: this.currentUser.id,
@@ -64,7 +64,7 @@ export default {
     },
     methods: {
         seguimiento(tipo) {
-            axios.post('/api/seguimiento/', 
+            axios.post('/api/seguimiento-audiovisual/', 
             { 
                 audiovisual_id: this.audiovisual.id, 
                 usuario_id: this.currentUser.id, 
