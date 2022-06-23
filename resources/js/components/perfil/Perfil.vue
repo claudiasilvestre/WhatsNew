@@ -2,7 +2,13 @@
     <v-app>
         <div>
             <app-header />
-            <div class="list">
+            <div v-if="Object.keys(currentUser).length === 0" class="d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+                <b-spinner
+                    :variant="'light'"
+                    :key="'light'"
+                ></b-spinner>
+            </div>
+            <div v-else class="list">
                 <h2>{{ currentUser.nombre }}</h2>
                 <b-tabs>
                     <b-tab title="Actividad" active><actividad /></b-tab>

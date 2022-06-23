@@ -32,14 +32,11 @@ export default {
       audiovisual: {
         required: true,
         type: Object
+      },
+      currentUser: {
+        required: true,
+        type: Object
       }
-    },
-    computed: {
-        currentUser: {
-            get() {
-                return this.$store.state.currentUser.user;
-            }
-        }
     },
     created() {
         axios.get('/api/saber-seguimiento-audiovisual/', {

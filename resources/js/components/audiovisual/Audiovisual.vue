@@ -2,8 +2,14 @@
     <v-app>
         <div>
             <app-header />
-            <div v-if="!loading" class="header">
-                <aside-audiovisual :audiovisual="audiovisual" />
+            <div v-if="Object.keys(currentUser).length === 0" class="d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+                <b-spinner
+                    :variant="'light'"
+                    :key="'light'"
+                ></b-spinner>
+            </div>
+            <div v-else-if="!loading" class="header">
+                <aside-audiovisual :audiovisual="audiovisual" :currentUser="currentUser" />
                 <div class="width">
                     <header-audiovisual :audiovisual="audiovisual" />
                     <menu-audiovisual :audiovisual="audiovisual" />
@@ -31,6 +37,13 @@ export default {
             id: this.$route.params.id,
             audiovisual: {},
             loading: true,
+        }
+    },
+    computed: {
+        currentUser: {
+            get() {
+                return this.$store.state.currentUser.user;
+            }
         }
     },
     created() {

@@ -2,8 +2,14 @@
     <v-app>
         <div>
             <app-header />
-            <div v-if="!loading" class="header">
-                <aside-audiovisual :audiovisual="audiovisual" />
+            <div v-if="Object.keys(currentUser).length === 0" class="d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+                <b-spinner
+                    :variant="'light'"
+                    :key="'light'"
+                ></b-spinner>
+            </div>
+            <div v-else-if="!loading" class="header">
+                <aside-audiovisual :audiovisual="audiovisual" :currentUser="currentUser" />
                 <div class="width">
                     <header-audiovisual :audiovisual="audiovisual" />
                     <div class="list">
@@ -41,15 +47,22 @@ export default {
             loading: true,
         }
     },
+    computed: {
+        currentUser: {
+            get() {
+                return this.$store.state.currentUser.user;
+            }
+        }
+    },
     created() {
         axios.get('/api/audiovisuales/'+this.idAudiovisual)
             .then(response => this.audiovisual = response.data[0])
-            .catch(error => { console.log(error.response) });
+            .catch(error => { console.log(error.response) })
+            .finally(() => this.loading = false);
 
         axios.get('/api/capitulo/'+this.idCapitulo)
             .then(response => this.capitulo = response.data[0])
-            .catch(error => { console.log(error.response) })
-            .finally(() => this.loading = false);
+            .catch(error => { console.log(error.response) });
     },
 }
 </script>
