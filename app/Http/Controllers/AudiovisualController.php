@@ -104,4 +104,30 @@ class AudiovisualController extends Controller
             'comprar' => $comprar,
         ]);
     }
+
+    public function coleccion_usuario($usuario_id) {
+        $todo = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('seguimiento_audiovisual.estado', '!=', 1)
+                                ->get();
+        $series = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('seguimiento_audiovisual.estado', '!=', 1)
+                                ->where('tipoAudiovisual_id', 2)
+                                ->get();
+        $peliculas = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('seguimiento_audiovisual.estado', '!=', 1)
+                                ->where('tipoAudiovisual_id', 1)
+                                ->get();
+
+        return response()->json([
+            'todo' => $todo,
+            'series' => $series,
+            'peliculas' => $peliculas,
+        ]);
+    }
 }

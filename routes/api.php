@@ -54,3 +54,4 @@ Route::post('/opinion-positiva-capitulo', [ComentarioController::class, 'opinion
 Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinionNegativaCapitulo']);
 
 Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividad_usuario']);
+Route::get('/coleccion-usuario/{usuario_id}', [AudiovisualController::class, 'coleccion_usuario']);

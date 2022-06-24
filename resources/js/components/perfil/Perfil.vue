@@ -12,7 +12,7 @@
                 <h2>{{ currentUser.nombre }}</h2>
                 <b-tabs>
                     <b-tab title="Actividad" active><actividad /></b-tab>
-                    <b-tab title="Colección"></b-tab>
+                    <b-tab title="Colección"><coleccion /></b-tab>
                 </b-tabs>
             </div>
         </div>
@@ -22,11 +22,13 @@
 <script>
 import Header from '../layouts/Header.vue'
 import Actividad from '../Actividad.vue'
+import Coleccion from './Coleccion.vue'
 
 export default {
     components: {
         'app-header': Header,
         Actividad,
+        Coleccion,
     },
     computed: {
         currentUser: {
