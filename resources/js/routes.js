@@ -7,6 +7,7 @@ import Participante from './components/Participante.vue'
 import Registro from './components/auth/Registro.vue'
 import Login from './components/auth/Login.vue'
 import Perfil from './components/perfil/Perfil.vue'
+import Ajustes from './components/perfil/Ajustes.vue'
 
 const router = new VueRouter ({
     mode: 'history',
@@ -48,6 +49,11 @@ const router = new VueRouter ({
             path: '/perfil',
             name: 'perfil',
             component: Perfil
+        },
+        {
+            path: '/ajustes/:idPersona',
+            name: 'ajustes',
+            component: Ajustes
         }
     ],
 })

@@ -16,6 +16,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/guardar-cambios', [PersonaController::class, 'guardar_cambios']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);
@@ -55,3 +56,4 @@ Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinion
 
 Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividad_usuario']);
 Route::get('/coleccion-usuario/{usuario_id}', [AudiovisualController::class, 'coleccion_usuario']);
+Route::get('/info-usuario/{usuario_id}', [PersonaController::class, 'info']);

@@ -10,6 +10,11 @@
             </div>
             <div v-else class="list">
                 <h2>{{ currentUser.nombre }}</h2>
+                <router-link :to="{ name: 'ajustes', params: { idPersona: currentUser.id }}">
+                    <button class="btn btn-info m-1"><b-icon icon="tools"></b-icon>
+                        Editar perfil
+                    </button>
+                </router-link>
                 <b-tabs>
                     <b-tab title="Actividad" active><actividad /></b-tab>
                     <b-tab title="Colección"><coleccion /></b-tab>
