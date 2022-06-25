@@ -60,7 +60,7 @@ export default {
     },
     methods: {
         guardarCambios() {
-            axios.post('/api/guardar-cambios', this.formData).then((response) => {
+            axios.put('/api/guardar-cambios', this.formData).then((response) => {
                 console.log(response.data)
                 this.$router.push('/perfil')
             }).catch((errors) => {
