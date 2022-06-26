@@ -17,7 +17,7 @@ class AuthController extends Controller
             'nombre' => 'required',
             'usuario' => 'required|unique:persona',
             'email' => 'required|unique:persona',
-            'password' => 'required|min:6|confirmed',
+            'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required',
         ]);
 
@@ -28,13 +28,13 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return response()->json(['msg' => 'Registered Successfully']);
+        return response()->json(['msg' => 'Registered successfully']);
     }
 
     public function login(Request $request) {
         if (!Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
+                'email' => ['Las credenciales proporcionadas no son correctas.'],
             ]);
         }
 

@@ -7,6 +7,8 @@ use App\Models\Persona;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class PersonaController extends Controller
 {
@@ -33,7 +35,7 @@ class PersonaController extends Controller
         return response()->json($persona);
     }
 
-    public function guardar_cambios(Request $request) {
+    public function guardar_informacion(Request $request) {
         $user = Auth::user();
 
         $request->validate([
@@ -55,5 +57,24 @@ class PersonaController extends Controller
         ]);
 
         return response()->json(['msg' => 'Data changed successfully']);
+    }
+
+    public function guardar_password(Request $request) {
+        $user = Auth::user();
+
+        if (!Hash::check($request->current_password, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => ['La contraseña proporcionada no coincide con la actual.'],
+            ]);
+        }
+
+        $request->validate([
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required',
+        ]);
+
+        Persona::where('id', $user->id)->update(['password' => Hash::make($request->password)]);
+
+        return response()->json(['msg' => 'Password changed successfully']);
     }
 }

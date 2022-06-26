@@ -16,7 +16,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::put('/guardar-cambios', [PersonaController::class, 'guardar_cambios']);
+    Route::put('/guardar-informacion', [PersonaController::class, 'guardar_informacion']);
+    Route::put('/guardar-password', [PersonaController::class, 'guardar_password']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);
