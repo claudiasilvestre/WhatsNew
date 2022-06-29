@@ -46,7 +46,7 @@ const router = new VueRouter ({
             component: Login
         },
         {
-            path: '/perfil',
+            path: '/perfil/:idPersona',
             name: 'perfil',
             component: Perfil
         },

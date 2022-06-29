@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('audiovisual_id');
             $table->unsignedBigInteger('persona_id');
-            $table->integer('puntuacion');
+            $table->float('puntuacion', 8, 1);
 
             $table->foreign('audiovisual_id')->references('id')->on('audiovisual');
             $table->foreign('persona_id')->references('id')->on('persona');

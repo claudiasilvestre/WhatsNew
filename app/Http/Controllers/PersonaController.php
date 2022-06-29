@@ -9,6 +9,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use App\Models\SeguimientoPersona;
 
 class PersonaController extends Controller
 {
@@ -76,5 +77,41 @@ class PersonaController extends Controller
         Persona::where('id', $user->id)->update(['password' => Hash::make($request->password)]);
 
         return response()->json(['msg' => 'Password changed successfully']);
+    }
+
+    public function saber_seguimiento_usuario(Request $request) {
+        if (SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->exists()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function seguimiento_usuario(Request $request) {
+        if (SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->exists()) {
+            $seguimiento = SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->first();
+            $seguimiento->delete();
+
+            Persona::where('id', $request->usuarioActual_id)
+                ->decrement('seguidos');
+
+            Persona::where('id', $request->usuario_id)
+                ->decrement('seguidores');
+
+            return false;
+        } else {
+            SeguimientoPersona::create([
+                'personaActual_id' => $request->usuarioActual_id,
+                'persona_id' => $request->usuario_id,
+            ]);
+
+            Persona::where('id', $request->usuarioActual_id)
+                ->increment('seguidos');
+
+            Persona::where('id', $request->usuario_id)
+                ->increment('seguidores');
+
+            return true;
+        }
     }
 }

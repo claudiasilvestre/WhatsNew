@@ -26,6 +26,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->rememberToken();
+            $table->integer('seguidos')->default(0);
+            $table->integer('seguidores')->default(0);
             $table->integer('puntos')->default(0);
 
             $table->foreign('tipoPersona_id')->references('id')->on('tipo_persona');

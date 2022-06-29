@@ -19,18 +19,12 @@ export default {
         return {
             todo: [],
             series: [],
-            peliculas: []
-        }
-    },
-    computed: {
-        currentUser: {
-            get() {
-                return this.$store.state.currentUser.user;
-            }
+            peliculas: [],
+            usuario_id: this.$route.params.idPersona,
         }
     },
     created() {
-        axios.get('/api/coleccion-usuario/'+this.currentUser.id)
+        axios.get('/api/coleccion-usuario/'+this.usuario_id)
             .then(response => {
                 this.todo = response.data['todo'];
                 this.series = response.data['series'];

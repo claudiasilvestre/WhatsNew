@@ -4,7 +4,7 @@
             <h3>{{ title }}</h3>
         </router-link>
         <div v-if="Object.keys(currentUser).length > 0">
-            <router-link :to="{ name: 'perfil' }">
+            <router-link :to="{ name: 'perfil', params: { idPersona: currentUser.id }}">
                 <span>{{ currentUser.nombre }}</span>
             </router-link>
             <button @click="handleLogout" class="btn btn-danger">Cerrar sesión</button>

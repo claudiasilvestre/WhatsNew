@@ -1,6 +1,7 @@
 <template>
     <div>
         <img class="rounded" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="200" height="300">
+        <star-rating v-model="rating" :increment="0.5" :star-size="30" text-class="custom-text"></star-rating>
         <div v-if="!loading" class="buttons width">
             <button v-bind:class="{'btn btn-danger': !clicked1, 'btn btn-outline-danger': clicked1}" @click="seguimiento(1)" class="m-1"><b-icon icon="clock"></b-icon>
                 {{ pendiente }}
@@ -16,7 +17,12 @@
 </template>
 
 <script>
+import StarRating from 'vue-star-rating'
+
 export default {
+    components: {
+        StarRating
+    },
     data() {
         return {
             pendiente: "Pendiente",
@@ -26,6 +32,8 @@ export default {
             clicked1: false,
             clicked2: false,
             clicked3: false,
+            rating: 0,
+            watcher: true,
         }
     },
     props: {
@@ -58,6 +66,18 @@ export default {
             })
             .catch(error => console.log(error.response))
             .finally(() => this.loading = false);
+
+        axios.get('/api/saber-valoracion-audiovisual/', {
+            params: { 
+                audiovisual_id: this.audiovisual.id, 
+                usuario_id: this.currentUser.id,
+            }})
+            .then(response => {
+                this.watcher = false;
+                this.rating = response.data;
+            })
+            .catch(error => console.log(error.response))
+            .finally(() => this.watcher = true);
     },
     methods: {
         seguimiento(tipo) {
@@ -107,6 +127,23 @@ export default {
             })
             .catch(error => console.log(error.response));
         },
+    },
+    watch: {
+        rating: function () {
+            if (this.watcher) {
+                axios.post('/api/valoracion-audiovisual/', 
+                { 
+                    audiovisual_id: this.audiovisual.id, 
+                    usuario_id: this.currentUser.id, 
+                    puntuacion: this.rating 
+                })
+                .then(response => {
+                    console.log(response.data)
+                })
+                .catch(error => console.log(error.response));
+            } else
+                this.watcher = true;
+        }
     }
 }
 </script>

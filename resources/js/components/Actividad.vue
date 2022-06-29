@@ -2,7 +2,7 @@
     <div>
         <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2">
             <div v-if="actividad.tipoAudiovisual_id">
-                {{ currentUser.nombre }}
+                {{ usuario.nombre }}
                 <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
                 <span v-else-if="actividad.tipo === 2"> sigue </span>
                 <span v-else-if="actividad.tipo === 3"> ha visto </span>
@@ -12,13 +12,13 @@
             </div>
             <div v-else-if="actividad.numero_capitulo">
                 <span>
-                    {{ currentUser.nombre }} ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
+                    {{ usuario.nombre }} ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
                     - {{ actividad.nombre }} de {{ actividad.titulo_audiovisual_capitulo }}
                 </span>
             </div>
             <div v-else-if="actividad.numero_temporada_actividad">
                 <span>
-                    {{ currentUser.nombre }} ha visto la temporada {{ actividad.numero_temporada_actividad }} 
+                    {{ usuario.nombre }} ha visto la temporada {{ actividad.numero_temporada_actividad }} 
                     de {{ actividad.titulo_audiovisual_temporada }}
                 </span>
             </div>
@@ -31,17 +31,15 @@ export default {
     data() {
         return {
             actividadTotal: [],
-        }
-    },
-    computed: {
-        currentUser: {
-            get() {
-                return this.$store.state.currentUser.user;
-            }
+            usuario_id: this.$route.params.idPersona,
         }
     },
     created() {
-        axios.get('/api/actividad-usuario/'+this.currentUser.id)
+        axios.get('/api/personas/'+this.usuario_id)
+            .then(response => this.usuario = response.data[0])
+            .catch(error => { console.log(error.response) });
+
+        axios.get('/api/actividad-usuario/'+this.usuario_id)
             .then(response => {
                 this.actividadTotal = response.data;
             })

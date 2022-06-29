@@ -58,3 +58,8 @@ Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinion
 Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividad_usuario']);
 Route::get('/coleccion-usuario/{usuario_id}', [AudiovisualController::class, 'coleccion_usuario']);
 Route::get('/info-usuario/{usuario_id}', [PersonaController::class, 'info']);
+Route::get('/saber-seguimiento-usuario', [PersonaController::class, 'saber_seguimiento_usuario']);
+Route::post('/seguimiento-usuario', [PersonaController::class, 'seguimiento_usuario']);
+
+Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracion_audiovisual']);
+Route::get('/saber-valoracion-audiovisual', [AudiovisualController::class, 'saber_valoracion_audiovisual']);

@@ -10,6 +10,7 @@ use App\Models\SeguimientoAudiovisual;
 use App\Models\ProveedorAudiovisual;
 use App\Models\Proveedor;
 use App\Models\Actividad;
+use App\Models\Valoracion;
 
 class AudiovisualController extends Controller
 {
@@ -129,5 +130,28 @@ class AudiovisualController extends Controller
             'series' => $series,
             'peliculas' => $peliculas,
         ]);
+    }
+
+    public function valoracion_audiovisual(Request $request) {
+        if (Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->exists()) {
+            Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->delete();
+        }
+        
+        Valoracion::create([
+            'audiovisual_id' => $request->audiovisual_id,
+            'persona_id' => $request->usuario_id,
+            'puntuacion' => $request->puntuacion,
+        ]);
+
+        return response()->json(['msg' => 'Valoración añadida']);
+    }
+
+    public function saber_valoracion_audiovisual(Request $request) {
+        if (Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->exists()) {
+            $valoracion = Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->first();
+            return $valoracion->puntuacion;
+        }
+
+        return 0;
     }
 }

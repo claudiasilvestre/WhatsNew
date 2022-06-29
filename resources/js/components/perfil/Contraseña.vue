@@ -34,7 +34,6 @@
 export default {
     data() {
         return {
-            usuario_id: this.$route.params.idPersona,
             formData: {},
             errors: {}
         }
