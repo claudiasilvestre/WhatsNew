@@ -9,6 +9,7 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ActividadController;
+use App\Http\Controllers\SearchController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -63,3 +64,5 @@ Route::post('/seguimiento-usuario', [PersonaController::class, 'seguimiento_usua
 
 Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracion_audiovisual']);
 Route::get('/saber-valoracion-audiovisual', [AudiovisualController::class, 'saber_valoracion_audiovisual']);
+
+Route::get('/search/{busqueda}', [SearchController::class, 'search']);

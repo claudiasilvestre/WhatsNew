@@ -8,6 +8,7 @@ import Registro from './components/auth/Registro.vue'
 import Login from './components/auth/Login.vue'
 import Perfil from './components/perfil/Perfil.vue'
 import MenuAjustes from './components/perfil/MenuAjustes.vue'
+import Search from './components/Search.vue'
 
 const router = new VueRouter ({
     mode: 'history',
@@ -31,7 +32,7 @@ const router = new VueRouter ({
             component: Capitulo
         },
         {
-            path: '/media/:idAudiovisual/information/:idPersona',
+            path: '/information/:idPersona',
             name: 'informacion',
             component: Participante
         },
@@ -54,6 +55,11 @@ const router = new VueRouter ({
             path: '/ajustes/:idPersona',
             name: 'ajustes',
             component: MenuAjustes
+        },
+        {
+            path: '/search/:busqueda',
+            name: 'search',
+            component: Search
         }
     ],
 })

@@ -49,10 +49,10 @@
         <div class="d-flex flex-wrap">
           <div v-for="participacion in participaciones" :key="participacion.id" class="mr-2">
             <div v-if="participacion.tipoParticipante_id === 1">
-              <router-link :to="{ name: 'informacion', params: { idAudiovisual: audiovisual.id, idPersona: participacion.persona_id }}">
+              <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
                 <img class="rounded" v-bind:src="participacion.foto" v-bind:alt="participacion.nombre" width="115" height="170">
               </router-link>
-              <router-link :to="{ name: 'informacion', params: { idAudiovisual: audiovisual.id, idPersona: participacion.persona_id }}">
+              <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
                 <p>{{ participacion.nombre }}</p>
               </router-link>
               <p>{{ participacion.personaje }}</p>
@@ -64,10 +64,10 @@
         <div class="d-flex flex-wrap">
           <div v-for="participacion in participaciones" :key="participacion.id" class="mr-2">
             <div v-if="participacion.tipoParticipante_id !== 1">
-              <router-link :to="{ name: 'informacion', params: { idAudiovisual: audiovisual.id, idPersona: participacion.persona_id }}">
+              <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
                 <img class="rounded" v-bind:src="participacion.foto" v-bind:alt="participacion.nombre" width="115" height="170">
               </router-link>
-              <router-link :to="{ name: 'informacion', params: { idAudiovisual: audiovisual.id, idPersona: participacion.persona_id }}">
+              <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
                 <p>{{ participacion.nombre }}</p>
               </router-link>
               <p v-if="participacion.tipoParticipante_id === 2">Director</p>
