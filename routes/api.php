@@ -19,6 +19,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::put('/guardar-informacion', [PersonaController::class, 'guardar_informacion']);
     Route::put('/guardar-password', [PersonaController::class, 'guardar_password']);
+    Route::get('/search/{busqueda}', [SearchController::class, 'search']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);
@@ -64,5 +65,3 @@ Route::post('/seguimiento-usuario', [PersonaController::class, 'seguimiento_usua
 
 Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracion_audiovisual']);
 Route::get('/saber-valoracion-audiovisual', [AudiovisualController::class, 'saber_valoracion_audiovisual']);
-
-Route::get('/search/{busqueda}', [SearchController::class, 'search']);

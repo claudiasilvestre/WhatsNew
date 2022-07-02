@@ -21,6 +21,7 @@ class ActividadController extends Controller
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
                                 numero_temporada_actividad', 'audiovisual_temporada.titulo as titulo_audiovisual_temporada')
+                                ->orderBy('actividad.created_at', 'desc')
                                 ->get();
 
         return response()->json($actividad);
