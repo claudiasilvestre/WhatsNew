@@ -9,6 +9,7 @@ import Login from './components/auth/Login.vue'
 import Perfil from './components/perfil/Perfil.vue'
 import MenuAjustes from './components/perfil/MenuAjustes.vue'
 import Search from './components/Search.vue'
+import MiColeccion from './components/coleccion/MiColeccion.vue'
 
 const router = new VueRouter ({
     mode: 'history',
@@ -60,6 +61,11 @@ const router = new VueRouter ({
             path: '/search/:busqueda',
             name: 'search',
             component: Search
+        },
+        {
+            path: '/coleccion',
+            name: 'coleccion',
+            component: MiColeccion
         }
     ],
 })

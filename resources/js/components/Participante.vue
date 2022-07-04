@@ -3,7 +3,8 @@
         <div>
             <app-header />
             <div v-if="!loading" class="header">
-                <img class="rounded" v-bind:src="participante.foto" v-bind:alt="participante.nombre" width="200" height="300">
+                <img v-if="participante.foto" class="rounded" v-bind:src="participante.foto" v-bind:alt="participante.nombre" width="200" height="300">
+                <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="participante.nombre" width="200" height="300">
                 <div class="list">
                     <h3>{{ participante.nombre }}</h3>
                     <h5>Filmografía</h5>

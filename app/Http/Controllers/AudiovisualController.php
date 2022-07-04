@@ -11,6 +11,7 @@ use App\Models\ProveedorAudiovisual;
 use App\Models\Proveedor;
 use App\Models\Actividad;
 use App\Models\Valoracion;
+use Illuminate\Support\Facades\Auth;
 
 class AudiovisualController extends Controller
 {
@@ -153,5 +154,66 @@ class AudiovisualController extends Controller
         }
 
         return 0;
+    }
+
+    public function mi_coleccion() {
+        $usuario_id = Auth::id();
+        
+        $series = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('tipoAudiovisual_id', 2)
+                                ->get();
+                            
+        $series_pendientes = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('seguimiento_audiovisual.estado', '=', 1)
+                                ->where('tipoAudiovisual_id', 2)
+                                ->get();
+
+        $series_siguiendo = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('seguimiento_audiovisual.estado', '=', 2)
+                                ->where('tipoAudiovisual_id', 2)
+                                ->get();
+
+        $series_vistas = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('seguimiento_audiovisual.estado', '=', 3)
+                                ->where('tipoAudiovisual_id', 2)
+                                ->get();
+
+        $peliculas = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('tipoAudiovisual_id', 1)
+                                ->get();
+
+        $peliculas_pendientes = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('seguimiento_audiovisual.estado', '=', 1)
+                                ->where('tipoAudiovisual_id', 1)
+                                ->get();
+
+        $peliculas_vistas = DB::table('audiovisual')
+                                ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                                ->where('persona_id', $usuario_id)
+                                ->where('seguimiento_audiovisual.estado', '=', 3)
+                                ->where('tipoAudiovisual_id', 1)
+                                ->get();
+
+        return response()->json([
+            'series' => $series,
+            'series_pendientes' => $series_pendientes,
+            'series_siguiendo' => $series_siguiendo,
+            'series_vistas' => $series_vistas,
+            'peliculas' => $peliculas,
+            'peliculas_pendientes' => $peliculas_pendientes,
+            'peliculas_vistas' => $peliculas_vistas,
+        ]);
     }
 }

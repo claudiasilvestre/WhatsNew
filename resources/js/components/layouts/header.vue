@@ -1,8 +1,13 @@
 <template>
     <header class="header-content">
-        <router-link :to="{ name: 'home' }">
-            <h3>{{ title }}</h3>
-        </router-link>
+        <div class="header-content">
+            <router-link :to="{ name: 'home' }">
+                <h3 class="pr-3">{{ title }}</h3>
+            </router-link>
+            <router-link :to="{ name: 'coleccion' }">
+                <span class="pl-3">Mi colección</span>
+            </router-link>
+        </div>
         <div class="d-flex flex-row search rounded">
             <input type="search" name="search" v-model="busqueda" placeholder="Buscar" required/>
             <button type="submit" @click="redirect()">Search</button>

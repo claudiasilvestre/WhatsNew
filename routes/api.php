@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/guardar-informacion', [PersonaController::class, 'guardar_informacion']);
     Route::put('/guardar-password', [PersonaController::class, 'guardar_password']);
     Route::get('/search/{busqueda}', [SearchController::class, 'search']);
+    Route::get('/mi_coleccion', [AudiovisualController::class, 'mi_coleccion']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);

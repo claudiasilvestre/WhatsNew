@@ -1,19 +1,19 @@
 <template>
     <div>
         <b-tabs>
-            <b-tab title="Todo" active><audiovisuales-perfil :audiovisuales="todo" /></b-tab>
-            <b-tab title="Series"><audiovisuales-perfil :audiovisuales="series" /></b-tab>
-            <b-tab title="Películas"><audiovisuales-perfil :audiovisuales="peliculas" /></b-tab>
+            <b-tab title="Todo" active><lista-coleccion :audiovisuales="todo" /></b-tab>
+            <b-tab title="Series"><lista-coleccion :audiovisuales="series" /></b-tab>
+            <b-tab title="Películas"><lista-coleccion :audiovisuales="peliculas" /></b-tab>
         </b-tabs>
     </div>
 </template>
 
 <script>
-import AudiovisualesPerfil from './AudiovisualesPerfil.vue'
+import ListaColeccion from '../ListaColeccion.vue'
 
 export default {
     components: {
-        AudiovisualesPerfil
+        ListaColeccion
     },
     data() {
         return {

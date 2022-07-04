@@ -17,7 +17,7 @@
             <p>{{ audiovisual.sinopsis }}</p>
           </div>
           <div>
-            <h5>Ver ahora</h5>
+            <h5 v-if="stream.length > 0 || alquilar.length > 0 || comprar.length > 0">Ver ahora</h5>
               <div v-if="stream.length > 0" class="m-2">
                 <span>Stream</span>
                 <div class="d-flex flex-row">
@@ -50,7 +50,8 @@
           <div v-for="participacion in participaciones" :key="participacion.id" class="mr-2">
             <div v-if="participacion.tipoParticipante_id === 1">
               <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
-                <img class="rounded" v-bind:src="participacion.foto" v-bind:alt="participacion.nombre" width="115" height="170">
+                <img v-if="participacion.foto" class="rounded" v-bind:src="participacion.foto" v-bind:alt="participacion.nombre" width="115" height="170">
+                <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="participacion.nombre" width="115" height="170">
               </router-link>
               <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
                 <p>{{ participacion.nombre }}</p>
@@ -65,7 +66,8 @@
           <div v-for="participacion in participaciones" :key="participacion.id" class="mr-2">
             <div v-if="participacion.tipoParticipante_id !== 1">
               <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
-                <img class="rounded" v-bind:src="participacion.foto" v-bind:alt="participacion.nombre" width="115" height="170">
+                <img v-if="participacion.foto" class="rounded" v-bind:src="participacion.foto" v-bind:alt="participacion.nombre" width="115" height="170">
+                <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="participacion.nombre" width="115" height="170">
               </router-link>
               <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
                 <p>{{ participacion.nombre }}</p>
