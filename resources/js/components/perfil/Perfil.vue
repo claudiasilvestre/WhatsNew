@@ -24,6 +24,7 @@
                     <b-tab title="Actividad" active><actividad /></b-tab>
                     <b-tab title="Colección"><coleccion /></b-tab>
                 </b-tabs>
+                <actividad-aside />
             </div>
         </div>
     </v-app>
@@ -31,14 +32,16 @@
 
 <script>
 import Header from '../layouts/Header.vue'
-import Actividad from '../Actividad.vue'
+import Actividad from './ActividadPerfil.vue'
 import Coleccion from './Coleccion.vue'
+import ActividadAside from '../ActividadAside.vue'
 
 export default {
     components: {
         'app-header': Header,
         Actividad,
         Coleccion,
+        ActividadAside,
     },
     data() {
         return {
