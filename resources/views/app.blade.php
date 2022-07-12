@@ -18,7 +18,7 @@
     </head>
     <body>
         <div id="app">
-            <router-view />
+            <router-view :key="$route.fullPath" />
         </div>
 
         <script src="{{ asset('js/app.js') }}"></script>

@@ -9,8 +9,8 @@
             </router-link>
         </div>
         <div class="d-flex flex-row search rounded">
-            <input type="search" name="search" v-model="busqueda" placeholder="Buscar" required/>
-            <button type="submit" @click="redirect()">Search</button>
+            <input type="search" @keydown.enter="redirectBusqueda()" name="search" v-model="busqueda" placeholder="Buscar" required/>
+            <button type="submit" @click="redirectBusqueda()">Search</button>
         </div>
         <div v-if="Object.keys(currentUser).length > 0">
             <router-link :to="{ name: 'perfil', params: { idPersona: currentUser.id }}">
@@ -43,7 +43,10 @@ export default {
         handleLogout() {
             this.$store.dispatch('currentUser/logoutUser');
         },
-        redirect() {
+        redirectPerfil() {
+            this.$router.push('/perfil/'+this.currentUser.id)
+        },
+        redirectBusqueda() {
             if (this.busqueda)
                 this.$router.push('/search/'+this.busqueda)
         }

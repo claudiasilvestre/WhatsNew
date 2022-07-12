@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Audiovisual;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
@@ -13,18 +14,18 @@ class SearchController extends Controller
         $user = Auth::user();
 
         $usuarios = Persona::query()
-            ->where('nombre', 'LIKE', "%{$busqueda}%")
+            ->where(DB::raw('lower(nombre)'), "LIKE", "%".strtolower($busqueda)."%")
             ->where('tipoPersona_id', 1)
             ->where('id', '!=', $user->id)
             ->get();
         
         $participantes = Persona::query()
-            ->where('nombre', 'LIKE', "%{$busqueda}%")
+            ->where(DB::raw('lower(nombre)'), "LIKE", "%".strtolower($busqueda)."%")
             ->where('tipoPersona_id', 2)
             ->get();
 
         $audiovisuales = Audiovisual::query()
-            ->where('titulo', 'LIKE', "%{$busqueda}%")
+            ->where(DB::raw('lower(titulo)'), "LIKE", "%".strtolower($busqueda)."%")
             ->get();
 
         return response()->json([

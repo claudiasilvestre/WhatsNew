@@ -62,13 +62,6 @@ export default {
         axios.get('/api/personas/'+this.usuario_id)
             .then(response => this.usuario = response.data[0])
             .catch(error => { console.log(error.response) });
-
-        this.$watch(
-            () => this.$route.params,
-            (toParams, previousParams) => {
-                this.$forceUpdate();
-            }
-        )
     },
     beforeUpdate() {
         axios.get('/api/saber-seguimiento-usuario/', {
