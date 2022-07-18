@@ -16,6 +16,11 @@
             <lista-audiovisuales
                 :audiovisuales="audiovisualesPopulares['series']"
             />
+
+            <h4> Recomendaciones </h4>
+            <lista-audiovisuales
+                :audiovisuales="audiovisualesRecomendados"
+            />
         </div>
     </div>
 </template>
@@ -30,6 +35,7 @@ export default {
     data() {
         return {
             audiovisualesPopulares: [],
+            audiovisualesRecomendados: [],
             loading: true,
         }
     },
@@ -38,6 +44,10 @@ export default {
             .then(response => this.audiovisualesPopulares = response.data)
             .catch(error => { console.log(error.response) })
             .finally(() => this.loading = false);
+
+        axios.get('/api/recomendaciones')
+            .then(response => this.audiovisualesRecomendados = response.data)
+            .catch(error => { console.log(error.response) });
     },
 }
 </script>

@@ -12,4 +12,9 @@ class Genero extends Model
     protected $table = 'genero';
 
     public $incrementing = false;
+
+    public function audiovisuales()
+    {
+        return $this->hasMany(Audiovisual::class);
+    }
 }

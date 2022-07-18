@@ -12,4 +12,14 @@ class Audiovisual extends Model
     protected $table = 'audiovisual';
 
     public $incrementing = false;
+
+    public function genero()
+    {
+        return $this->belongsTo(Genero::class);
+    }
+
+    public function idioma()
+    {
+        return $this->belongsTo(Idioma::class);
+    }
 }

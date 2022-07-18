@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id')->primary();
             $table->unsignedBigInteger('tipoAudiovisual_id');
             $table->unsignedBigInteger('genero_id')->nullable();
+            $table->unsignedBigInteger('idioma_id')->nullable();
             $table->string('titulo', 64)->nullable();
             $table->string('tituloOriginal', 64)->nullable();
             $table->integer('anno')->nullable();
@@ -31,6 +32,7 @@ return new class extends Migration
 
             $table->foreign('tipoAudiovisual_id')->references('id')->on('tipo_audiovisual');
             $table->foreign('genero_id')->references('id')->on('genero');
+            $table->foreign('idioma_id')->references('id')->on('idioma');
 
             $table->timestamps();
         });

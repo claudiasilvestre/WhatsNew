@@ -43,9 +43,6 @@ export default {
         handleLogout() {
             this.$store.dispatch('currentUser/logoutUser');
         },
-        redirectPerfil() {
-            this.$router.push('/perfil/'+this.currentUser.id)
-        },
         redirectBusqueda() {
             if (this.busqueda)
                 this.$router.push('/search/'+this.busqueda)

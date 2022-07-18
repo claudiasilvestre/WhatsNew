@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/search/{busqueda}', [SearchController::class, 'search']);
     Route::get('/mi_coleccion', [AudiovisualController::class, 'mi_coleccion']);
     Route::get('/actividad_amigos', [ActividadController::class, 'actividad_amigos']);
+    Route::get('/recomendaciones', [AudiovisualController::class, 'recomendaciones']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);

@@ -17,6 +17,7 @@ use App\Models\TipoPersona;
 use App\Models\Participacion;
 use App\Models\Proveedor;
 use App\Models\ProveedorAudiovisual;
+use App\Models\Idioma;
 
 class AudiovisualesSeeder extends Seeder
 {
@@ -65,6 +66,18 @@ class AudiovisualesSeeder extends Seeder
 
             $pelicula->save();
             $serie->save();
+        }
+
+        // Idioma
+        if (!Idioma::where('id', '=', 1)->exists() && !Idioma::where('id', '=', 2)->exists()) {
+            $en = new Idioma;
+            $es = new Idioma;
+
+            $en->nombre = "Inglés";
+            $es->nombre = "Español";
+
+            $en->save();
+            $es->save();
         }
 
         // TipoPersona
@@ -138,6 +151,10 @@ class AudiovisualesSeeder extends Seeder
                         $pelicula->anno = date('Y', strtotime($p['release_date']));
                     }
                     $pelicula->puntuacion = $p['vote_average'];
+                    if ($p['original_language'] == "en")
+                        $pelicula->idioma_id = 1;
+                    else
+                        $pelicula->idioma_id = 2;
     
                     $pelicula->save();
 
@@ -258,6 +275,10 @@ class AudiovisualesSeeder extends Seeder
                         $serie->anno = date('Y', strtotime($s['first_air_date']));
                     }
                     $serie->puntuacion = $s['vote_average'];
+                    if ($s['original_language'] == "en")
+                        $serie->idioma_id = 1;
+                    else
+                        $serie->idioma_id = 2;
     
                     $serie->save();
 

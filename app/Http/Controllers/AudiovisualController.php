@@ -12,6 +12,7 @@ use App\Models\Proveedor;
 use App\Models\Actividad;
 use App\Models\Valoracion;
 use Illuminate\Support\Facades\Auth;
+use App\Services\ContentBasedRecommenderSystem;
 
 class AudiovisualController extends Controller
 {
@@ -215,5 +216,27 @@ class AudiovisualController extends Controller
             'peliculas_pendientes' => $peliculas_pendientes,
             'peliculas_vistas' => $peliculas_vistas,
         ]);
+    }
+
+    public function recomendaciones() {
+        $usuario_id = Auth::id();
+
+        $audiovisuales = DB::table('audiovisual')
+                            ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
+                            ->where('persona_id', $usuario_id)
+                            ->get();
+
+        $audiovisualesObject = [];
+
+        foreach ($audiovisuales as $audiovisual) {
+            $av = Audiovisual::find($audiovisual->audiovisual_id);
+            array_push($audiovisualesObject, $av);
+        }
+
+        $content_engine = new ContentBasedRecommenderSystem;
+
+        $sugerencias = $content_engine->sugerenciasAudiovisuales($audiovisualesObject);
+
+        return response()->json($sugerencias);
     }
 }
