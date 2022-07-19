@@ -65,7 +65,7 @@ export default {
             .then(response => this.temporadas = response.data)
             .catch(error => { console.log(error.response) })
             .finally(() => { 
-                if (this.temporadas) this.selected = this.temporadas[0];
+                this.selected = this.temporadas[0];
 
                 axios.get('/api/capitulos/'+this.selected.id)
                     .then(response => this.capitulos = response.data)

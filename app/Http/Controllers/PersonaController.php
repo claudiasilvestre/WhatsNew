@@ -20,12 +20,22 @@ class PersonaController extends Controller
     }
 
     public function participacion($audiovisual_id) {
-        $personas = DB::table('persona')
+        $personas_reparto = DB::table('persona')
                                 ->join('participacion', 'persona.id', '=', 'participacion.persona_id')
                                 ->where('participacion.audiovisual_id', '=', $audiovisual_id)
+                                ->where('persona.tipoParticipante_id', '=', 1)
                                 ->get();
 
-        return response()->json($personas);
+        $personas_equipo = DB::table('persona')
+                                ->join('participacion', 'persona.id', '=', 'participacion.persona_id')
+                                ->where('participacion.audiovisual_id', '=', $audiovisual_id)
+                                ->where('persona.tipoParticipante_id', '!=', 1)
+                                ->get();
+
+        return response()->json([
+            'personas_reparto' => $personas_reparto,
+            'personas_equipo' => $personas_equipo,
+        ]);
     }
 
     public function info($id) {
