@@ -44,6 +44,10 @@ export default {
       currentUser: {
         required: true,
         type: Object
+      },
+      cambioAside: {
+        required: true,
+        type: Boolean
       }
     },
     created() {
@@ -99,6 +103,7 @@ export default {
                     } else
                         // this.pendiente = "Pendiente";
                         this.clicked1 = false;
+                    this.$emit('comprobarCambioAside', !this.cambioAside);
                 } else if (tipo === 2) {
                     if (response.data) {
                         /* this.pendiente = "Pendiente";
@@ -121,6 +126,7 @@ export default {
                     } else
                         // this.vista = "Vista";
                         this.clicked3 = false;
+                    this.$emit('comprobarCambioAside', !this.cambioAside);
                 }
 
                 this.clicked = true;

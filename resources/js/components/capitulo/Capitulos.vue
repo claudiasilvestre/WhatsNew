@@ -24,7 +24,7 @@
                 <b-icon icon="check-circle"></b-icon></button>
             </div>
         </div>
-        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id" :vista="clicked" :cambio="cambio" :noCambio="noCambio" @comprobarVista="comprobarVista"/>
+        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id" :vista="clicked" :cambio="cambio" :noCambio="noCambio" :cambioAside="cambioAside" @comprobarVista="comprobarVista"/>
     </v-app>
 </template>
 
@@ -39,6 +39,10 @@ export default {
       audiovisual: {
         required: true,
         type: Object
+      },
+      cambioAside: {
+        required: true,
+        type: Boolean
       }
     },
     data() {
@@ -58,6 +62,25 @@ export default {
             get() {
                 return this.$store.state.currentUser.user;
             }
+        }
+    },
+    watch: {
+        cambioAside: function () {
+            axios.get('/api/saber-visualizacion-temporada/', {
+                    params: { 
+                        temporada_id: this.selected.id, 
+                        usuario_id: this.currentUser.id,
+                    }})
+                    .then(response => {
+                        if (response.data) {
+                            this.state = true;
+                            this.clicked = true;
+                        } else {
+                            this.state = false;
+                            this.clicked = false;
+                        }
+                    })
+                    .catch(error => console.log(error.response));
         }
     },
     created() {

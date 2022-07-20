@@ -11,6 +11,10 @@ use App\Models\ProveedorAudiovisual;
 use App\Models\Proveedor;
 use App\Models\Actividad;
 use App\Models\Valoracion;
+use App\Models\VisualizacionTemporada;
+use App\Models\VisualizacionCapitulo;
+use App\Models\Temporada;
+use App\Models\Capitulo;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ContentBasedRecommenderSystem;
 
@@ -51,7 +55,7 @@ class AudiovisualController extends Controller
     }
 
     public function seguimiento_audiovisual(Request $request) {
-        if (SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->exists()) {
+        if (SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->exists()) {            
             $seguimiento = SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->first();
             if ($seguimiento->estado === $request->tipo) {
                 $seguimiento->delete();
@@ -61,6 +65,54 @@ class AudiovisualController extends Controller
             SeguimientoAudiovisual::where('persona_id', $request->usuario_id)
                 ->where('audiovisual_id', $request->audiovisual_id)
                 ->update(['estado' => $request->tipo]);
+
+            // Si tipo es 1 se borran los VisualizaciónTemporada y VisualizaciónCapitulo que existan de la serie para ese usuario
+            if ($request->tipo === 1) {
+                $temporadas = Temporada::where('audiovisual_id', $request->audiovisual_id)->get();
+
+                foreach ($temporadas as $temporada) {
+                    if (VisualizacionTemporada::where('persona_id', $request->usuario_id)->where('temporada_id', $temporada->id)->exists()) { 
+                        VisualizacionTemporada::where('persona_id', $request->usuario_id)
+                        ->where('temporada_id', $temporada->id)
+                        ->delete();
+                    }
+
+                    $capitulos = Capitulo::where('temporada_id', $temporada->id)->get();
+
+                    foreach ($capitulos as $capitulo) {
+                        if (VisualizacionCapitulo::where('persona_id', $request->usuario_id)->where('capitulo_id', $capitulo->id)->exists()) { 
+                            VisualizacionCapitulo::where('persona_id', $request->usuario_id)
+                            ->where('capitulo_id', $capitulo->id)
+                            ->delete();
+                        }
+                    }
+                }
+            }
+
+            // Si tipo es 3 se crea VisualizacionTemporada y VisualizacionCapitulo de todos los capítulos de la serie que no existan para ese usuario
+            if ($request->tipo === 3) {
+                $temporadas = Temporada::where('audiovisual_id', $request->audiovisual_id)->get();
+
+                foreach ($temporadas as $temporada) {
+                    if (!VisualizacionTemporada::where('persona_id', $request->usuario_id)->where('temporada_id', $temporada->id)->exists()) { 
+                        VisualizacionTemporada::create([
+                            'temporada_id' => $temporada->id,
+                            'persona_id' => $request->usuario_id,
+                        ]);
+                    }
+
+                    $capitulos = Capitulo::where('temporada_id', $temporada->id)->get();
+
+                    foreach ($capitulos as $capitulo) {
+                        if (!VisualizacionCapitulo::where('persona_id', $request->usuario_id)->where('capitulo_id', $capitulo->id)->exists()) { 
+                            VisualizacionCapitulo::create([
+                                'capitulo_id' => $capitulo->id,
+                                'persona_id' => $request->usuario_id,
+                            ]);
+                        }
+                    }
+                }
+            }
 
             Actividad::create([
                 'persona_id' => $request->usuario_id,
@@ -73,6 +125,25 @@ class AudiovisualController extends Controller
                 'persona_id' => $request->usuario_id,
                 'estado' => $request->tipo,
             ]);
+
+            // Si tipo es 3 se crea VisualizacionCapitulo de todos los capítulos de la serie
+            $temporadas = Temporada::where('audiovisual_id', $request->audiovisual_id)->get();
+
+            foreach ($temporadas as $temporada) { 
+                VisualizacionTemporada::create([
+                    'temporada_id' => $temporada->id,
+                    'persona_id' => $request->usuario_id,
+                ]);
+
+                $capitulos = Capitulo::where('temporada_id', $temporada->id)->get();
+
+                foreach ($capitulos as $capitulo) {
+                    VisualizacionCapitulo::create([
+                        'capitulo_id' => $capitulo->id,
+                        'persona_id' => $request->usuario_id,
+                    ]);
+                }
+            }
 
             Actividad::create([
                 'persona_id' => $request->usuario_id,

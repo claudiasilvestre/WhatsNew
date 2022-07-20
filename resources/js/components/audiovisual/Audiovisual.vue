@@ -9,10 +9,10 @@
                 ></b-spinner>
             </div>
             <div v-else-if="!loading" class="header">
-                <aside-audiovisual :audiovisual="audiovisual" :currentUser="currentUser" />
+                <aside-audiovisual :audiovisual="audiovisual" :currentUser="currentUser" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" />
                 <div class="width">
                     <header-audiovisual :audiovisual="audiovisual" />
-                    <menu-audiovisual :audiovisual="audiovisual" />
+                    <menu-audiovisual :audiovisual="audiovisual" :cambioAside="cambioAside" />
                 </div>
             </div>
         </div>
@@ -37,6 +37,7 @@ export default {
             id: this.$route.params.id,
             audiovisual: {},
             loading: true,
+            cambioAside: false,
         }
     },
     computed: {
@@ -52,5 +53,10 @@ export default {
             .catch(error => { console.log(error.response) })
             .finally(() => this.loading = false);
     },
+    methods: {
+      comprobarCambioAside(cambio) {
+        this.cambioAside = cambio;
+      },
+    }
 }
 </script>

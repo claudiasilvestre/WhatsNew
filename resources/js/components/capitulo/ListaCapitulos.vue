@@ -44,6 +44,10 @@ export default {
         required: true,
         type: Boolean
       },
+      cambioAside: {
+        required: true,
+        type: Boolean
+      },
     },
     data() {
         return {
@@ -96,7 +100,18 @@ export default {
                     .catch(error => console.log(error.response))
                     .finally(() => this.loading = false);
             }
-        }
+        },
+        cambioAside: function () {
+            axios.get('/api/visualizaciones/', {
+                params: { 
+                    capitulos: this.capitulos,
+                    usuario_id: this.currentUser.id,
+                }})
+                .then(response => {
+                    this.clicked = response.data;
+                })
+                .catch(error => console.log(error.response));
+        },
     },
     methods: {
         visto(capitulo_id, index) {
