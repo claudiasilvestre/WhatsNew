@@ -37,6 +37,10 @@ export default {
         creado: {
             required: true,
             type: Boolean
+        },
+        tipo: {
+            required: true,
+            type: Number
         }
     },
     data() {
@@ -79,22 +83,30 @@ export default {
     },
     methods: {
         comentariosAudiovisual() {
-            axios.get('/api/comentario-audiovisual/'+this.audiovisual.id)
+            axios.get('/api/comentario-audiovisual/', {
+            params: { 
+                audiovisual_id: this.audiovisual.id, 
+                tipo: this.tipo,
+            }})
             .then(response => {
                 this.comentarios = response.data['comentarios'];
                 this.clickedLike = response.data['clickedLike'];
                 this.clickedDislike = response.data['clickedDislike'];
             })
-            .catch(error => { console.log(error.response) });
+            .catch(error => console.log(error.response));
         },
         comentariosCapitulo() {
-            axios.get('/api/comentario-capitulo/'+this.capitulo.id)
+            axios.get('/api/comentario-capitulo/', {
+            params: { 
+                capitulo_id: this.capitulo.id, 
+                tipo: this.tipo,
+            }})
             .then(response => {
                 this.comentarios = response.data['comentarios'];
                 this.clickedLike = response.data['clickedLike'];
                 this.clickedDislike = response.data['clickedDislike'];
             })
-            .catch(error => { console.log(error.response) });
+            .catch(error => console.log(error.response));
         },
         borrarComentario(comentario_id) {
             if (this.audiovisual) {
@@ -135,6 +147,8 @@ export default {
 
                 this.comentariosCapitulo()
             }
+
+            this.$emit('voto');
         },
         votoNegativo(comentario_id) {
             this.formData.comentario_id = comentario_id;
@@ -158,6 +172,8 @@ export default {
 
                 this.comentariosCapitulo()
             }
+
+            this.$emit('voto');
         }
     }
 }

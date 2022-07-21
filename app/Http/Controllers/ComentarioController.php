@@ -39,12 +39,20 @@ class ComentarioController extends Controller
         return response()->json(['msg' => 'Comentario añadido']);
     }
 
-    public function audiovisual($audiovisual_id) {
-        $comentarios = DB::table('persona')
-                                ->join('comentario_audiovisual', 'persona.id', '=', 'comentario_audiovisual.persona_id')
-                                ->where('audiovisual_id', $audiovisual_id)
-                                ->orderBy('comentario_audiovisual.created_at', 'desc')
-                                ->get();
+    public function audiovisual(Request $request) {
+        if ($request->tipo == 1)
+            $comentarios = DB::table('persona')
+                                    ->join('comentario_audiovisual', 'persona.id', '=', 'comentario_audiovisual.persona_id')
+                                    ->where('audiovisual_id', $request->audiovisual_id)
+                                    ->orderBy('comentario_audiovisual.created_at', 'desc')
+                                    ->get();
+            
+        else
+            $comentarios = DB::table('persona')
+                                    ->join('comentario_audiovisual', 'persona.id', '=', 'comentario_audiovisual.persona_id')
+                                    ->where('audiovisual_id', $request->audiovisual_id)
+                                    ->orderBy('comentario_audiovisual.votosPositivos', 'desc')
+                                    ->get();
 
         $clickedLike = [];
         $clickedDislike = [];
@@ -68,12 +76,19 @@ class ComentarioController extends Controller
         ]);
     }
 
-    public function capitulo($capitulo_id) {
-        $comentarios = DB::table('persona')
-                                ->join('comentario_capitulo', 'persona.id', '=', 'comentario_capitulo.persona_id')
-                                ->where('capitulo_id', $capitulo_id)
-                                ->orderBy('comentario_capitulo.created_at', 'desc')
-                                ->get();
+    public function capitulo(Request $request) {
+        if ($request->tipo == 1)
+            $comentarios = DB::table('persona')
+                                    ->join('comentario_capitulo', 'persona.id', '=', 'comentario_capitulo.persona_id')
+                                    ->where('capitulo_id', $request->capitulo_id)
+                                    ->orderBy('comentario_capitulo.created_at', 'desc')
+                                    ->get();
+        else
+            $comentarios = DB::table('persona')
+                                    ->join('comentario_capitulo', 'persona.id', '=', 'comentario_capitulo.persona_id')
+                                    ->where('capitulo_id', $request->capitulo_id)
+                                    ->orderBy('comentario_capitulo.votosPositivos', 'desc')
+                                    ->get();
 
         $clickedLike = [];
         $clickedDislike = [];

@@ -10,10 +10,13 @@
         </div>
         <b-tabs>
             <b-tab title="Más recientes" class="tabsComentarios" active>
-                <lista-comentarios v-if="audiovisual" :audiovisual="audiovisual" :creado="clicked"/>
-                <lista-comentarios v-else :capitulo="capitulo" :creado="clicked"/>
+                <lista-comentarios v-if="audiovisual" :audiovisual="audiovisual" :creado="clicked" :tipo=1 @voto="voto" />
+                <lista-comentarios v-else :capitulo="capitulo" :creado="clicked" :tipo=1 @voto="voto" />
             </b-tab>
-            <b-tab title="Mejor valorados" class="tabsComentarios">Todavía no hay comentarios</b-tab>
+            <b-tab title="Mejor valorados" class="tabsComentarios">
+                <lista-comentarios v-if="audiovisual" :audiovisual="audiovisual" :creado="clicked" :tipo=2 @voto="voto" />
+                <lista-comentarios v-else :capitulo="capitulo" :creado="clicked" :tipo=2 @voto="voto" />
+            </b-tab>
         </b-tabs>
     </div>
 </template>
@@ -71,6 +74,9 @@ export default {
                     this.errors = errors.response.data.errors
                 });
             }
+            this.clicked = !this.clicked;
+        },
+        voto() {
             this.clicked = !this.clicked;
         }
     }

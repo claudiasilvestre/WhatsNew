@@ -164,3 +164,7 @@ input {
 .v-select__selection--comma {
     overflow: visible !important;
 }
+
+.v-list-item__content {
+    overflow: visible !important;
+}

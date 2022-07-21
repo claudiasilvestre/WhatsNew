@@ -50,8 +50,8 @@ Route::get('/proveedores/{audiovisual_id}', [AudiovisualController::class, 'prov
 
 Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarAudiovisual']);
 Route::post('/guardar-comentario-capitulo', [ComentarioController::class, 'guardarCapitulo']);
-Route::get('/comentario-audiovisual/{audiovisual_id}', [ComentarioController::class, 'audiovisual']);
-Route::get('/comentario-capitulo/{capitulo_id}', [ComentarioController::class, 'capitulo']);
+Route::get('/comentario-audiovisual', [ComentarioController::class, 'audiovisual']);
+Route::get('/comentario-capitulo', [ComentarioController::class, 'capitulo']);
 Route::post('/borrar-comentario-audiovisual/{comentario_id}', [ComentarioController::class, 'borrarAudiovisual']);
 Route::post('/borrar-comentario-capitulo/{comentario_id}', [ComentarioController::class, 'borrarCapitulo']);
 
