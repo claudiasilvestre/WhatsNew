@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2">
+        <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2 d-flex justify-content-between">
             <div v-if="actividad.tipoAudiovisual_id">
                 {{ usuario.nombre }}
                 <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
@@ -22,6 +22,7 @@
                     de {{ actividad.titulo_audiovisual_temporada }}
                 </span>
             </div>
+            <b-icon icon="x-circle" variant="danger" @click="borrarActividad(actividad.id)" class="pointer"></b-icon>
         </div>
     </div>
 </template>
@@ -44,6 +45,23 @@ export default {
                 this.actividadTotal = response.data;
             })
             .catch(error => { console.log(error.response) });
+    },
+    methods: {
+        borrarActividad(actividad_id) {
+            axios.post('/api/borrar-actividad/'+actividad_id)
+            .then((response) => {
+                console.log(response.data)
+            })
+            .catch((errors) => {
+                this.errors = errors.response.data.errors
+            });
+
+            axios.get('/api/actividad-usuario/'+this.usuario_id)
+            .then(response => {
+                this.actividadTotal = response.data;
+            })
+            .catch(error => { console.log(error.response) });
+        }
     }
 }
 </script>

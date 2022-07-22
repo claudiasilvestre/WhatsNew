@@ -104,4 +104,8 @@ class CapituloController extends Controller
             ]);
         }
     }
+
+    public function capitulos_anterior_siguiente($capitulo_id) {
+        
+    }
 }

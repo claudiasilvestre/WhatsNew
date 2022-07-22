@@ -18,7 +18,7 @@ class ActividadController extends Controller
                                 ->leftJoin('temporada as temporada_actividad', 'actividad.temporada_id', 'temporada_actividad.id')
                                 ->leftJoin('audiovisual as audiovisual_temporada', 'temporada_actividad.audiovisual_id', 'audiovisual_temporada.id')
                                 ->where('persona_id', $usuario_id)
-                                ->select('tipo', 'audiovisual.tipoAudiovisual_id', 'audiovisual.titulo as titulo_audiovisual', 
+                                ->select('actividad.id', 'tipo', 'audiovisual.tipoAudiovisual_id', 'audiovisual.titulo as titulo_audiovisual', 
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
                                 numero_temporada_actividad', 'audiovisual_temporada.titulo as titulo_audiovisual_temporada')
@@ -51,5 +51,11 @@ class ActividadController extends Controller
                                 ->get();
 
         return response()->json($actividad);
+    }
+
+    public function borrar_actividad($actividad_id) {
+        Actividad::where('id', $actividad_id)->delete();
+
+        return response()->json(['msg' => 'Actividad borrada']);
     }
 }

@@ -1,6 +1,7 @@
 <template>
     <div class="list">
-        <div v-for="(comentario, index) in comentarios" :key="comentario.id" class="p-1 mb-4 rounded background2">
+        <p v-if="comentarios.length === 0" >Todavía no hay comentarios</p>
+        <div v-else v-for="(comentario, index) in comentarios" :key="comentario.id" class="p-1 mb-4 rounded background2">
             <div d-flex flex-row>
                 <span>{{ comentario.nombre }}</span>
                 <span> {{ moment(comentario.created_at).format('LL') }}</span>
@@ -124,6 +125,7 @@ export default {
 
                 this.comentariosCapitulo();
             }
+            this.$emit('cambio');
         },
         votoPositivo(comentario_id) {
             this.formData.comentario_id = comentario_id;
@@ -148,7 +150,7 @@ export default {
                 this.comentariosCapitulo()
             }
 
-            this.$emit('voto');
+            this.$emit('cambio');
         },
         votoNegativo(comentario_id) {
             this.formData.comentario_id = comentario_id;
@@ -173,7 +175,7 @@ export default {
                 this.comentariosCapitulo()
             }
 
-            this.$emit('voto');
+            this.$emit('cambio');
         }
     }
 }

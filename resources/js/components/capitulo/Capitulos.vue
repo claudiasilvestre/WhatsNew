@@ -41,7 +41,6 @@ export default {
         type: Object
       },
       cambioAside: {
-        required: true,
         type: Boolean
       }
     },

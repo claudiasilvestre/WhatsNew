@@ -52,6 +52,7 @@ class ComentarioController extends Controller
                                     ->join('comentario_audiovisual', 'persona.id', '=', 'comentario_audiovisual.persona_id')
                                     ->where('audiovisual_id', $request->audiovisual_id)
                                     ->orderBy('comentario_audiovisual.votosPositivos', 'desc')
+                                    ->orderBy('comentario_audiovisual.created_at', 'desc')
                                     ->get();
 
         $clickedLike = [];
@@ -88,6 +89,7 @@ class ComentarioController extends Controller
                                     ->join('comentario_capitulo', 'persona.id', '=', 'comentario_capitulo.persona_id')
                                     ->where('capitulo_id', $request->capitulo_id)
                                     ->orderBy('comentario_capitulo.votosPositivos', 'desc')
+                                    ->orderBy('comentario_capitulo.created_at', 'desc')
                                     ->get();
 
         $clickedLike = [];

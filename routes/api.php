@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mi_coleccion', [AudiovisualController::class, 'mi_coleccion']);
     Route::get('/actividad_amigos', [ActividadController::class, 'actividad_amigos']);
     Route::get('/recomendaciones', [AudiovisualController::class, 'recomendaciones']);
+    Route::post('/borrar-actividad/{actividad_id}', [ActividadController::class, 'borrar_actividad']);
+    Route::get('/capitulos-anterior-siguiente/{capitulo_id}', [CapituloController::class, 'capitulos_anterior_siguiente']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);

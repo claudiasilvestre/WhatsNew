@@ -13,6 +13,11 @@
                 <div class="width">
                     <header-audiovisual :audiovisual="audiovisual" />
                     <div class="list">
+                        <p class="pointer" @click="retroceder()"><b-icon icon="arrow-left"></b-icon> Capítulos</p>
+                        <p class="d-flex justify-content-between">
+                            <span class="pointer" @click="anteriorCapitulo()"><b-icon icon="arrow-left-short"></b-icon>Anterior capítulo</span>
+                            <span class="pointer" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
+                        </p>
                         <h3>{{ capitulo.nombre }}</h3>
                         <h5>Sinopsis</h5>
                         <p>{{ capitulo.sinopsis }}</p>
@@ -45,6 +50,8 @@ export default {
             audiovisual: {},
             capitulo: {},
             loading: true,
+            anteriorCapitulo_id: '',
+            siguienteCapitulo_id: '',
         }
     },
     computed: {
@@ -63,6 +70,26 @@ export default {
         axios.get('/api/capitulo/'+this.idCapitulo)
             .then(response => this.capitulo = response.data[0])
             .catch(error => { console.log(error.response) });
+
+        axios.get('/api/capitulos-anterior-siguiente/'+this.idCapitulo)
+            .then(response => {
+                this.anteriorCapitulo_id = response.data['anteriorCapitulo'];
+                this.siguienteCapitulo_id = response.data['siguienteCapitulo'];
+            })
+            .catch(error => { console.log(error.response) });
     },
+    methods: {
+        retroceder() {
+            this.$router.push('/media/'+this.audiovisual.id)
+        },
+        anteriorCapitulo() {
+            if (this.anteriorCapitulo_id)
+                this.$router.push('/media/'+this.audiovisual.id+'/episode/'+this.anteriorCapitulo_id)
+        },
+        siguienteCapitulo() {
+            if (this.siguienteCapitulo_id)
+                this.$router.push('/media/'+this.audiovisual.id+'/episode/'+this.siguienteCapitulo_id)
+        }
+    }
 }
 </script>

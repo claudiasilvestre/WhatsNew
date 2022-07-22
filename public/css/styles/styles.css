@@ -83,6 +83,10 @@ body {
     width: 100%;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
 .headerMedia {
     display: flex;
     flex-direction: row;
