@@ -14,11 +14,20 @@
                     <header-audiovisual :audiovisual="audiovisual" />
                     <div class="list">
                         <p class="pointer" @click="retroceder()"><b-icon icon="arrow-left"></b-icon> Capítulos</p>
-                        <p class="d-flex justify-content-between">
-                            <span class="pointer" @click="anteriorCapitulo()"><b-icon icon="arrow-left-short"></b-icon>Anterior capítulo</span>
-                            <span class="pointer" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
+                        <p v-if="!anteriorCapitulo_id && siguienteCapitulo_id" class="d-flex justify-content-end">
+                            <span v-if="anteriorCapitulo_id" class="pointer" @click="anteriorCapitulo()"><b-icon icon="arrow-left-short"></b-icon>Anterior capítulo</span>
+                            <span v-if="siguienteCapitulo_id" class="pointer" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
                         </p>
-                        <h3>{{ capitulo.nombre }}</h3>
+                        <p v-else class="d-flex justify-content-between">
+                            <span v-if="anteriorCapitulo_id" class="pointer" @click="anteriorCapitulo()"><b-icon icon="arrow-left-short"></b-icon>Anterior capítulo</span>
+                            <span v-if="siguienteCapitulo_id" class="pointer" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <h3>{{ capitulo.nombre }}</h3>
+                            <button v-bind:class="{'btn btn-info': !clicked, 'btn btn-outline-info': clicked}" @click="seguimiento()" class="m-1"><b-icon icon="check2"></b-icon>
+                                Visto
+                            </button>
+                        </div>
                         <h5>Sinopsis</h5>
                         <p>{{ capitulo.sinopsis }}</p>
                         <h5>Comentarios</h5>
@@ -52,6 +61,7 @@ export default {
             loading: true,
             anteriorCapitulo_id: '',
             siguienteCapitulo_id: '',
+            clicked: false,
         }
     },
     computed: {
@@ -71,11 +81,19 @@ export default {
             .then(response => this.capitulo = response.data[0])
             .catch(error => { console.log(error.response) });
 
-        axios.get('/api/capitulos-anterior-siguiente/'+this.idCapitulo)
-            .then(response => {
-                this.anteriorCapitulo_id = response.data['anteriorCapitulo'];
-                this.siguienteCapitulo_id = response.data['siguienteCapitulo'];
-            })
+        axios.get('/api/capitulos-anterior-siguiente/', {
+                    params: { 
+                        capitulo_id: this.idCapitulo, 
+                        audiovisual_id: this.idAudiovisual,
+                    }})
+                    .then(response => {
+                        this.anteriorCapitulo_id = response.data['anteriorCapitulo_id'];
+                        this.siguienteCapitulo_id = response.data['siguienteCapitulo_id'];
+                    })
+                    .catch(error => console.log(error.response));
+
+        axios.get('/api/saber-visualizacion-capitulo/'+this.idCapitulo)
+            .then(response => this.clicked = response.data)
             .catch(error => { console.log(error.response) });
     },
     methods: {
@@ -89,6 +107,13 @@ export default {
         siguienteCapitulo() {
             if (this.siguienteCapitulo_id)
                 this.$router.push('/media/'+this.audiovisual.id+'/episode/'+this.siguienteCapitulo_id)
+        },
+        seguimiento() {
+            axios.post('/api/visualizacion-capitulo/'+this.idCapitulo)
+            .then(response => {
+                this.clicked = response.data;
+            })
+            .catch(error => console.log(error.response));
         }
     }
 }

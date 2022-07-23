@@ -24,7 +24,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/actividad_amigos', [ActividadController::class, 'actividad_amigos']);
     Route::get('/recomendaciones', [AudiovisualController::class, 'recomendaciones']);
     Route::post('/borrar-actividad/{actividad_id}', [ActividadController::class, 'borrar_actividad']);
-    Route::get('/capitulos-anterior-siguiente/{capitulo_id}', [CapituloController::class, 'capitulos_anterior_siguiente']);
+    Route::get('/capitulos-anterior-siguiente', [CapituloController::class, 'capitulos_anterior_siguiente']);
+    Route::get('/saber-visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'saber_visualizacion_capitulo']);
+    Route::post('/visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'visualizacion_capitulo']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);

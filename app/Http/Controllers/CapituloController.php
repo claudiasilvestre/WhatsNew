@@ -10,6 +10,7 @@ use App\Models\VisualizacionCapitulo;
 use App\Models\VisualizacionTemporada;
 use App\Models\Actividad;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class CapituloController extends Controller
 {
@@ -105,7 +106,58 @@ class CapituloController extends Controller
         }
     }
 
-    public function capitulos_anterior_siguiente($capitulo_id) {
-        
+    public function capitulos_anterior_siguiente(Request $request) {
+        $anteriorCapitulo = DB::table('capitulo')
+                                    ->join('temporada', 'capitulo.temporada_id', '=', 'temporada.id')
+                                    ->join('audiovisual', 'temporada.audiovisual_id', '=', 'audiovisual.id')
+                                    ->where('audiovisual.id', $request->audiovisual_id)
+                                    ->where('capitulo.id', '<', $request->capitulo_id)
+                                    ->select('capitulo.id')
+                                    ->latest('id')->first();
+
+        $anteriorCapitulo_id = '';
+        if ($anteriorCapitulo)
+            $anteriorCapitulo_id = $anteriorCapitulo->id;
+
+        $siguienteCapitulo = DB::table('capitulo')
+                                    ->join('temporada', 'capitulo.temporada_id', '=', 'temporada.id')
+                                    ->join('audiovisual', 'temporada.audiovisual_id', '=', 'audiovisual.id')
+                                    ->where('audiovisual.id', $request->audiovisual_id)
+                                    ->where('capitulo.id', '>', $request->capitulo_id)
+                                    ->select('capitulo.id')
+                                    ->first();
+
+        $siguienteCapitulo_id = '';
+        if ($siguienteCapitulo)
+            $siguienteCapitulo_id = $siguienteCapitulo->id;
+
+        return response()->json([
+            'anteriorCapitulo_id' => $anteriorCapitulo_id,
+            'siguienteCapitulo_id' => $siguienteCapitulo_id,
+        ]);
+    }
+
+    public function saber_visualizacion_capitulo($capitulo_id) {
+        $usuario_id = Auth::id();
+
+        if (VisualizacionCapitulo::where('persona_id', $usuario_id)->where('capitulo_id', $capitulo_id)->exists())
+            return true;
+        else
+            return false;
+    }
+
+    public function visualizacion_capitulo($capitulo_id) {
+        $usuario_id = Auth::id();
+
+        if (!VisualizacionCapitulo::where('persona_id', $usuario_id)->where('capitulo_id', $capitulo_id)->exists()) {
+            VisualizacionCapitulo::create([
+                'capitulo_id' => $capitulo_id,
+                'persona_id' => $usuario_id,
+            ]);
+
+            return true;
+        }
+
+        return false;
     }
 }
