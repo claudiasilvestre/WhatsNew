@@ -40,7 +40,7 @@ class PersonaController extends Controller
 
     public function info($id) {
         $persona = Persona::where('id', $id)
-                            ->select('nombre', 'usuario', 'email')
+                            ->select('foto', 'nombre', 'usuario', 'email')
                             ->first();
 
         return response()->json($persona);
@@ -65,6 +65,7 @@ class PersonaController extends Controller
             'nombre' => $request->nombre,
             'usuario' => $request->usuario,
             'email' => $request->email,
+            'foto' => $request->foto,
         ]);
 
         return response()->json(['msg' => 'Data changed successfully']);

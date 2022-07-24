@@ -108,6 +108,10 @@ body {
     border-radius: 0.25rem;
 }
 
+.roundedPerfil {
+    border-radius: 50%;
+}
+
 .buttons {
     display: flex;
     flex-direction: column;
