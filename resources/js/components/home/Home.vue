@@ -17,5 +17,8 @@ export default {
       'app-header': Header,
       AudiovisualesPopulares,
     },
+    mounted() {
+        document.title = "What's new"
+    }
 }
 </script>

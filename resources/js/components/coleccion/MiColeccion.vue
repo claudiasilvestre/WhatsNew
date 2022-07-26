@@ -19,5 +19,8 @@ export default {
         'app-header': Header,
         MenuColeccion,
     },
+    mounted() {
+        document.title = "Mi colección - What's new"
+    }
 }
 </script>

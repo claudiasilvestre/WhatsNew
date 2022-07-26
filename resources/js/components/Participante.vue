@@ -39,12 +39,13 @@ export default {
     created() {
         axios.get('/api/personas/'+this.idParticipante)
             .then(response => this.participante = response.data[0])
-            .catch(error => { console.log(error.response) });
+            .catch(error => { console.log(error.response) })
+            .finally(() => document.title = this.participante.nombre + " - What's new")
 
         axios.get('/api/audiovisuales-participacion/'+this.idParticipante)
             .then(response => this.audiovisuales = response.data)
             .catch(error => { console.log(error.response) })
             .finally(() => this.loading = false);
-    },
+    }
 }
 </script>

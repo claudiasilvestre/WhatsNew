@@ -26,6 +26,7 @@ class AuthController extends Controller
             'usuario' => $request->usuario,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'foto' => '/img/blank-profile-picture2.jpg',
         ]);
 
         return response()->json(['msg' => 'Registered successfully']);

@@ -41,6 +41,9 @@ export default {
             },
         }
     },
+    mounted() {
+        document.title = "Inicio sesión - What's new"
+    },
     computed: {
         errors: {
             get() {

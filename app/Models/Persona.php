@@ -24,6 +24,7 @@ class Persona extends Authenticatable
         'usuario',
         'email',
         'password',
+        'foto',
     ];
 
     /**

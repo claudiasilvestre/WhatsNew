@@ -61,11 +61,16 @@ class PersonaController extends Controller
             ],
         ]);
 
+        $images_path = public_path('images');
+        $file_name = $request->file->getClientOriginalName();
+        $generated_new_name = time() . '.' . $request->file->getClientOriginalExtension();
+        $request->file->move($images_path, $generated_new_name);
+
         Persona::where('id', $user->id)->update([
             'nombre' => $request->nombre,
             'usuario' => $request->usuario,
             'email' => $request->email,
-            'foto' => $request->foto,
+            'foto' => $file_name,
         ]);
 
         return response()->json(['msg' => 'Data changed successfully']);

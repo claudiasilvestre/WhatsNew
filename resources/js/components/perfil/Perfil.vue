@@ -20,11 +20,13 @@
                 <button v-else v-bind:class="{'btn btn-info': !clicked, 'btn btn-outline-info': clicked}" @click="seguimientoUsuario" class="m-1">
                     {{ seguimiento }}
                 </button>
-                <b-tabs>
-                    <b-tab title="Actividad" active><actividad /></b-tab>
-                    <b-tab title="Colección"><coleccion /></b-tab>
-                </b-tabs>
-                <actividad-aside />
+                <div class="d-flex justify-content-between">
+                    <b-tabs>
+                        <b-tab title="Actividad" active><actividad /></b-tab>
+                        <b-tab title="Colección"><coleccion /></b-tab>
+                    </b-tabs>
+                    <actividad-aside />
+                </div>
             </div>
         </div>
     </v-app>
@@ -62,6 +64,9 @@ export default {
         axios.get('/api/personas/'+this.usuario_id)
             .then(response => this.usuario = response.data[0])
             .catch(error => { console.log(error.response) });
+    },
+    mounted() {
+        document.title = this.currentUser.nombre + " - What's new"
     },
     beforeUpdate() {
         axios.get('/api/saber-seguimiento-usuario/', {

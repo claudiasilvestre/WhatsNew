@@ -57,6 +57,9 @@ export default {
             errors: {}
         }
     },
+    mounted() {
+        document.title = "Registro - What's new"
+    },
     methods: {
         registerUser() {
             axios.post('/api/register', this.formData).then((response) => {

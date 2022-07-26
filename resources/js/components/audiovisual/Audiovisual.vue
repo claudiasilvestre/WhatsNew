@@ -51,7 +51,10 @@ export default {
         axios.get('/api/audiovisuales/'+this.id)
             .then(response => this.audiovisual = response.data[0])
             .catch(error => { console.log(error.response) })
-            .finally(() => this.loading = false);
+            .finally(() => {
+                this.loading = false
+                document.title = this.audiovisual.titulo + " - What's new"
+            });
     },
     methods: {
       comprobarCambioAside(cambio) {

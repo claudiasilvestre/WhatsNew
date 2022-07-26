@@ -8,7 +8,7 @@
                         <label id="imagen_perfil">Imagen de perfil</label>
                         <p>
                             <img class="roundedPerfil" v-bind:src="formData.foto" width="125" height="125" v-bind:alt="formData.nombre" id="imagen_perfil" name="imagen_perfil">
-                            <input type="file" ref="myFile" @change="previewFile" accept="image/png, image/jpeg, image/jpg">
+                            <input type="file" @change="previewFile" accept="image/png, image/jpeg, image/jpg">
                         </p>
                     </div>
                     <div class="form-group">
@@ -58,17 +58,17 @@ export default {
     },
     methods: {
         guardarCambios() {
-            if (this.file.length !== 0)
-                this.formData.foto = "/img/"+this.file;
+            this.formData.file = this.file;
             axios.put('/api/guardar-informacion', this.formData).then((response) => {
                 console.log(response.data)
                 this.$router.push('/perfil/'+this.usuario_id)
             }).catch((errors) => {
-                this.errors = errors.response.data.errors
+                console.log(errors.response.data)
+                //this.errors = errors.response.data.errors
             });
         },
-        previewFile() {
-            this.file = this.$refs.myFile.files[0].name
+        previewFile(event) {
+            this.file = event.target.files[0]
         }
     }
 }

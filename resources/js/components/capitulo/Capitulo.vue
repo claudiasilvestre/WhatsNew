@@ -79,7 +79,8 @@ export default {
 
         axios.get('/api/capitulo/'+this.idCapitulo)
             .then(response => this.capitulo = response.data[0])
-            .catch(error => { console.log(error.response) });
+            .catch(error => { console.log(error.response) })
+            .finally(() => document.title = this.audiovisual.titulo + ": " + this.capitulo.nombre + " - What's new");
 
         axios.get('/api/capitulos-anterior-siguiente/', {
                     params: { 
