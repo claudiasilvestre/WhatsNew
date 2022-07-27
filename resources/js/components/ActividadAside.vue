@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="pl-2">
         <h3>Actividad</h3>
         <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2">
             <div v-if="actividad.tipoAudiovisual_id">
@@ -10,20 +10,37 @@
                 <span v-else-if="actividad.tipo === 3"> ha visto </span>
                 <span v-if="actividad.tipoAudiovisual_id === 1">la película </span>
                 <span v-else-if="actividad.tipoAudiovisual_id === 2">la serie </span>
-                <span>{{ actividad.titulo_audiovisual }}</span>
+                <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
+                    <span>{{ actividad.titulo_audiovisual }}</span>
+                </router-link>
+                <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
+                    <img class="rounded p-2" v-bind:src="actividad.audiovisual_cartel" v-bind:alt="actividad.titulo_audiovisual" width="55" height="80">
+                </router-link>
             </div>
             <div v-else-if="actividad.numero_capitulo">
                 <span>
                     <img class="roundedPerfil" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
                     {{ actividad.usuario_nombre }} ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
-                    - {{ actividad.nombre }} de {{ actividad.titulo_audiovisual_capitulo }}
+                    - {{ actividad.nombre }} de 
+                    <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
+                        {{ actividad.titulo_audiovisual_capitulo }}
+                    </router-link>
+                    <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
+                        <img class="rounded p-2" v-bind:src="actividad.capitulo_cartel" v-bind:alt="actividad.titulo_audiovisual_capitulo" width="55" height="80">
+                    </router-link>
                 </span>
             </div>
             <div v-else-if="actividad.numero_temporada_actividad">
                 <span>
                     <img class="roundedPerfil" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
                     {{ actividad.usuario_nombre }} ha visto la temporada {{ actividad.numero_temporada_actividad }} 
-                    de {{ actividad.titulo_audiovisual_temporada }}
+                    de 
+                    <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
+                        {{ actividad.titulo_audiovisual_temporada }}
+                    </router-link>
+                    <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
+                        <img class="rounded p-2" v-bind:src="actividad.temporada_cartel" v-bind:alt="actividad.titulo_audiovisual_temporada" width="55" height="80">
+                    </router-link>
                 </span>
             </div>
         </div>
@@ -41,6 +58,19 @@ export default {
         axios.get('/api/actividad_amigos')
             .then(response => this.actividadTotal = response.data)
             .catch(error => { console.log(error.response) });
+    },
+    props: {
+        cambio: {
+            required: true,
+            type: Number
+        }
+    },
+    watch: {
+        cambio: function () {
+            axios.get('/api/actividad_amigos')
+            .then(response => this.actividadTotal = response.data)
+            .catch(error => { console.log(error.response) });
+        }
     }
 }
 </script>

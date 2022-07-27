@@ -22,10 +22,10 @@
                 </button>
                 <div class="d-flex justify-content-between">
                     <b-tabs>
-                        <b-tab title="Actividad" active><actividad /></b-tab>
+                        <b-tab title="Actividad" active><actividad @cambio="cambio" /></b-tab>
                         <b-tab title="Colección"><coleccion /></b-tab>
                     </b-tabs>
-                    <actividad-aside />
+                    <actividad-aside :cambio="componentKey" />
                 </div>
             </div>
         </div>
@@ -51,6 +51,7 @@ export default {
             seguimiento: "Seguir",
             clicked: false,
             usuario: {},
+            componentKey: 0,
         }
     },
     computed: {
@@ -63,10 +64,8 @@ export default {
     created() {
         axios.get('/api/personas/'+this.usuario_id)
             .then(response => this.usuario = response.data[0])
-            .catch(error => { console.log(error.response) });
-    },
-    mounted() {
-        document.title = this.currentUser.nombre + " - What's new"
+            .catch(error => { console.log(error.response) })
+            .finally(() => document.title = this.usuario.nombre + " - What's new");
     },
     beforeUpdate() {
         axios.get('/api/saber-seguimiento-usuario/', {
@@ -103,6 +102,9 @@ export default {
             axios.get('/api/personas/'+this.usuario_id)
                 .then(response => this.usuario = response.data[0])
                 .catch(error => { console.log(error.response) });
+        },
+        cambio() {
+            this.componentKey += 1;
         }
     }
 }

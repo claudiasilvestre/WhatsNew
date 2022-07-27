@@ -141,7 +141,8 @@ class AudiovisualesSeeder extends Seeder
     
                     $pelicula->id = $p['id'];
                     $pelicula->tipoAudiovisual_id = 1;
-                    $pelicula->genero_id = $p['genre_ids'][0];
+                    if ($p['genre_ids'])
+                        $pelicula->genero_id = $p['genre_ids'][0];
                     $pelicula->titulo = $p['title'];
                     $pelicula->tituloOriginal = $p['original_title'];
                     $pelicula->sinopsis = $p['overview'];

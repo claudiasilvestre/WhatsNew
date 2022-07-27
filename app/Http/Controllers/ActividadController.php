@@ -21,7 +21,10 @@ class ActividadController extends Controller
                                 ->select('actividad.id', 'tipo', 'audiovisual.tipoAudiovisual_id', 'audiovisual.titulo as titulo_audiovisual', 
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
-                                numero_temporada_actividad', 'audiovisual_temporada.titulo as titulo_audiovisual_temporada')
+                                numero_temporada_actividad', 'audiovisual_temporada.titulo as titulo_audiovisual_temporada',
+                                'audiovisual.id as id_audiovisual', 'audiovisual_capitulo.id as id_audiovisual_capitulo', 
+                                'audiovisual_temporada.id as id_audiovisual_temporada', 'audiovisual.cartel as audiovisual_cartel', 
+                                'audiovisual_capitulo.cartel as capitulo_cartel', 'audiovisual_temporada.cartel as temporada_cartel')
                                 ->orderBy('actividad.created_at', 'desc')
                                 ->get();
 
@@ -46,7 +49,10 @@ class ActividadController extends Controller
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
                                 numero_temporada_actividad', 'audiovisual_temporada.titulo as titulo_audiovisual_temporada',
-                                'persona.nombre as usuario_nombre', 'persona.foto')
+                                'persona.nombre as usuario_nombre', 'persona.foto', 'audiovisual.id as id_audiovisual', 
+                                'audiovisual_capitulo.id as id_audiovisual_capitulo', 'audiovisual_temporada.id as id_audiovisual_temporada', 
+                                'audiovisual.cartel as audiovisual_cartel', 'audiovisual_capitulo.cartel as capitulo_cartel', 
+                                'audiovisual_temporada.cartel as temporada_cartel')
                                 ->orderBy('actividad.created_at', 'desc')
                                 ->get();
 

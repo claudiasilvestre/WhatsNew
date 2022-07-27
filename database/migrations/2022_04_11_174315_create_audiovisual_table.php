@@ -18,7 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tipoAudiovisual_id');
             $table->unsignedBigInteger('genero_id')->nullable();
             $table->unsignedBigInteger('idioma_id')->nullable();
-            $table->string('titulo', 64)->nullable();
+            $table->string('titulo', 2048)->nullable();
             $table->string('tituloOriginal', 64)->nullable();
             $table->integer('anno')->nullable();
             $table->integer('duracion')->nullable();
