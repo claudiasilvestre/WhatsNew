@@ -1,10 +1,19 @@
 <template>
-    <div class="pl-2">
+    <div v-if="loading" class="d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+        <b-spinner
+            :variant="'light'"
+            :key="'light'"
+        ></b-spinner>
+    </div>
+    <div v-else class="pl-2">
         <h3>Actividad</h3>
         <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2">
             <div v-if="actividad.tipoAudiovisual_id">
                 <img class="roundedPerfil" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
-                {{ actividad.usuario_nombre }}
+                <span v-if="actividad.usuario_id === currentUser.id">{{ actividad.usuario_nombre }}</span>
+                <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                    {{ actividad.usuario_nombre }}
+                </router-link>
                 <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
                 <span v-else-if="actividad.tipo === 2"> sigue </span>
                 <span v-else-if="actividad.tipo === 3"> ha visto </span>
@@ -20,7 +29,11 @@
             <div v-else-if="actividad.numero_capitulo">
                 <span>
                     <img class="roundedPerfil" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
-                    {{ actividad.usuario_nombre }} ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
+                    <span v-if="actividad.usuario_id === currentUser.id">{{ actividad.usuario_nombre }}</span>
+                    <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                        {{ actividad.usuario_nombre }}
+                    </router-link>
+                    ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
                     - {{ actividad.nombre }} de 
                     <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
                         {{ actividad.titulo_audiovisual_capitulo }}
@@ -33,8 +46,11 @@
             <div v-else-if="actividad.numero_temporada_actividad">
                 <span>
                     <img class="roundedPerfil" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
-                    {{ actividad.usuario_nombre }} ha visto la temporada {{ actividad.numero_temporada_actividad }} 
-                    de 
+                    <span v-if="actividad.usuario_id === currentUser.id">{{ actividad.usuario_nombre }}</span>
+                    <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                        {{ actividad.usuario_nombre }}
+                    </router-link>
+                    ha visto la temporada {{ actividad.numero_temporada_actividad }} de 
                     <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
                         {{ actividad.titulo_audiovisual_temporada }}
                     </router-link>
@@ -52,12 +68,21 @@ export default {
     data() {
         return {
             actividadTotal: [],
+            loading: true,
+        }
+    },
+    computed: {
+        currentUser: {
+            get() {
+                return this.$store.state.currentUser.user;
+            }
         }
     },
     created() {
         axios.get('/api/actividad_amigos')
             .then(response => this.actividadTotal = response.data)
-            .catch(error => { console.log(error.response) });
+            .catch(error => { console.log(error.response) })
+            .finally(() => this.loading = false);
     },
     props: {
         cambio: {

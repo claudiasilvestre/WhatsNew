@@ -17,8 +17,8 @@
                 :audiovisuales="audiovisualesPopulares['series']"
             />
 
-            <h4> Recomendaciones </h4>
-            <lista-audiovisuales
+            <h4 v-if="this.audiovisualesRecomendados.length > 0"> Recomendaciones </h4>
+            <lista-audiovisuales v-if="this.audiovisualesRecomendados.length > 0"
                 :audiovisuales="audiovisualesRecomendados"
             />
         </div>

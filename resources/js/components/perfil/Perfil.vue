@@ -25,7 +25,7 @@
                         <b-tab title="Actividad" active><actividad @cambio="cambio" /></b-tab>
                         <b-tab title="Colección"><coleccion /></b-tab>
                     </b-tabs>
-                    <actividad-aside :cambio="componentKey" />
+                    <actividad-aside v-if="Number(usuario_id) === currentUser.id" :cambio="componentKey" />
                 </div>
             </div>
         </div>
