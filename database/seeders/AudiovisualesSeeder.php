@@ -327,10 +327,8 @@ class AudiovisualesSeeder extends Seeder
             // Estado de la serie
             if ($detalles['in_production'])
                 $serie->estado = 1;
-            else if ($detalles['status'] === "Returning Series")
-                $serie->estado = 2;
             else
-                $serie->estado = 3;
+                $serie->estado = 2;
             $serie->save();
 
             // Equipo y capítulos

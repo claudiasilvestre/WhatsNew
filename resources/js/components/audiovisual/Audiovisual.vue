@@ -57,8 +57,8 @@ export default {
             });
     },
     methods: {
-      comprobarCambioAside(cambio) {
-        this.cambioAside = cambio;
+      comprobarCambioAside() {
+        this.cambioAside = !this.cambioAside;
       },
     }
 }

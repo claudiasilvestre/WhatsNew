@@ -102,15 +102,17 @@ export default {
             }
         },
         cambioAside: function () {
-            axios.get('/api/visualizaciones/', {
-                params: { 
-                    capitulos: this.capitulos,
-                    usuario_id: this.currentUser.id,
-                }})
-                .then(response => {
-                    this.clicked = response.data;
-                })
-                .catch(error => console.log(error.response));
+            if (this.capitulos.length > 0) {
+                axios.get('/api/visualizaciones/', {
+                    params: { 
+                        capitulos: this.capitulos,
+                        usuario_id: this.currentUser.id,
+                    }})
+                    .then(response => {
+                        this.clicked = response.data;
+                    })
+                    .catch(error => console.log(error.response));
+            }
         },
     },
     methods: {

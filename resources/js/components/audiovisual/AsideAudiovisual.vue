@@ -102,7 +102,7 @@ export default {
                     } else
                         // this.pendiente = "Pendiente";
                         this.clicked1 = false;
-                    this.$emit('comprobarCambioAside', !this.cambioAside);
+                    this.$emit('comprobarCambioAside');
                 } else if (tipo === 2) {
                     if (response.data) {
                         /* this.pendiente = "Pendiente";
@@ -125,7 +125,7 @@ export default {
                     } else
                         // this.vista = "Vista";
                         this.clicked3 = false;
-                    this.$emit('comprobarCambioAside', !this.cambioAside);
+                    this.$emit('comprobarCambioAside');
                 }
 
                 this.clicked = true;
