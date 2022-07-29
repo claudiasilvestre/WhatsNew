@@ -15,6 +15,7 @@ use App\Models\VisualizacionTemporada;
 use App\Models\VisualizacionCapitulo;
 use App\Models\Temporada;
 use App\Models\Capitulo;
+use App\Models\Persona;
 use Illuminate\Support\Facades\Auth;
 use App\Services\ContentBasedRecommenderSystem;
 
@@ -187,8 +188,12 @@ class AudiovisualController extends Controller
     }
 
     public function valoracion_audiovisual(Request $request) {
+        $usuario_id = Auth::id();
+
         if (Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->exists()) {
             Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->delete();
+
+            Persona::where('id', $usuario_id)->decrement('puntos', 10);
         }
         
         Valoracion::create([
@@ -196,6 +201,8 @@ class AudiovisualController extends Controller
             'persona_id' => $request->usuario_id,
             'puntuacion' => $request->puntuacion,
         ]);
+
+        Persona::where('id', $usuario_id)->increment('puntos', 10);
 
         return response()->json(['msg' => 'Valoración añadida']);
     }

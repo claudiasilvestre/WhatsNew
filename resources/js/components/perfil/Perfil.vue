@@ -8,18 +8,22 @@
                     :key="'light'"
                 ></b-spinner>
             </div>
-            <div v-else class="list">
+            <div v-else class="list d-flex flex-column">
+                <img class="roundedPerfil" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="100" height="100">
                 <h2>{{ usuario.nombre }}</h2>
-                <span>{{ usuario.seguidos }} Siguiendo</span>
-                <span>{{ usuario.seguidores }} Seguidores</span>
-                <router-link v-if="Number(usuario_id) === currentUser.id" :to="{ name: 'ajustes', params: { idPersona: currentUser.id }}">
-                    <button class="btn btn-info m-1"><b-icon icon="tools"></b-icon>
-                        Editar perfil
+                <span>{{ usuario.puntos }} puntos</span>
+                <div>
+                    <span>{{ usuario.seguidos }} Siguiendo</span>
+                    <span>{{ usuario.seguidores }} Seguidores</span>
+                    <router-link v-if="Number(usuario_id) === currentUser.id" :to="{ name: 'ajustes', params: { idPersona: currentUser.id }}">
+                        <button class="btn btn-info m-1"><b-icon icon="tools"></b-icon>
+                            Editar perfil
+                        </button>
+                    </router-link>
+                    <button v-else v-bind:class="{'btn btn-info': !clicked, 'btn btn-outline-info': clicked}" @click="seguimientoUsuario" class="m-1">
+                        {{ seguimiento }}
                     </button>
-                </router-link>
-                <button v-else v-bind:class="{'btn btn-info': !clicked, 'btn btn-outline-info': clicked}" @click="seguimientoUsuario" class="m-1">
-                    {{ seguimiento }}
-                </button>
+                </div>
                 <div class="d-flex justify-content-between">
                     <b-tabs>
                         <b-tab title="Actividad" active><actividad @cambio="cambio" /></b-tab>

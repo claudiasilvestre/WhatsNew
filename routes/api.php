@@ -27,6 +27,19 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/capitulos-anterior-siguiente', [CapituloController::class, 'capitulos_anterior_siguiente']);
     Route::get('/saber-visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'saber_visualizacion_capitulo']);
     Route::post('/visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'visualizacion_capitulo']);
+
+    Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarAudiovisual']);
+    Route::post('/guardar-comentario-capitulo', [ComentarioController::class, 'guardarCapitulo']);
+    Route::post('/borrar-comentario-audiovisual/{comentario_id}', [ComentarioController::class, 'borrarAudiovisual']);
+    Route::post('/borrar-comentario-capitulo/{comentario_id}', [ComentarioController::class, 'borrarCapitulo']);
+    Route::post('/opinion-positiva-audiovisual', [ComentarioController::class, 'opinionPositivaAudiovisual']);
+    Route::post('/opinion-negativa-audiovisual', [ComentarioController::class, 'opinionNegativaAudiovisual']);
+    Route::post('/opinion-positiva-capitulo', [ComentarioController::class, 'opinionPositivaCapitulo']);
+    Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinionNegativaCapitulo']);
+
+    Route::post('/seguimiento-usuario', [PersonaController::class, 'seguimiento_usuario']);
+
+    Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracion_audiovisual']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);
@@ -52,23 +65,12 @@ Route::post('/visualizacion-temporada', [TemporadaController::class, 'visualizac
 
 Route::get('/proveedores/{audiovisual_id}', [AudiovisualController::class, 'proveedores']);
 
-Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarAudiovisual']);
-Route::post('/guardar-comentario-capitulo', [ComentarioController::class, 'guardarCapitulo']);
 Route::get('/comentario-audiovisual', [ComentarioController::class, 'audiovisual']);
 Route::get('/comentario-capitulo', [ComentarioController::class, 'capitulo']);
-Route::post('/borrar-comentario-audiovisual/{comentario_id}', [ComentarioController::class, 'borrarAudiovisual']);
-Route::post('/borrar-comentario-capitulo/{comentario_id}', [ComentarioController::class, 'borrarCapitulo']);
-
-Route::post('/opinion-positiva-audiovisual', [ComentarioController::class, 'opinionPositivaAudiovisual']);
-Route::post('/opinion-negativa-audiovisual', [ComentarioController::class, 'opinionNegativaAudiovisual']);
-Route::post('/opinion-positiva-capitulo', [ComentarioController::class, 'opinionPositivaCapitulo']);
-Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinionNegativaCapitulo']);
 
 Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividad_usuario']);
 Route::get('/coleccion-usuario/{usuario_id}', [AudiovisualController::class, 'coleccion_usuario']);
 Route::get('/info-usuario/{usuario_id}', [PersonaController::class, 'info']);
 Route::get('/saber-seguimiento-usuario', [PersonaController::class, 'saber_seguimiento_usuario']);
-Route::post('/seguimiento-usuario', [PersonaController::class, 'seguimiento_usuario']);
 
-Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracion_audiovisual']);
 Route::get('/saber-valoracion-audiovisual', [AudiovisualController::class, 'saber_valoracion_audiovisual']);

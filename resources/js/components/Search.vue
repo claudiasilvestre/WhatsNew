@@ -7,8 +7,7 @@
                 <div v-for="usuario in usuarios" :key="usuario.id" class="mr-2">
                     <router-link :to="{ name: 'perfil', params: { idPersona: usuario.id }}">
                         <div class="d-flex flex-column">
-                            <img v-if="usuario.foto" class="rounded" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="175" height="250">
-                            <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="usuario.nombre" width="175" height="250">
+                            <img class="rounded" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="175" height="175">
                             <span>{{ usuario.nombre }}</span>
                         </div>
                     </router-link>

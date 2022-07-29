@@ -114,6 +114,8 @@ class PersonaController extends Controller
             Persona::where('id', $request->usuario_id)
                 ->decrement('seguidores');
 
+            Persona::where('id', $request->usuario_id)->decrement('puntos', 10);
+
             return false;
         } else {
             SeguimientoPersona::create([
@@ -126,6 +128,8 @@ class PersonaController extends Controller
 
             Persona::where('id', $request->usuario_id)
                 ->increment('seguidores');
+
+            Persona::where('id', $request->usuario_id)->increment('puntos', 10);
 
             return true;
         }
