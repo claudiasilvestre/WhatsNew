@@ -176,3 +176,16 @@ input {
 .v-list-item__content {
     overflow: visible !important;
 }
+
+.contenedor {
+    position: relative;
+    width: 100%;
+    white-space: initial;
+}
+
+.capa {
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+    font-weight: bold;
+}

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('audiovisual_id');
             $table->unsignedBigInteger('persona_id');
+            $table->string('personaje', 128)->nullable();
 
             $table->foreign('audiovisual_id')->references('id')->on('audiovisual');
             $table->foreign('persona_id')->references('id')->on('persona');

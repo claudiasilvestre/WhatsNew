@@ -19,7 +19,6 @@ return new class extends Migration
             $table->unsignedBigInteger('tipoParticipante_id')->nullable();
             $table->string('nombre', 128);
             $table->string('foto', 64)->nullable();
-            $table->string('personaje', 128)->nullable();
 
             $table->string('usuario', 16)->nullable()->unique();
             $table->string('email')->nullable()->unique();

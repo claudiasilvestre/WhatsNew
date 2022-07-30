@@ -4,7 +4,8 @@
             <h1 style="width: 100%">{{ audiovisual.titulo }}</h1>
             <div class="itemsHeaderMedia">
                 <div style="padding-right: 20px">
-                    <span class="item">{{ audiovisual.puntuacion }}</span>
+                    <span v-if="audiovisual.puntuacion" class="item">{{ audiovisual.puntuacion }} / 5.0</span>
+                    <span v-else class="item">--- / 5.0</span>
                     <b-icon icon="star-fill"></b-icon>
                 </div>
                 <span class="item" style="color: green" v-if="audiovisual.tipoAudiovisual_id === 2 && audiovisual.estado === 1">En emisión</span>

@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('sinopsis', 2048)->nullable();
             $table->string('cartel', 64)->nullable();
             $table->date('fechaLanzamiento')->nullable();
-            $table->decimal('puntuacion', $precision = 8, $scale = 1)->default(0.0);
+            $table->decimal('puntuacion', $precision = 8, $scale = 2)->nullable();
             $table->integer('estado')->default(0);
             $table->integer('numeroTemporadas')->nullable();
             $table->integer('numeroCapitulos')->nullable();

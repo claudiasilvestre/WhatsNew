@@ -146,6 +146,8 @@ export default {
                     console.log(response.data)
                 })
                 .catch(error => console.log(error.response));
+
+                this.$emit('actualizarValoracion');
             } else
                 this.watcher = true;
         }

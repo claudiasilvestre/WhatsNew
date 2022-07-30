@@ -9,7 +9,7 @@
                 ></b-spinner>
             </div>
             <div v-else-if="!loading" class="header">
-                <aside-audiovisual :audiovisual="audiovisual" :currentUser="currentUser" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" />
+                <aside-audiovisual :audiovisual="audiovisual" :currentUser="currentUser" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
                 <div class="width">
                     <header-audiovisual :audiovisual="audiovisual" />
                     <menu-audiovisual :audiovisual="audiovisual" :cambioAside="cambioAside" />
@@ -59,6 +59,11 @@ export default {
     methods: {
       comprobarCambioAside() {
         this.cambioAside = !this.cambioAside;
+      },
+      actualizarValoracion() {
+        axios.get('/api/audiovisuales/'+this.id)
+            .then(response => this.audiovisual = response.data[0])
+            .catch(error => { console.log(error.response) });
       },
     }
 }

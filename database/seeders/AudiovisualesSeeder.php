@@ -151,7 +151,6 @@ class AudiovisualesSeeder extends Seeder
                         $pelicula->fechaLanzamiento = $p['release_date'];
                         $pelicula->anno = date('Y', strtotime($p['release_date']));
                     }
-                    $pelicula->puntuacion = $p['vote_average'];
                     if ($p['original_language'] == "en")
                         $pelicula->idioma_id = 1;
                     else
@@ -171,13 +170,13 @@ class AudiovisualesSeeder extends Seeder
             
                             $participante->nombre = $cast_equipo['cast'][$i]['name'];
                             if ($cast_equipo['cast'][$i]['profile_path']) $participante->foto = "https://image.tmdb.org/t/p/w500".$cast_equipo['cast'][$i]['profile_path'];
-                            $participante->personaje = $cast_equipo['cast'][$i]['character'];
             
                             $participante->save();
 
                             $participacion = new Participacion;
                             $participacion->audiovisual_id = $pelicula->id;
                             $participacion->persona_id = $participante->id;
+                            $participacion->personaje = $cast_equipo['cast'][$i]['character'];
                             $participacion->save();
                         } else {
                             $participante = Persona::where('nombre', '=', $cast_equipo['cast'][$i]['name'])->first();
@@ -185,6 +184,7 @@ class AudiovisualesSeeder extends Seeder
                             $participacion = new Participacion;
                             $participacion->audiovisual_id = $pelicula->id;
                             $participacion->persona_id = $participante->id;
+                            $participacion->personaje = $cast_equipo['cast'][$i]['character'];
                             $participacion->save();
                         }
                     }
@@ -275,7 +275,6 @@ class AudiovisualesSeeder extends Seeder
                         $serie->fechaLanzamiento = $s['first_air_date'];
                         $serie->anno = date('Y', strtotime($s['first_air_date']));
                     }
-                    $serie->puntuacion = $s['vote_average'];
                     if ($s['original_language'] == "en")
                         $serie->idioma_id = 1;
                     else
@@ -399,13 +398,13 @@ class AudiovisualesSeeder extends Seeder
 
                     $participante->nombre = $cast['cast'][$i]['name'];
                     if ($cast['cast'][$i]['profile_path']) $participante->foto = "https://image.tmdb.org/t/p/w500".$cast['cast'][$i]['profile_path'];
-                    $participante->personaje = $cast['cast'][$i]['character'];
 
                     $participante->save();
 
                     $participacion = new Participacion;
                     $participacion->audiovisual_id = $serie->id;
                     $participacion->persona_id = $participante->id;
+                    $participacion->personaje = $cast['cast'][$i]['character'];
                     $participacion->save();
                 } else {
                     $participante = Persona::where('nombre', '=', $cast['cast'][$i]['name'])->first();
@@ -413,6 +412,7 @@ class AudiovisualesSeeder extends Seeder
                     $participacion = new Participacion;
                     $participacion->audiovisual_id = $serie->id;
                     $participacion->persona_id = $participante->id;
+                    $participacion->personaje = $cast['cast'][$i]['character'];
                     $participacion->save();
                 }
             }

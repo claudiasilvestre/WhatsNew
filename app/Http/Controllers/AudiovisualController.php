@@ -202,6 +202,12 @@ class AudiovisualController extends Controller
             'puntuacion' => $request->puntuacion,
         ]);
 
+        // Media de las valoraciones
+        $num_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->count();
+        $suma_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->sum('puntuacion');
+        $puntuacion = $suma_valoraciones/$num_valoraciones;
+        Audiovisual::where('id', $request->audiovisual_id)->update(['puntuacion' => $puntuacion]);
+
         Persona::where('id', $usuario_id)->increment('puntos', 10);
 
         return response()->json(['msg' => 'Valoración añadida']);
