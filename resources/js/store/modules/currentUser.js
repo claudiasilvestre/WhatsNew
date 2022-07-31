@@ -14,7 +14,7 @@ const actions = {
     loginUser( {commit, state}, formData ) {
         axios.get('/sanctum/csrf-cookie').then(response => {
             axios.post('/api/login', formData).then((response) => {
-                window.location.replace("/");
+                window.location.replace("/home");
             }).catch((errors) => {
                 commit('setErrors', errors.response.data.errors)
             })
@@ -29,7 +29,7 @@ const actions = {
     logoutUser() {
         axios.post('/api/logout')
             .then(response => {
-                window.location.replace("/login");
+                window.location.replace("/");
                 commit('setUser', {});})
             .catch(error => console.log(error.response))
     }

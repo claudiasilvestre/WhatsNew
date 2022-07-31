@@ -4,18 +4,22 @@ import Home from './components/home/Home.vue'
 import Audiovisual from './components/audiovisual/Audiovisual.vue'
 import Capitulo from './components/capitulo/Capitulo.vue'
 import Participante from './components/Participante.vue'
-import Registro from './components/auth/Registro.vue'
-import Login from './components/auth/Login.vue'
 import Perfil from './components/perfil/Perfil.vue'
 import MenuAjustes from './components/perfil/MenuAjustes.vue'
 import Search from './components/Search.vue'
 import MiColeccion from './components/coleccion/MiColeccion.vue'
+import Index from './components/Index.vue'
 
 const router = new VueRouter ({
     mode: 'history',
     routes: [
         {
             path: '/',
+            name: 'index',
+            component: Index,
+        },
+        {
+            path: '/home',
             name: 'home',
             component: Home,
             meta: {
@@ -36,16 +40,6 @@ const router = new VueRouter ({
             path: '/information/:idPersona',
             name: 'informacion',
             component: Participante
-        },
-        {
-            path: '/register',
-            name: 'register',
-            component: Registro
-        },
-        {
-            path: '/login',
-            name: 'login',
-            component: Login
         },
         {
             path: '/perfil/:idPersona',

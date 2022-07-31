@@ -24,7 +24,7 @@
                 <b-icon icon="check-circle"></b-icon></button>
             </div>
         </div>
-        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id" :vista="clicked" :cambio="cambio" :noCambio="noCambio" :cambioAside="cambioAside" @comprobarVista="comprobarVista"/>
+        <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id" :vista="clicked" :cambio="cambio" :noCambio="noCambio" :cambioAside="cambioAside" @comprobarVista="comprobarVista" />
     </v-app>
 </template>
 

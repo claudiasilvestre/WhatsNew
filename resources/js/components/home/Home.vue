@@ -18,7 +18,7 @@ export default {
       AudiovisualesPopulares,
     },
     mounted() {
-        document.title = "What's new"
+        document.title = "Home - What's new"
     }
 }
 </script>
