@@ -5,14 +5,13 @@
             <b-icon icon="x-lg" @click="cerrarLogin" class="pointer"></b-icon>
         </div>
         <div class="card-body">
-            <div class="form-group">
-                <input type="email" class="p-2" name="email" placeholder="Email" v-model="formData.email">
-                <p class="text-danger" v-text="errors.email"></p>
-            </div>
-            <div class="form-group">
-                <input type="password" class="p-2" name="password" placeholder="Contraseña" v-model="formData.password">
-                <p class="text-danger" v-text="errors.password"></p>
-            </div>
+            <p class="form-group">
+                <input type="email" class="p-2" placeholder="Email" v-model="formData.email">
+            </p>
+            <p class="form-group">
+                <input type="password" class="p-2" placeholder="Contraseña" v-model="formData.password">
+                <span v-if="errors.credenciales" class="text-danger">{{ errors.credenciales.toString() }}</span>
+            </p>
 
             <div class="row">
                 <div class="col-md-6">

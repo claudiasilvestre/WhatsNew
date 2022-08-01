@@ -1,24 +1,27 @@
 <template>
     <div class="list">
         <p v-if="comentarios.length === 0" >Todavía no hay comentarios</p>
-        <div v-else v-for="(comentario, index) in comentarios" :key="comentario.id" class="p-1 mb-4 rounded background2">
-            <div d-flex flex-row>
-                <span>{{ comentario.nombre }}</span>
-                <span> {{ moment(comentario.created_at).format('LL') }}</span>
-            </div>
-            <p>{{ comentario.texto }}</p>
-            <div class="d-flex justify-content-end">
-                <button @click="votoPositivo(comentario.id)" class="m-1">
-                    <b-icon v-if="!clickedLike[index]" icon="hand-thumbs-up"></b-icon>
-                    <b-icon v-else icon="hand-thumbs-up-fill"></b-icon>
-                    <span>{{ comentario.votosPositivos }}</span>
-                </button>
-                <button @click="votoNegativo(comentario.id)" class="m-1">
-                    <b-icon v-if="!clickedDislike[index]" icon="hand-thumbs-down"></b-icon>
-                    <b-icon v-else icon="hand-thumbs-down-fill"></b-icon>
-                    <span>{{ comentario.votosNegativos }}</span>
-                </button>
-                <button v-if="comentario.persona_id === currentUser.id" class="btn btn-danger m-1" @click="borrarComentario(comentario.id)">Borrar</button>
+        <div v-else v-for="(comentario, index) in comentarios" :key="comentario.id" class="p-1 mb-4 rounded background2 d-flex flex-row">
+            <img class="roundedPerfil m-3" v-bind:src="comentario.foto" v-bind:alt="comentario.nombre" width="50" height="50">
+            <div class="width">
+                <div d-flex flex-row>
+                    <span>{{ comentario.nombre }}</span>
+                    <span class="p-letra">{{ moment(comentario.created_at).format('LL') }}</span>
+                </div>
+                <span>{{ comentario.texto }}</span>
+                <div class="d-flex justify-content-end">
+                    <button @click="votoPositivo(comentario.id)" class="m-1">
+                        <b-icon v-if="!clickedLike[index]" icon="hand-thumbs-up"></b-icon>
+                        <b-icon v-else icon="hand-thumbs-up-fill"></b-icon>
+                        <span>{{ comentario.votosPositivos }}</span>
+                    </button>
+                    <button @click="votoNegativo(comentario.id)" class="m-1">
+                        <b-icon v-if="!clickedDislike[index]" icon="hand-thumbs-down"></b-icon>
+                        <b-icon v-else icon="hand-thumbs-down-fill"></b-icon>
+                        <span>{{ comentario.votosNegativos }}</span>
+                    </button>
+                    <button v-if="comentario.persona_id === currentUser.id" class="btn btn-danger m-1" @click="borrarComentario(comentario.id)">Borrar</button>
+                </div>
             </div>
         </div>
     </div>

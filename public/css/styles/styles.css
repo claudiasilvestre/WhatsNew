@@ -188,3 +188,7 @@ input {
     padding: 10px;
     font-weight: bold;
 }
+
+.p-letra {
+    font-size: 13px;
+}

@@ -1,9 +1,14 @@
 <template>
     <div class="list">
         <div>
-            <textarea v-if="audiovisual" v-model="formData.texto" v-bind:placeholder="'¿Qué te ha parecido '+audiovisual.titulo+'?'"></textarea>
-            <textarea v-else v-model="formData.texto" placeholder="¿Qué te ha parecido este capítulo?"></textarea>
-            <p class="text-danger" v-text="errors.texto"></p>
+            <div class="d-flex flex-row">
+                <img class="roundedPerfil m-3" v-bind:src="currentUser.foto" v-bind:alt="currentUser.nombre" width="50" height="50">
+                <p class="width">
+                    <textarea v-if="audiovisual" v-model="formData.texto" v-bind:placeholder="'¿Qué te ha parecido '+audiovisual.titulo+'?'"></textarea>
+                    <textarea v-else v-model="formData.texto" placeholder="¿Qué te ha parecido este capítulo?"></textarea>
+                    <span v-if="errors.texto" class="text-danger">{{ errors.texto.toString() }}</span>
+                </p>
+            </div>
             <div class="d-flex justify-content-end">
                 <b-button @click="guardarComentario" variant="info" class="mt-3">Comentar</b-button>
             </div>

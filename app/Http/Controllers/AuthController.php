@@ -17,15 +17,15 @@ class AuthController extends Controller
             'nombre' => 'required',
             'usuario' => 'required|unique:persona',
             'email' => 'required|unique:persona',
-            'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required',
+            'contraseña' => 'required|min:8|confirmed',
+            'confirmar_contraseña' => 'required',
         ]);
 
         Persona::create([
             'nombre' => $request->nombre,
             'usuario' => $request->usuario,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($request->contraseña),
             'foto' => '/img/blank-profile-picture2.jpg',
         ]);
 
@@ -35,7 +35,7 @@ class AuthController extends Controller
     public function login(Request $request) {
         if (!Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
-                'email' => ['Las credenciales proporcionadas no son correctas.'],
+                'credenciales' => 'Las credenciales proporcionadas no son correctas.',
             ]);
         }
 

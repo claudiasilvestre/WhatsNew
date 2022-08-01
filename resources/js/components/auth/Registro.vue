@@ -5,26 +5,26 @@
             <b-icon icon="x-lg" @click="cerrarRegistro" class="pointer"></b-icon>
         </div>
         <div class="card-body">
-            <div class="form-group">
-                <input type="text" class="p-2" name="nombre" placeholder="Nombre" v-model="formData.nombre">
-                <p class="text-danger" v-text="errors.nombre"></p>
-            </div>
-            <div class="form-group">
-                <input type="text" class="p-2" name="usuario" placeholder="Usuario" v-model="formData.usuario">
-                <p class="text-danger" v-text="errors.usuario"></p>
-            </div>
-            <div class="form-group">
-                <input type="email" class="p-2" name="email" placeholder="Email" v-model="formData.email">
-                <p class="text-danger" v-text="errors.email"></p>
-            </div>
-            <div class="form-group">
-                <input type="password" class="p-2" name="password" placeholder="Contraseña" v-model="formData.password">
-                <p class="text-danger" v-text="errors.password"></p>
-            </div>
-            <div class="form-group">
-                <input type="password" class="p-2" name="password_confirmation" placeholder="Confirmar contraseña" v-model="formData.password_confirmation">
-                <p class="text-danger" v-text="errors.password_confirmation"></p>
-            </div>
+            <p class="form-group">
+                <input type="text" class="p-2" placeholder="Nombre" v-model="formData.nombre">
+                <span v-if="errors.nombre" class="text-danger">{{ errors.nombre.toString() }}</span>
+            </p>
+            <p class="form-group">
+                <input type="text" class="p-2" placeholder="Usuario" v-model="formData.usuario">
+                <span v-if="errors.usuario" class="text-danger">{{ errors.usuario.toString() }}</span>
+            </p>
+            <p class="form-group">
+                <input type="email" class="p-2" placeholder="Email" v-model="formData.email">
+                <span v-if="errors.email" class="text-danger">{{ errors.email.toString() }}</span>
+            </p>
+            <p class="form-group">
+                <input type="password" class="p-2" placeholder="Contraseña" v-model="formData.contraseña">
+                <span v-if="errors.contraseña" class="text-danger">{{ errors.contraseña.toString() }}</span>
+            </p>
+            <p class="form-group">
+                <input type="password" class="p-2" placeholder="Confirmar contraseña" v-model="formData.confirmar_contraseña">
+                <span v-if="errors.confirmar_contraseña" class="text-danger">{{ errors.confirmar_contraseña.toString() }}</span>
+            </p>
 
             <div class="row">
                 <div class="col-md-6">
@@ -48,8 +48,8 @@ export default {
                 nombre: '',
                 usuario: '',
                 email: '',
-                password: '',
-                password_confirmation: ''
+                contraseña: '',
+                confirmar_contraseña: ''
             },
             errors: {}
         }
@@ -61,7 +61,7 @@ export default {
         registerUser() {
             axios.post('/api/register', this.formData).then((response) => {
                 console.log(response.data)
-                this.formData.nombre = this.formData.usuario = this.formData.email = this.formData.password = this.formData.password_confirmation = ''
+                this.formData.nombre = this.formData.usuario = this.formData.email = this.formData.contraseña = this.formData.confirmar_contraseña = ''
                 this.$router.push('/login')
             }).catch((errors) => {
                 this.errors = errors.response.data.errors

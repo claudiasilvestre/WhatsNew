@@ -2,7 +2,7 @@
     <div class="pr-2">
         <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2 d-flex justify-content-between">
             <div v-if="actividad.tipoAudiovisual_id">
-                <img class="roundedPerfil" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
+                <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
                 {{ usuario.nombre }}
                 <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
                 <span v-else-if="actividad.tipo === 2"> sigue </span>
@@ -12,37 +12,42 @@
                 <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
                     <span>{{ actividad.titulo_audiovisual }}</span>
                 </router-link>
-                <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
-                    <img class="rounded p-2" v-bind:src="actividad.audiovisual_cartel" v-bind:alt="actividad.titulo_audiovisual" width="55" height="80">
-                </router-link>
             </div>
             <div v-else-if="actividad.numero_capitulo">
                 <span>
-                    <img class="roundedPerfil" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
+                    <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
                     {{ usuario.nombre }} ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
                     - {{ actividad.nombre }} de 
                     <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
                         {{ actividad.titulo_audiovisual_capitulo }}
                     </router-link>
-                    <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
-                        <img class="rounded p-2" v-bind:src="actividad.capitulo_cartel" v-bind:alt="actividad.titulo_audiovisual_capitulo" width="55" height="80">
-                    </router-link>
                 </span>
             </div>
             <div v-else-if="actividad.numero_temporada_actividad">
                 <span>
-                    <img class="roundedPerfil" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
+                    <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
                     {{ usuario.nombre }} ha visto la temporada {{ actividad.numero_temporada_actividad }} 
                     de 
                     <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
                         {{ actividad.titulo_audiovisual_temporada }}
                     </router-link>
-                    <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
-                        <img class="rounded p-2" v-bind:src="actividad.temporada_cartel" v-bind:alt="actividad.titulo_audiovisual_temporada" width="55" height="80">
-                    </router-link>
                 </span>
             </div>
-            <b-icon icon="x-circle" variant="danger" @click="borrarActividad(actividad.id)" class="pointer"></b-icon>
+            <div class="d-flex align-items-start">
+                <router-link v-if="actividad.id_audiovisual" :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
+                    <img class="rounded p-2" v-bind:src="actividad.audiovisual_cartel" v-bind:alt="actividad.titulo_audiovisual" width="55" height="80">
+                </router-link>
+                
+                <router-link v-if="actividad.id_audiovisual_capitulo" :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
+                    <img class="rounded p-2" v-bind:src="actividad.capitulo_cartel" v-bind:alt="actividad.titulo_audiovisual_capitulo" width="55" height="80">
+                </router-link>
+
+                <router-link v-if="actividad.id_audiovisual_temporada" :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
+                    <img class="rounded p-2" v-bind:src="actividad.temporada_cartel" v-bind:alt="actividad.titulo_audiovisual_temporada" width="55" height="80">
+                </router-link>
+
+                <b-icon icon="x-circle" variant="danger" @click="borrarActividad(actividad.id)" class="pointer"></b-icon>
+            </div>
         </div>
     </div>
 </template>

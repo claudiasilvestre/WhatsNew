@@ -46,63 +46,71 @@
         </div>
 
         <h5 v-if="personas_reparto.length > 0">Reparto</h5>
-        <div v-if="!readMoreActivatedReparto && personas_reparto.length > 5" class="d-flex flex-column">
+        <div v-if="!readMoreActivatedReparto && personas_reparto.length > 5" class="d-flex flex-column mb-4">
           <div class="d-flex flex-wrap">
             <div v-for="i in 5" :key="i" class="mr-2">
               <router-link :to="{ name: 'informacion', params: { idPersona: personas_reparto[i-1].persona_id }}">
                 <img v-if="personas_reparto[i-1].foto" class="rounded" v-bind:src="personas_reparto[i-1].foto" v-bind:alt="personas_reparto[i-1].nombre" width="115" height="170">
                 <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="personas_reparto[i-1].nombre" width="115" height="170">
               </router-link>
-              <router-link :to="{ name: 'informacion', params: { idPersona: personas_reparto[i-1].persona_id }}">
-                <p>{{ personas_reparto[i-1].nombre }}</p>
-              </router-link>
-              <p>{{ personas_reparto[i-1].personaje }}</p>
+              <p class="d-flex flex-column">
+                <router-link :to="{ name: 'informacion', params: { idPersona: personas_reparto[i-1].persona_id }}">
+                  <span>{{ personas_reparto[i-1].nombre }}</span>
+                </router-link>
+                <span class="p-letra">{{ personas_reparto[i-1].personaje }}</span>
+              </p>
             </div>
           </div>
           <a @click="activateReadMoreReparto">Mostrar más</a>
         </div>
-        <div v-else class="d-flex flex-wrap">
+        <div v-else class="d-flex flex-wrap mb-4">
           <div v-for="participacion in personas_reparto" :key="participacion.id" class="mr-2">
             <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
               <img v-if="participacion.foto" class="rounded" v-bind:src="participacion.foto" v-bind:alt="participacion.nombre" width="115" height="170">
               <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="participacion.nombre" width="115" height="170">
             </router-link>
-            <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
-              <p>{{ participacion.nombre }}</p>
-            </router-link>
-            <p>{{ participacion.personaje }}</p>
+            <p class="d-flex flex-column">
+              <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
+                <span>{{ participacion.nombre }}</span>
+              </router-link>
+              <span class="p-letra">{{ participacion.personaje }}</span>
+            </p>
           </div>
         </div>
 
         <h5 v-if="personas_equipo.length > 0">Equipo</h5>
-        <div v-if="!readMoreActivatedEquipo && personas_equipo.length > 5" class="d-flex flex-column">
+        <div v-if="!readMoreActivatedEquipo && personas_equipo.length > 5" class="d-flex flex-column mb-4">
           <div class="d-flex flex-wrap">
             <div v-for="i in 5" :key="i" class="mr-2">
               <router-link :to="{ name: 'informacion', params: { idPersona: personas_equipo[i-1].persona_id }}">
                 <img v-if="personas_equipo[i-1].foto" class="rounded" v-bind:src="personas_equipo[i-1].foto" v-bind:alt="personas_equipo[i-1].nombre" width="115" height="170">
                 <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="personas_equipo[i-1].nombre" width="115" height="170">
               </router-link>
-              <router-link :to="{ name: 'informacion', params: { idPersona: personas_equipo[i-1].persona_id }}">
-                <p>{{ personas_equipo[i-1].nombre }}</p>
-              </router-link>
-              <p v-if="personas_equipo[i-1].tipoParticipante_id === 2">Director</p>
-              <p v-else>Guionista</p>
+              <p class="d-flex flex-column">
+                <router-link :to="{ name: 'informacion', params: { idPersona: personas_equipo[i-1].persona_id }}">
+                  <span>{{ personas_equipo[i-1].nombre }}</span>
+                </router-link>
+                <span v-if="personas_equipo[i-1].tipoParticipante_id === 2">Director</span>
+                <span v-else>Guionista</span>
+              </p>
             </div>
           </div>
           <a @click="activateReadMore">Mostrar más</a>
         </div>
-        <div v-else class="d-flex flex-wrap">
+        <div v-else class="d-flex flex-wrap mb-4">
           <div v-for="participacion in personas_equipo" :key="participacion.id" class="mr-2">
             <div v-if="participacion.tipoParticipante_id !== 1">
               <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
                 <img v-if="participacion.foto" class="rounded" v-bind:src="participacion.foto" v-bind:alt="participacion.nombre" width="115" height="170">
                 <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="participacion.nombre" width="115" height="170">
               </router-link>
-              <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
-                <p>{{ participacion.nombre }}</p>
-              </router-link>
-              <p v-if="participacion.tipoParticipante_id === 2">Director</p>
-              <p v-else>Guionista</p>
+              <p class="d-flex flex-column">
+                <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
+                  <span>{{ participacion.nombre }}</span>
+                </router-link>
+                <span v-if="participacion.tipoParticipante_id === 2">Director</span>
+                <span v-else>Guionista</span>
+              </p>
             </div>
           </div>
         </div>
