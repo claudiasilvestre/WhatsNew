@@ -1,19 +1,22 @@
 <template>
     <div class="pr-2">
         <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2 d-flex justify-content-between">
-            <div v-if="actividad.tipoAudiovisual_id">
-                <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
-                {{ usuario.nombre }}
-                <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
-                <span v-else-if="actividad.tipo === 2"> sigue </span>
-                <span v-else-if="actividad.tipo === 3"> ha visto </span>
-                <span v-if="actividad.tipoAudiovisual_id === 1">la película </span>
-                <span v-else-if="actividad.tipoAudiovisual_id === 2">la serie </span>
-                <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
-                    <span>{{ actividad.titulo_audiovisual }}</span>
-                </router-link>
+            <div v-if="actividad.tipoAudiovisual_id" class="d-flex flex-column">
+                <div>
+                    <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
+                    {{ usuario.nombre }}
+                    <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
+                    <span v-else-if="actividad.tipo === 2"> sigue </span>
+                    <span v-else-if="actividad.tipo === 3"> ha visto </span>
+                    <span v-if="actividad.tipoAudiovisual_id === 1">la película </span>
+                    <span v-else-if="actividad.tipoAudiovisual_id === 2">la serie </span>
+                    <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
+                        <span>{{ actividad.titulo_audiovisual }}</span>
+                    </router-link>
+                </div>
+                <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
             </div>
-            <div v-else-if="actividad.numero_capitulo">
+            <div v-else-if="actividad.numero_capitulo" class="d-flex flex-column">
                 <span>
                     <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
                     {{ usuario.nombre }} ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
@@ -22,8 +25,9 @@
                         {{ actividad.titulo_audiovisual_capitulo }}
                     </router-link>
                 </span>
+                <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
             </div>
-            <div v-else-if="actividad.numero_temporada_actividad">
+            <div v-else-if="actividad.numero_temporada_actividad" class="d-flex flex-column">
                 <span>
                     <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
                     {{ usuario.nombre }} ha visto la temporada {{ actividad.numero_temporada_actividad }} 
@@ -32,6 +36,7 @@
                         {{ actividad.titulo_audiovisual_temporada }}
                     </router-link>
                 </span>
+                <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
             </div>
             <div class="d-flex align-items-start">
                 <router-link v-if="actividad.id_audiovisual" :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
@@ -53,14 +58,19 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
     data() {
         return {
             actividadTotal: [],
             usuario_id: this.$route.params.idPersona,
+            moment: moment,
         }
     },
     created() {
+        moment.locale('es');
+        
         axios.get('/api/personas/'+this.usuario_id)
             .then(response => this.usuario = response.data[0])
             .catch(error => { console.log(error.response) });
@@ -74,11 +84,8 @@ export default {
     methods: {
         borrarActividad(actividad_id) {
             axios.post('/api/borrar-actividad/'+actividad_id)
-            .then((response) => {
-                console.log(response.data)
-            })
             .catch((errors) => {
-                this.errors = errors.response.data.errors
+                console.log(errors.response)
             });
 
             axios.get('/api/actividad-usuario/'+this.usuario_id)

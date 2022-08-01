@@ -193,7 +193,7 @@ class AudiovisualController extends Controller
         if (Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->exists()) {
             Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->delete();
 
-            Persona::where('id', $usuario_id)->decrement('puntos', 10);
+            Persona::where('id', $usuario_id)->decrement('puntos', 5);
         }
         
         Valoracion::create([
@@ -208,9 +208,7 @@ class AudiovisualController extends Controller
         $puntuacion = $suma_valoraciones/$num_valoraciones;
         Audiovisual::where('id', $request->audiovisual_id)->update(['puntuacion' => $puntuacion]);
 
-        Persona::where('id', $usuario_id)->increment('puntos', 10);
-
-        return response()->json(['msg' => 'Valoración añadida']);
+        Persona::where('id', $usuario_id)->increment('puntos', 5);
     }
 
     public function saber_valoracion_audiovisual(Request $request) {

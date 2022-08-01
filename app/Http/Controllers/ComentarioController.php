@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Auth;
 class ComentarioController extends Controller
 {
     public function guardarAudiovisual(Request $request) {
-        $request->validate([
-            'texto' => 'required',
-        ]);
-
         ComentarioAudiovisual::create([
             'audiovisual_id' => $request->tipo_id,
             'persona_id' => $request->usuario_id,
@@ -26,9 +22,7 @@ class ComentarioController extends Controller
 
         $usuario_id = Auth::id();
 
-        Persona::where('id', $usuario_id)->increment('puntos', 10);
-
-        return response()->json(['msg' => 'Comentario añadido']);
+        Persona::where('id', $usuario_id)->increment('puntos', 5);
     }
 
     public function guardarCapitulo(Request $request) {
@@ -44,9 +38,7 @@ class ComentarioController extends Controller
 
         $usuario_id = Auth::id();
 
-        Persona::where('id', $usuario_id)->increment('puntos', 10);
-
-        return response()->json(['msg' => 'Comentario añadido']);
+        Persona::where('id', $usuario_id)->increment('puntos', 5);
     }
 
     public function audiovisual(Request $request) {
@@ -130,9 +122,7 @@ class ComentarioController extends Controller
 
         $usuario_id = Auth::id();
 
-        Persona::where('id', $usuario_id)->decrement('puntos', 10);
-
-        return response()->json(['msg' => 'Comentario borrado']);
+        Persona::where('id', $usuario_id)->decrement('puntos', 5);
     }
 
     public function borrarCapitulo($comentario_id) {
@@ -141,9 +131,7 @@ class ComentarioController extends Controller
 
         $usuario_id = Auth::id();
 
-        Persona::where('id', $usuario_id)->decrement('puntos', 10);
-
-        return response()->json(['msg' => 'Comentario borrado']);
+        Persona::where('id', $usuario_id)->decrement('puntos', 5);
     }
 
     public function opinionPositivaAudiovisual(Request $request) {
@@ -159,7 +147,7 @@ class ComentarioController extends Controller
             ComentarioAudiovisual::where('id', $request->comentario_id)
                 ->increment('votosPositivos');
 
-            Persona::where('id', $usuario_id)->increment('puntos', 5);
+            Persona::where('id', $usuario_id)->increment('puntos', 1);
 
         } else {
             $opinionComentario = OpinionComentarioAudiovisual::where('persona_id', $request->usuario_id)
@@ -180,11 +168,9 @@ class ComentarioController extends Controller
                 ComentarioAudiovisual::where('id', $request->comentario_id)
                     ->decrement('votosPositivos');
 
-                Persona::where('id', $usuario_id)->decrement('puntos', 5);
+                Persona::where('id', $usuario_id)->decrement('puntos', 1);
             }
         }
-
-        return response()->json(['msg' => 'Comentario marcado como "Me gusta"']);
     }
 
     public function opinionNegativaAudiovisual(Request $request) {
@@ -200,7 +186,7 @@ class ComentarioController extends Controller
             ComentarioAudiovisual::where('id', $request->comentario_id)
                 ->increment('votosNegativos');
 
-            Persona::where('id', $usuario_id)->increment('puntos', 5);
+            Persona::where('id', $usuario_id)->increment('puntos', 1);
 
         } else {
             $opinionComentario = OpinionComentarioAudiovisual::where('persona_id', $request->usuario_id)
@@ -221,11 +207,9 @@ class ComentarioController extends Controller
                 ComentarioAudiovisual::where('id', $request->comentario_id)
                     ->decrement('votosNegativos');
 
-                Persona::where('id', $usuario_id)->decrement('puntos', 5);
+                Persona::where('id', $usuario_id)->decrement('puntos', 1);
             }
         }
-
-        return response()->json(['msg' => 'Comentario marcado como "No me gusta"']);
     }
 
     public function opinionPositivaCapitulo(Request $request) {
@@ -241,7 +225,7 @@ class ComentarioController extends Controller
             ComentarioCapitulo::where('id', $request->comentario_id)
                 ->increment('votosPositivos');
 
-            Persona::where('id', $usuario_id)->increment('puntos', 5);
+            Persona::where('id', $usuario_id)->increment('puntos', 1);
 
         } else {
             $opinionComentario = OpinionComentarioCapitulo::where('persona_id', $request->usuario_id)
@@ -262,11 +246,9 @@ class ComentarioController extends Controller
                 ComentarioCapitulo::where('id', $request->comentario_id)
                     ->decrement('votosPositivos');
 
-                Persona::where('id', $usuario_id)->decrement('puntos', 5);
+                Persona::where('id', $usuario_id)->decrement('puntos', 1);
             }
         }
-
-        return response()->json(['msg' => 'Comentario marcado como "Me gusta"']);
     }
 
     public function opinionNegativaCapitulo(Request $request) {
@@ -282,7 +264,7 @@ class ComentarioController extends Controller
             ComentarioCapitulo::where('id', $request->comentario_id)
                 ->increment('votosNegativos');
 
-            Persona::where('id', $usuario_id)->increment('puntos', 5);
+            Persona::where('id', $usuario_id)->increment('puntos', 1);
 
         } else {
             $opinionComentario = OpinionComentarioCapitulo::where('persona_id', $request->usuario_id)
@@ -303,10 +285,8 @@ class ComentarioController extends Controller
                 ComentarioCapitulo::where('id', $request->comentario_id)
                     ->decrement('votosNegativos');
 
-                Persona::where('id', $usuario_id)->decrement('puntos', 5);
+                Persona::where('id', $usuario_id)->decrement('puntos', 1);
             }
         }
-
-        return response()->json(['msg' => 'Comentario marcado como "No me gusta"']);
     }
 }

@@ -40,8 +40,7 @@ export default {
     },
     methods: {
         guardarCambios() {
-            axios.put('/api/guardar-password', this.formData).then((response) => {
-                console.log(response.data)
+            axios.put('/api/guardar-password', this.formData).then(() => {
                 this.$router.push('/perfil')
             }).catch((errors) => {
                 this.errors = errors.response.data.errors

@@ -43,8 +43,7 @@ class ActividadController extends Controller
                                 ->leftJoin('audiovisual as audiovisual_temporada', 'temporada_actividad.audiovisual_id', 'audiovisual_temporada.id')
                                 ->leftJoin('seguimiento_persona', 'actividad.persona_id', 'seguimiento_persona.persona_id')
                                 ->leftJoin('persona', 'actividad.persona_id', 'persona.id')
-                                ->where('actividad.persona_id', $usuario_id)
-                                ->orWhere('seguimiento_persona.personaActual_id', $usuario_id)
+                                ->where('seguimiento_persona.personaActual_id', $usuario_id)
                                 ->select('tipo', 'audiovisual.tipoAudiovisual_id', 'audiovisual.titulo as titulo_audiovisual', 
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
@@ -61,7 +60,5 @@ class ActividadController extends Controller
 
     public function borrar_actividad($actividad_id) {
         Actividad::where('id', $actividad_id)->delete();
-
-        return response()->json(['msg' => 'Actividad borrada']);
     }
 }

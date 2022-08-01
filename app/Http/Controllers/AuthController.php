@@ -17,19 +17,20 @@ class AuthController extends Controller
             'nombre' => 'required',
             'usuario' => 'required|unique:persona',
             'email' => 'required|unique:persona',
-            'contraseña' => 'required|min:8|confirmed',
-            'confirmar_contraseña' => 'required',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required',
+        ], [], [
+            'password' => 'contraseña',
+            'password_confirmation' => 'confirmar contraseña'
         ]);
 
         Persona::create([
             'nombre' => $request->nombre,
             'usuario' => $request->usuario,
             'email' => $request->email,
-            'password' => Hash::make($request->contraseña),
+            'password' => Hash::make($request->password),
             'foto' => '/img/blank-profile-picture2.jpg',
         ]);
-
-        return response()->json(['msg' => 'Registered successfully']);
     }
 
     public function login(Request $request) {
@@ -45,9 +46,7 @@ class AuthController extends Controller
 
         $cookie = cookie('jwt', $token, 60 * 24);
 
-        return response([
-            'message' => 'Success'
-        ])->withCookie($cookie);
+        return response([])->withCookie($cookie);
     }
 
     public function user() {

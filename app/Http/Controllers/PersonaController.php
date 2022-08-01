@@ -91,8 +91,6 @@ class PersonaController extends Controller
         ]);
 
         Persona::where('id', $user->id)->update(['password' => Hash::make($request->password)]);
-
-        return response()->json(['msg' => 'Password changed successfully']);
     }
 
     public function saber_seguimiento_usuario(Request $request) {
@@ -114,7 +112,7 @@ class PersonaController extends Controller
             Persona::where('id', $request->usuario_id)
                 ->decrement('seguidores');
 
-            Persona::where('id', $request->usuario_id)->decrement('puntos', 10);
+            Persona::where('id', $request->usuario_id)->decrement('puntos', 5);
 
             return false;
         } else {
@@ -129,7 +127,7 @@ class PersonaController extends Controller
             Persona::where('id', $request->usuario_id)
                 ->increment('seguidores');
 
-            Persona::where('id', $request->usuario_id)->increment('puntos', 10);
+            Persona::where('id', $request->usuario_id)->increment('puntos', 5);
 
             return true;
         }

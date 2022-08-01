@@ -6,7 +6,6 @@
                 <p class="width">
                     <textarea v-if="audiovisual" v-model="formData.texto" v-bind:placeholder="'¿Qué te ha parecido '+audiovisual.titulo+'?'"></textarea>
                     <textarea v-else v-model="formData.texto" placeholder="¿Qué te ha parecido este capítulo?"></textarea>
-                    <span v-if="errors.texto" class="text-danger">{{ errors.texto.toString() }}</span>
                 </p>
             </div>
             <div class="d-flex justify-content-end">
@@ -48,7 +47,6 @@ export default {
                 usuario_id: '',
                 texto: '',
             },
-            errors: {},
             clicked: false,
         }
     },
@@ -61,25 +59,25 @@ export default {
     },
     methods: {
         guardarComentario() {
-            this.formData.usuario_id = this.currentUser.id;
-            if (this.audiovisual) {
-                this.formData.tipo_id = this.audiovisual.id;
-                axios.post('/api/guardar-comentario-audiovisual', this.formData).then((response) => {
-                    console.log(response.data)
-                    this.formData.texto = this.formData.tipo_id =''
-                }).catch((errors) => {
-                    this.errors = errors.response.data.errors
-                });
-            } else {
-                this.formData.tipo_id = this.capitulo.id;
-                axios.post('/api/guardar-comentario-capitulo', this.formData).then((response) => {
-                    console.log(response.data)
-                    this.formData.texto = this.formData.tipo_id = ''
-                }).catch((errors) => {
-                    this.errors = errors.response.data.errors
-                });
+            if (this.formData.texto) {
+                this.formData.usuario_id = this.currentUser.id;
+                if (this.audiovisual) {
+                    this.formData.tipo_id = this.audiovisual.id;
+                    axios.post('/api/guardar-comentario-audiovisual', this.formData).then(() => {
+                        this.formData.texto = this.formData.tipo_id =''
+                    }).catch((errors) => {
+                        console.log(errors.response)
+                    });
+                } else {
+                    this.formData.tipo_id = this.capitulo.id;
+                    axios.post('/api/guardar-comentario-capitulo', this.formData).then(() => {
+                        this.formData.texto = this.formData.tipo_id = ''
+                    }).catch((errors) => {
+                        console.log(errors.response)
+                    });
+                }
+                this.clicked = !this.clicked;
             }
-            this.clicked = !this.clicked;
         },
         cambio() {
             this.clicked = !this.clicked;

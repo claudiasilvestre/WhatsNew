@@ -115,16 +115,12 @@ export default {
         borrarComentario(comentario_id) {
             if (this.audiovisual) {
                 axios.post('/api/borrar-comentario-audiovisual/'+comentario_id)
-                .then((response) => {
-                    console.log(response.data)
-                }).catch(error => console.log(error.response));
+                .catch(error => console.log(error.response));
 
                 this.comentariosAudiovisual();
             } else {
                 axios.post('/api/borrar-comentario-capitulo/'+comentario_id)
-                .then((response) => {
-                    console.log(response.data)
-                }).catch(error => console.log(error.response));
+                .catch(error => console.log(error.response));
 
                 this.comentariosCapitulo();
             }
@@ -135,8 +131,7 @@ export default {
             this.formData.usuario_id = this.currentUser.id;
             if (this.audiovisual) {
                 axios.post('/api/opinion-positiva-audiovisual', this.formData)
-                .then((response) => {
-                    console.log(response.data)
+                .then(() => {
                     this.formData.comentario_id = ''
                 })
                 .catch(error => console.log(error.response));
@@ -144,8 +139,7 @@ export default {
                 this.comentariosAudiovisual()
             } else {
                 axios.post('/api/opinion-positiva-capitulo', this.formData)
-                .then((response) => {
-                    console.log(response.data)
+                .then(() => {
                     this.formData.comentario_id = ''
                 })
                 .catch(error => console.log(error.response));
@@ -160,8 +154,7 @@ export default {
             this.formData.usuario_id = this.currentUser.id;
             if (this.audiovisual) {
                 axios.post('/api/opinion-negativa-audiovisual', this.formData)
-                .then((response) => {
-                    console.log(response.data)
+                .then(() => {
                     this.formData.comentario_id = ''
                 })
                 .catch(error => console.log(error.response));
@@ -169,8 +162,7 @@ export default {
                 this.comentariosAudiovisual();
             } else {
                 axios.post('/api/opinion-negativa-capitulo', this.formData)
-                .then((response) => {
-                    console.log(response.data)
+                .then(() => {
                     this.formData.comentario_id = ''
                 })
                 .catch(error => console.log(error.response));

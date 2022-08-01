@@ -18,12 +18,12 @@
                 <span v-if="errors.email" class="text-danger">{{ errors.email.toString() }}</span>
             </p>
             <p class="form-group">
-                <input type="password" class="p-2" placeholder="Contraseña" v-model="formData.contraseña">
-                <span v-if="errors.contraseña" class="text-danger">{{ errors.contraseña.toString() }}</span>
+                <input type="password" class="p-2" placeholder="Contraseña" v-model="formData.password">
+                <span v-if="errors.password" class="text-danger">{{ errors.password.toString() }}</span>
             </p>
             <p class="form-group">
-                <input type="password" class="p-2" placeholder="Confirmar contraseña" v-model="formData.confirmar_contraseña">
-                <span v-if="errors.confirmar_contraseña" class="text-danger">{{ errors.confirmar_contraseña.toString() }}</span>
+                <input type="password" class="p-2" placeholder="Confirmar contraseña" v-model="formData.password_confirmation">
+                <span v-if="errors.password_confirmation" class="text-danger">{{ errors.password_confirmation.toString() }}</span>
             </p>
 
             <div class="row">
@@ -48,8 +48,8 @@ export default {
                 nombre: '',
                 usuario: '',
                 email: '',
-                contraseña: '',
-                confirmar_contraseña: ''
+                password: '',
+                password_confirmation: ''
             },
             errors: {}
         }
@@ -59,10 +59,9 @@ export default {
     },
     methods: {
         registerUser() {
-            axios.post('/api/register', this.formData).then((response) => {
-                console.log(response.data)
-                this.formData.nombre = this.formData.usuario = this.formData.email = this.formData.contraseña = this.formData.confirmar_contraseña = ''
-                this.$router.push('/login')
+            axios.post('/api/register', this.formData).then(() => {
+                this.formData.nombre = this.formData.usuario = this.formData.email = this.formData.password = this.formData.password_confirmation = ''
+                this.$emit('login');
             }).catch((errors) => {
                 this.errors = errors.response.data.errors
             });

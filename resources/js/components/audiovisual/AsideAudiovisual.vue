@@ -142,9 +142,6 @@ export default {
                     usuario_id: this.currentUser.id, 
                     puntuacion: this.rating 
                 })
-                .then(response => {
-                    console.log(response.data)
-                })
                 .catch(error => console.log(error.response));
 
                 this.$emit('actualizarValoracion');
