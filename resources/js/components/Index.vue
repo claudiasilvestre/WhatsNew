@@ -15,9 +15,7 @@
             <b-modal 
                 v-model="loginShow"
                 centered
-                :header-bg-variant="'dark'"
                 :body-bg-variant="'dark'"
-                :footer-bg-variant="'dark'"
                 :hide-header="true"
                 :hide-footer="true"
             >
@@ -27,9 +25,7 @@
             <b-modal 
                 v-model="registroShow"
                 centered
-                :header-bg-variant="'dark'"
                 :body-bg-variant="'dark'"
-                :footer-bg-variant="'dark'"
                 :hide-header="true"
                 :hide-footer="true"
             >

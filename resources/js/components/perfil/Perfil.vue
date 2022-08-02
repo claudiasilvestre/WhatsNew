@@ -36,9 +36,7 @@
             <b-modal 
                 v-model="siguiendoShow"
                 centered
-                :header-bg-variant="'dark'"
                 :body-bg-variant="'dark'"
-                :footer-bg-variant="'dark'"
                 :hide-header="true"
                 :hide-footer="true"
             >
@@ -48,9 +46,7 @@
             <b-modal 
                 v-model="seguidoresShow"
                 centered
-                :header-bg-variant="'dark'"
                 :body-bg-variant="'dark'"
-                :footer-bg-variant="'dark'"
                 :hide-header="true"
                 :hide-footer="true"
             >
