@@ -13,8 +13,8 @@
                 <h2>{{ usuario.nombre }}</h2>
                 <span>{{ usuario.puntos }} puntos</span>
                 <div>
-                    <span>{{ usuario.seguidos }} Siguiendo</span>
-                    <span>{{ usuario.seguidores }} Seguidores</span>
+                    <a @click="siguiendoShow = !siguiendoShow">{{ usuario.seguidos }} Siguiendo</a>
+                    <a @click="seguidoresShow = !seguidoresShow">{{ usuario.seguidores }} Seguidores</a>
                     <router-link v-if="Number(usuario_id) === currentUser.id" :to="{ name: 'ajustes', params: { idPersona: currentUser.id }}">
                         <button class="btn btn-info m-1"><b-icon icon="tools"></b-icon>
                             Editar perfil
@@ -32,6 +32,30 @@
                     <actividad-aside v-if="Number(usuario_id) === currentUser.id" :cambio="componentKey" />
                 </div>
             </div>
+
+            <b-modal 
+                v-model="siguiendoShow"
+                centered
+                :header-bg-variant="'dark'"
+                :body-bg-variant="'dark'"
+                :footer-bg-variant="'dark'"
+                :hide-header="true"
+                :hide-footer="true"
+            >
+                <seguimiento :usuario="usuario" :tipo="1" @cerrarSiguiendo="siguiendoShow = !siguiendoShow" />
+            </b-modal>
+            
+            <b-modal 
+                v-model="seguidoresShow"
+                centered
+                :header-bg-variant="'dark'"
+                :body-bg-variant="'dark'"
+                :footer-bg-variant="'dark'"
+                :hide-header="true"
+                :hide-footer="true"
+            >
+                <seguimiento :usuario="usuario" :tipo="2" @cerrarSeguidores="seguidoresShow = !seguidoresShow" />
+            </b-modal>
         </div>
     </v-app>
 </template>
@@ -41,6 +65,7 @@ import Header from '../layouts/Header.vue'
 import Actividad from './ActividadPerfil.vue'
 import Coleccion from './Coleccion.vue'
 import ActividadAside from '../ActividadAside.vue'
+import Seguimiento from './Seguimiento.vue'
 
 export default {
     components: {
@@ -48,6 +73,7 @@ export default {
         Actividad,
         Coleccion,
         ActividadAside,
+        Seguimiento,
     },
     data() {
         return {
@@ -56,6 +82,8 @@ export default {
             clicked: false,
             usuario: {},
             componentKey: 0,
+            siguiendoShow: false,
+            seguidoresShow: false,
         }
     },
     computed: {

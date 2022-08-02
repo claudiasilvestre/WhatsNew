@@ -5,7 +5,7 @@
 
             <div class="d-flex justify-content-center align-items-center m-5">
                 <button class="btn btn-outline-info btn-lg m-1" @click="loginShow = !loginShow">Entra</button>
-                <span class="m-1">¿No tienes usuario? <a class="text-info" @click="registroShow = !registroShow">Regístrate</a></span>
+                <p class="m-1">¿No tienes una cuenta? <a class="color-registro" @click="registroShow = !registroShow">Regístrate</a></p>
             </div>
             
             <div class="d-flex justify-content-center width" style="height:75%;">

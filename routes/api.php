@@ -40,6 +40,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/seguimiento-usuario', [PersonaController::class, 'seguimiento_usuario']);
 
     Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracion_audiovisual']);
+
+    Route::get('/siguiendo/{usuario_id}', [PersonaController::class, 'siguiendo']);
+    Route::get('/seguidores/{usuario_id}', [PersonaController::class, 'seguidores']);
 });
 
 Route::resource('/audiovisuales', AudiovisualController::class);

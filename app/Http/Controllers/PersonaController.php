@@ -132,4 +132,54 @@ class PersonaController extends Controller
             return true;
         }
     }
+
+    public function siguiendo($usuario_id) {
+        $usuarioActual_id = Auth::id();
+
+        $siguiendo = DB::table('persona')
+                                ->join('seguimiento_persona', 'persona.id', 'seguimiento_persona.persona_id')
+                                ->where('seguimiento_persona.personaActual_id', $usuario_id)
+                                ->select('persona.id', 'persona.foto', 'persona.nombre', 'persona_id')
+                                ->get();
+
+        $clicked = array_fill(0, sizeof($siguiendo), false);
+        $btnSeguimiento = array_fill(0, sizeof($siguiendo), "Seguir");
+        for ($i = 0; $i < sizeof($siguiendo); $i++) {
+            if (SeguimientoPersona::where('personaActual_id', $usuarioActual_id)->where('persona_id', $siguiendo[$i]->persona_id)->exists()) {
+                $clicked[$i] = true;
+                $btnSeguimiento[$i] = "Siguiendo";
+            }
+        }
+
+        return response()->json([
+            'siguiendo' => $siguiendo,
+            'clicked' => $clicked,
+            'btnSeguimiento' => $btnSeguimiento,
+        ]);
+    }
+
+    public function seguidores($usuario_id) {
+        $usuarioActual_id = Auth::id();
+
+        $seguidores = DB::table('persona')
+                                ->join('seguimiento_persona', 'persona.id', 'seguimiento_persona.personaActual_id')
+                                ->where('seguimiento_persona.persona_id', $usuario_id)
+                                ->select('persona.id', 'persona.foto', 'persona.nombre', 'personaActual_id')
+                                ->get();
+
+        $clicked = array_fill(0, sizeof($seguidores), false);
+        $btnSeguimiento = array_fill(0, sizeof($seguidores), "Seguir");
+        for ($i = 0; $i < sizeof($seguidores); $i++) {
+            if (SeguimientoPersona::where('personaActual_id', $usuarioActual_id)->where('persona_id', $seguidores[$i]->personaActual_id)->exists()) {
+                $clicked[$i] = true;
+                $btnSeguimiento[$i] = "Siguiendo";
+            }
+        }
+
+        return response()->json([
+            'seguidores' => $seguidores,
+            'clicked' => $clicked,
+            'btnSeguimiento' => $btnSeguimiento,
+        ]);
+    }
 }

@@ -165,12 +165,12 @@ input {
 }
 
 .v-application a {
-    color: #0dcaf0 !important;
+    color: #fff !important;
     text-decoration: none;
 }
 
-.v-application span a {
-    color: none !important;
+.v-application p a {
+    color: #0dcaf0 !important;
 }
 
 .v-select__selections input {
