@@ -90,8 +90,8 @@
                 <router-link :to="{ name: 'informacion', params: { idPersona: personas_equipo[i-1].persona_id }}">
                   <span>{{ personas_equipo[i-1].nombre }}</span>
                 </router-link>
-                <span v-if="personas_equipo[i-1].tipoParticipante_id === 2">Director</span>
-                <span v-else>Guionista</span>
+                <span v-if="personas_equipo[i-1].tipoParticipante_id === 2" class="p-letra">Director</span>
+                <span v-else class="p-letra">Guionista</span>
               </p>
             </div>
           </div>
@@ -108,8 +108,8 @@
                 <router-link :to="{ name: 'informacion', params: { idPersona: participacion.persona_id }}">
                   <span>{{ participacion.nombre }}</span>
                 </router-link>
-                <span v-if="participacion.tipoParticipante_id === 2">Director</span>
-                <span v-else>Guionista</span>
+                <span v-if="participacion.tipoParticipante_id === 2" class="p-letra">Director</span>
+                <span v-else class="p-letra">Guionista</span>
               </p>
             </div>
           </div>

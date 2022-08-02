@@ -24,7 +24,8 @@ class ActividadController extends Controller
                                 numero_temporada_actividad', 'audiovisual_temporada.titulo as titulo_audiovisual_temporada',
                                 'audiovisual.id as id_audiovisual', 'audiovisual_capitulo.id as id_audiovisual_capitulo', 
                                 'audiovisual_temporada.id as id_audiovisual_temporada', 'audiovisual.cartel as audiovisual_cartel', 
-                                'audiovisual_capitulo.cartel as capitulo_cartel', 'audiovisual_temporada.cartel as temporada_cartel')
+                                'audiovisual_capitulo.cartel as capitulo_cartel', 'audiovisual_temporada.cartel as temporada_cartel', 
+                                'actividad.created_at')
                                 ->orderBy('actividad.created_at', 'desc')
                                 ->get();
 
@@ -51,7 +52,7 @@ class ActividadController extends Controller
                                 'persona.nombre as usuario_nombre', 'persona.foto', 'audiovisual.id as id_audiovisual', 
                                 'audiovisual_capitulo.id as id_audiovisual_capitulo', 'audiovisual_temporada.id as id_audiovisual_temporada', 
                                 'audiovisual.cartel as audiovisual_cartel', 'audiovisual_capitulo.cartel as capitulo_cartel', 
-                                'audiovisual_temporada.cartel as temporada_cartel', 'persona.id as usuario_id')
+                                'audiovisual_temporada.cartel as temporada_cartel', 'persona.id as usuario_id', 'actividad.created_at')
                                 ->orderBy('actividad.created_at', 'desc')
                                 ->get();
 

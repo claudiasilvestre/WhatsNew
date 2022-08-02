@@ -1,11 +1,15 @@
 <template>
     <v-app>
-        <div>
+        <div class="height width">
             <app-header />
 
-            <div class="d-flex justify-content-center">
-                <b-button class="m-1" @click="loginShow = !loginShow">Iniciar sesión</b-button>
-                <b-button class="m-1" @click="registroShow = !registroShow">Registrarse</b-button>
+            <div class="d-flex justify-content-center align-items-center m-5">
+                <button class="btn btn-outline-info btn-lg m-1" @click="loginShow = !loginShow">Entra</button>
+                <span class="m-1">¿No tienes usuario? <a class="text-info" @click="registroShow = !registroShow">Regístrate</a></span>
+            </div>
+            
+            <div class="d-flex justify-content-center width" style="height:75%;">
+                <div class="bg-inicio height" style="width:60%;"></div>
             </div>
 
             <b-modal 

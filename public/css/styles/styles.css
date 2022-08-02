@@ -83,6 +83,10 @@ body {
     width: 100%;
 }
 
+.height {
+    height: 100%;
+}
+
 .pointer {
     cursor: pointer;
 }
@@ -161,8 +165,12 @@ input {
 }
 
 .v-application a {
-    color: #fff !important;
+    color: #0dcaf0 !important;
     text-decoration: none;
+}
+
+.v-application span a {
+    color: none !important;
 }
 
 .v-select__selections input {
@@ -191,4 +199,9 @@ input {
 
 .p-letra {
     font-size: 13px;
+}
+
+.bg-inicio {
+    background-image: url('/img/bg.jpg');
+    background-size: contain;
 }
