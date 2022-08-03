@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <button @click="handleLogin" class="btn btn-primary">Iniciar sesión</button>
+                        <button @click="handleLoginBtn()" class="btn btn-primary">Iniciar sesión</button>
                     </div>
                 </div>
                 <div class="col-md-6 text-right">
@@ -48,6 +48,9 @@ export default {
         }
     },
     methods: {
+        handleLoginBtn() {
+            this.$store.dispatch('currentUser/loginUser', this.formData);
+        },
         handleLogin() {
             if (!this.formData.email)
                 this.$refs.email.focus()

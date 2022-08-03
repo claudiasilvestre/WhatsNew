@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <button @click="registerUser" class="btn btn-primary">Registrarse</button>
+                        <button @click="registerUserBtn()" class="btn btn-primary">Registrarse</button>
                     </div>
                 </div>
                 <div class="col-md-6 text-right">
@@ -58,6 +58,14 @@ export default {
         document.title = "Registro - What's new"
     },
     methods: {
+        registerUserBtn() {
+            axios.post('/api/register', this.formData).then(() => {
+                    this.formData.nombre = this.formData.usuario = this.formData.email = this.formData.password = this.formData.password_confirmation = ''
+                    this.$emit('login');
+                }).catch((errors) => {
+                    this.errors = errors.response.data.errors
+                });
+        },
         registerUser() {
             if (!this.formData.nombre)
                 this.$refs.nombre.focus()

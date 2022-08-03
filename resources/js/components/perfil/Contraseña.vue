@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <button @click="guardarCambios" class="btn btn-primary">Cambiar contraseña</button>
+                                <button @click="guardarCambiosBtn()" class="btn btn-primary">Cambiar contraseña</button>
                             </div>
                         </div>
                     </div>
@@ -39,6 +39,13 @@ export default {
         }
     },
     methods: {
+        guardarCambiosBtn() {
+            axios.put('/api/guardar-password', this.formData).then(() => {
+                    this.$router.push('/perfil')
+                }).catch((errors) => {
+                    this.errors = errors.response.data.errors
+                });
+        },
         guardarCambios() {
             if (!this.formData.current_password)
                 this.$refs.current_password.focus()
