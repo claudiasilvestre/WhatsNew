@@ -6,10 +6,10 @@
         </div>
         <div class="card-body">
             <p class="form-group">
-                <input type="email" class="p-2" placeholder="Email" v-model="formData.email">
+                <input type="email" @keydown.enter="handleLogin()" ref="email" class="p-2" placeholder="Email" v-model="formData.email">
             </p>
             <p class="form-group">
-                <input type="password" class="p-2" placeholder="Contraseña" v-model="formData.password">
+                <input type="password" @keydown.enter="handleLogin()" ref="password" class="p-2" placeholder="Contraseña" v-model="formData.password">
                 <span v-if="errors.credenciales" class="text-danger">{{ errors.credenciales.toString() }}</span>
             </p>
 
@@ -49,7 +49,12 @@ export default {
     },
     methods: {
         handleLogin() {
-            this.$store.dispatch('currentUser/loginUser', this.formData);
+            if (!this.formData.email)
+                this.$refs.email.focus()
+            else if (!this.formData.password)
+                this.$refs.password.focus()
+            else
+                this.$store.dispatch('currentUser/loginUser', this.formData);
         },
         registro() {
             this.$emit('registro');

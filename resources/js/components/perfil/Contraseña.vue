@@ -4,18 +4,18 @@
             <div class="card background2">
                 <div class="card-header">Contraseña</div>
                 <div class="card-body">
-                    <div class="form-group">
-                        <input type="password" class="p-2" name="current_password" placeholder="Contraseña actual" v-model="formData.current_password">
-                        <p class="text-danger" v-text="errors.current_password"></p>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="p-2" name="password" placeholder="Nueva contraseña" v-model="formData.password">
-                        <p class="text-danger" v-text="errors.password"></p>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" class="p-2" name="password_confirmation" placeholder="Confirmar nueva contraseña" v-model="formData.password_confirmation">
-                        <p class="text-danger" v-text="errors.password_confirmation"></p>
-                    </div>
+                    <p class="form-group">
+                        <input type="password" @keydown.enter="guardarCambios()" ref="current_password" class="p-2" placeholder="Contraseña actual" v-model="formData.current_password">
+                        <span v-if="errors.current_password" class="text-danger">{{ errors.current_password.toString() }}</span>
+                    </p>
+                    <p class="form-group">
+                        <input type="password" @keydown.enter="guardarCambios()" ref="password" class="p-2" placeholder="Nueva contraseña" v-model="formData.password">
+                        <span v-if="errors.password" class="text-danger">{{ errors.password.toString() }}</span>
+                    </p>
+                    <p class="form-group">
+                        <input type="password" @keydown.enter="guardarCambios()" ref="password_confirmation" class="p-2" placeholder="Confirmar nueva contraseña" v-model="formData.password_confirmation">
+                        <span v-if="errors.password_confirmation" class="text-danger">{{ errors.password_confirmation.toString() }}</span>
+                    </p>
 
                     <div class="row">
                         <div class="col-md-6">
@@ -40,11 +40,18 @@ export default {
     },
     methods: {
         guardarCambios() {
-            axios.put('/api/guardar-password', this.formData).then(() => {
-                this.$router.push('/perfil')
-            }).catch((errors) => {
-                this.errors = errors.response.data.errors
-            });
+            if (!this.formData.current_password)
+                this.$refs.current_password.focus()
+            else if (!this.formData.password)
+                this.$refs.password.focus()
+            else if (!this.formData.password_confirmation)
+                this.$refs.password_confirmation.focus()
+            else
+                axios.put('/api/guardar-password', this.formData).then(() => {
+                    this.$router.push('/perfil')
+                }).catch((errors) => {
+                    this.errors = errors.response.data.errors
+                });
         }
     }
 }

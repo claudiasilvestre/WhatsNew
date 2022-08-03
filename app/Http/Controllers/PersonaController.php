@@ -88,6 +88,9 @@ class PersonaController extends Controller
         $request->validate([
             'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required',
+        ], [], [
+            'password' => 'contraseña',
+            'password_confirmation' => 'confirmar nueva contraseña'
         ]);
 
         Persona::where('id', $user->id)->update(['password' => Hash::make($request->password)]);

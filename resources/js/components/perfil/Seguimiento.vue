@@ -12,7 +12,7 @@
                     <img class="roundedPerfil m-2" v-bind:src="seguimiento.foto" v-bind:alt="seguimiento.nombre" width="45" height="45">
                     <span>{{ seguimiento.nombre }}</span>
                 </div>
-                <button v-if="seguimiento.id !== currentUser.id" v-bind:class="{'btn btn-info': !clicked[index], 'btn btn-outline-info': clicked[index]}" @click="seguimientoUsuario(seguimiento.id)" class="m-1">
+                <button v-if="seguimiento.id !== currentUser.id" v-bind:class="{'btn btn-info': !clicked[index], 'btn btn-outline-info': clicked[index]}" @click="seguimientoUsuario(seguimiento.id, index)" class="m-1">
                     {{ btnSeguimiento[index] }}
                 </button>
             </li>
@@ -71,36 +71,23 @@ export default {
         }
     },
     methods: {
-        seguimientoUsuario(seguido_id) {
+        seguimientoUsuario(usuario_id, index) {
             axios.post('/api/seguimiento-usuario/', 
             { 
                 usuarioActual_id: this.currentUser.id, 
-                usuario_id: seguido_id, 
+                usuario_id: usuario_id, 
+            })
+            .then(response => {
+                if (response.data) {
+                    this.clicked.splice(index, 1, true)
+                    this.btnSeguimiento.splice(index, 1, "Siguiendo")
+                } else {
+                    this.clicked.splice(index, 1, false)
+                    this.btnSeguimiento.splice(index, 1, "Seguir")
+                }
             })
             .catch(error => console.log(error.response));
-
-            if (this.tipo === 1) {
-                axios.get('/api/siguiendo/'+this.usuario.id)
-                    .then(response => {
-                        if (response.data) {
-                            this.totalSeguimiento = response.data['siguiendo'];
-                            this.clicked = response.data['clicked'];
-                            this.btnSeguimiento = response.data['btnSeguimiento'];
-                        }
-                    })
-                    .catch(error => console.log(error.response));
-
-            } else if (this.tipo === 2) {
-                axios.get('/api/seguidores/'+this.usuario.id)
-                    .then(response => {
-                        if (response.data) {
-                            this.totalSeguimiento = response.data['seguidores'];
-                            this.clicked = response.data['clicked'];
-                            this.btnSeguimiento = response.data['btnSeguimiento'];
-                        }
-                    })
-                    .catch(error => console.log(error.response));
-            }
+            
         },
         cerrarSiguiendo() {
             this.$emit('cerrarSiguiendo');
