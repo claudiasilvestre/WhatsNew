@@ -17,7 +17,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::put('/guardar-informacion', [PersonaController::class, 'guardar_informacion']);
+    Route::post('/guardar-informacion', [PersonaController::class, 'guardar_informacion']);
     Route::put('/guardar-password', [PersonaController::class, 'guardar_password']);
     Route::get('/search/{busqueda}', [SearchController::class, 'search']);
     Route::get('/mi_coleccion', [AudiovisualController::class, 'mi_coleccion']);

@@ -61,19 +61,26 @@ class PersonaController extends Controller
             ],
         ]);
 
-        $images_path = public_path('images');
-        $file_name = $request->file->getClientOriginalName();
-        $generated_new_name = time() . '.' . $request->file->getClientOriginalExtension();
-        $request->file->move($images_path, $generated_new_name);
+        if($request->hasFile('imagen')) {
+            $file = $request->file('imagen');
+            $file_name = time(). '.' . $file->getClientOriginalName();
+            $file->move(public_path('img'), $file_name);
+            $ruta = '/img/'.$file_name;
 
-        Persona::where('id', $user->id)->update([
-            'nombre' => $request->nombre,
-            'usuario' => $request->usuario,
-            'email' => $request->email,
-            'foto' => $file_name,
-        ]);
-
-        return response()->json(['msg' => 'Data changed successfully']);
+            Persona::where('id', $user->id)->update([
+                'nombre' => $request->nombre,
+                'usuario' => $request->usuario,
+                'email' => $request->email,
+                'foto' => $ruta,
+            ]);
+            
+        } else {
+            Persona::where('id', $user->id)->update([
+                'nombre' => $request->nombre,
+                'usuario' => $request->usuario,
+                'email' => $request->email,
+            ]);
+        }
     }
 
     public function guardar_password(Request $request) {
