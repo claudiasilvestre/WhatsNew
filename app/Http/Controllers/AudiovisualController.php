@@ -22,8 +22,8 @@ use App\Services\ContentBasedRecommenderSystem;
 class AudiovisualController extends Controller
 {
     public function index() {
-        $peliculas = Audiovisual::where('tipoAudiovisual_id', 1)->orderBy('fechaLanzamiento', 'DESC')->get();
-        $series = Audiovisual::where('tipoAudiovisual_id', 2)->orderBy('fechaLanzamiento', 'DESC')->get();
+        $peliculas = Audiovisual::where('tipoAudiovisual_id', 1)->orderBy('fechaLanzamiento', 'DESC')->take(10)->get();
+        $series = Audiovisual::where('tipoAudiovisual_id', 2)->orderBy('fechaLanzamiento', 'DESC')->take(10)->get();
 
         return response()->json([
             'peliculas' => $peliculas,

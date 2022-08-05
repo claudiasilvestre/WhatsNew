@@ -38,10 +38,17 @@ export default {
             errors: {}
         }
     },
+    computed: {
+        currentUser: {
+            get() {
+                return this.$store.state.currentUser.user;
+            }
+        }
+    },
     methods: {
         guardarCambiosBtn() {
             axios.put('/api/guardar-password', this.formData).then(() => {
-                    this.$router.push('/perfil')
+                    this.$router.push('/perfil/'+this.currentUser.id)
                 }).catch((errors) => {
                     this.errors = errors.response.data.errors
                 });
@@ -55,7 +62,7 @@ export default {
                 this.$refs.password_confirmation.focus()
             else
                 axios.put('/api/guardar-password', this.formData).then(() => {
-                    this.$router.push('/perfil')
+                    this.$router.push('/perfil/'+this.currentUser.id)
                 }).catch((errors) => {
                     this.errors = errors.response.data.errors
                 });

@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="listAudiovisuales">
     <v-sheet
       class="rounded"
       dark

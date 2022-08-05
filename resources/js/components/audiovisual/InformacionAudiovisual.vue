@@ -8,7 +8,7 @@
       </div>
       <div v-else>
         <div class="row-between">
-          <div>
+          <div style="width:70%" class="mr-2">
             <h5>Título original</h5>
             <p>{{ audiovisual.tituloOriginal }}</p>
             <h5>Estreno</h5>
@@ -16,32 +16,32 @@
             <h5>Sinopsis</h5>
             <p>{{ audiovisual.sinopsis }}</p>
           </div>
-          <div>
+          <div style="width:30%" class="ml-2">
             <h5 v-if="stream.length > 0 || alquilar.length > 0 || comprar.length > 0">Ver ahora</h5>
-              <div v-if="stream.length > 0" class="m-2">
-                <span>Stream</span>
-                <div class="d-flex flex-row">
-                  <div v-for="proveedor in stream" :key="proveedor.id" class="mr-2">
-                    <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
-                  </div>
+            <div v-if="stream.length > 0" class="mt-2 mb-2 mr-2">
+              <span>Stream</span>
+              <div class="d-flex flex-wrap">
+                <div v-for="proveedor in stream" :key="proveedor.id" class="mr-2 mb-2">
+                  <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
                 </div>
               </div>
-              <div v-if="alquilar.length > 0" class="m-2">
-                <span>Alquilar</span>
-                <div class="d-flex flex-row">
-                  <div v-for="proveedor in alquilar" :key="proveedor.id" class="mr-2">
-                    <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
-                  </div>
+            </div>
+            <div v-if="alquilar.length > 0" class="mt-2 mb-2 mr-2">
+              <span>Alquilar</span>
+              <div class="d-flex flex-wrap">
+                <div v-for="proveedor in alquilar" :key="proveedor.id" class="mr-2 mb-2">
+                  <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
                 </div>
               </div>
-              <div v-if="comprar.length > 0" class="m-2">
-                <span>Comprar</span>
-                <div class="d-flex flex-row">
-                  <div v-for="proveedor in comprar" :key="proveedor.id" class="mr-2">
-                    <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
-                  </div>
+            </div>
+            <div v-if="comprar.length > 0" class="mt-2 mb-2 mr-2">
+              <span>Comprar</span>
+              <div class="d-flex flex-wrap">
+                <div v-for="proveedor in comprar" :key="proveedor.id" class="mr-2 mb-2">
+                  <img class="rounded" v-bind:src="proveedor.logo" v-bind:alt="proveedor.nombre" width="45" height="45">
                 </div>
               </div>
+            </div>
           </div>
         </div>
 

@@ -79,6 +79,16 @@ body {
     padding: 20px;
 }
 
+.titleAudiovisuales {
+    padding-left: 20px;
+}
+
+.listAudiovisuales {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
 .width {
     width: 100%;
 }
@@ -164,9 +174,9 @@ input {
     border-radius: 0.25rem !important;
 }
 
-.v-application a {
+a {
     color: #fff !important;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 .v-application p a {

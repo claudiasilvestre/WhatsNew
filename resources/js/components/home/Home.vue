@@ -2,20 +2,20 @@
   <v-app>
     <div>
       <app-header />
-      <audiovisuales-populares />
+      <audiovisuales />
     </div>
   </v-app>
 </template>
 
 <script>
 import Header from '../layouts/Header.vue'
-import AudiovisualesPopulares from './AudiovisualesPopulares.vue'
+import Audiovisuales from './Audiovisuales.vue'
 
 export default {
     name: 'Home',
     components: {
       'app-header': Header,
-      AudiovisualesPopulares,
+      Audiovisuales,
     },
     mounted() {
         document.title = "Home - What's new"

@@ -9,8 +9,12 @@
         <div class="card-body">
             <li v-for="(seguimiento, index) in totalSeguimiento" :key="seguimiento.id" class="d-flex justify-content-between">
                 <div>
-                    <img class="roundedPerfil m-2" v-bind:src="seguimiento.foto" v-bind:alt="seguimiento.nombre" width="45" height="45">
-                    <span>{{ seguimiento.nombre }}</span>
+                    <router-link :to="{ name: 'perfil', params: { idPersona: seguimiento.id }}">
+                        <img class="roundedPerfil m-2" v-bind:src="seguimiento.foto" v-bind:alt="seguimiento.nombre" width="45" height="45">
+                    </router-link>
+                    <router-link :to="{ name: 'perfil', params: { idPersona: seguimiento.id }}">
+                        <a>{{ seguimiento.nombre }}</a>
+                    </router-link>
                 </div>
                 <button v-if="seguimiento.id !== currentUser.id" v-bind:class="{'btn btn-info': !clicked[index], 'btn btn-outline-info': clicked[index]}" @click="seguimientoUsuario(seguimiento.id, index)" class="m-1">
                     {{ btnSeguimiento[index] }}

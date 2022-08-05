@@ -66,6 +66,9 @@ class PersonaController extends Controller
             $file_name = time(). '.' . $file->getClientOriginalName();
             $file->move(public_path('img'), $file_name);
             $ruta = '/img/'.$file_name;
+/*             $ruta = '/'.$file->storeAs(
+                'img', $file_name
+            ); */
 
             Persona::where('id', $user->id)->update([
                 'nombre' => $request->nombre,
