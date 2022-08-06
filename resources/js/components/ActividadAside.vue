@@ -7,7 +7,7 @@
     </div>
     <div v-else class="pl-2">
         <h3>Actividad amigos</h3>
-        <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2">
+        <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mt-2 mb-2 rounded background2">
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex justify-content-between">
                 <div class="d-flex flex-column">
                     <div>

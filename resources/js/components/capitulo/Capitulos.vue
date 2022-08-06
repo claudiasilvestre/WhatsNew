@@ -6,7 +6,7 @@
                 :key="'light'"
             ></b-spinner>
         </div>
-        <div v-else class="d-flex justify-content-between list">
+        <div v-else class="d-flex justify-content-between listTemporada">
             <div>
                 <v-select
                     v-model="selected"

@@ -1,6 +1,6 @@
 <template>
     <div class="pr-2">
-        <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mb-4 rounded background2 d-flex justify-content-between">
+        <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mt-2 mb-2 rounded background2 d-flex justify-content-between">
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex flex-column">
                 <div>
                     <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">

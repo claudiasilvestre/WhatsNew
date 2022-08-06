@@ -9,7 +9,7 @@
                     <span class="p-letra">{{ moment(comentario.created_at).format('LL') }}</span>
                 </div>
                 <span>{{ comentario.texto }}</span>
-                <div class="d-flex justify-content-end">
+                <div class="d-flex justify-content-end align-items-center">
                     <button @click="votoPositivo(comentario.id)" class="m-1">
                         <b-icon v-if="!clickedLike[index]" icon="hand-thumbs-up"></b-icon>
                         <b-icon v-else icon="hand-thumbs-up-fill"></b-icon>
@@ -20,7 +20,7 @@
                         <b-icon v-else icon="hand-thumbs-down-fill"></b-icon>
                         <span>{{ comentario.votosNegativos }}</span>
                     </button>
-                    <button v-if="comentario.persona_id === currentUser.id" class="btn btn-danger m-1" @click="borrarComentario(comentario.id)">Borrar</button>
+                    <b-icon v-if="comentario.persona_id === currentUser.id" icon="trash" variant="danger" class="pointer m-2" @click="borrarComentario(comentario.id)"></b-icon>
                 </div>
             </div>
         </div>
