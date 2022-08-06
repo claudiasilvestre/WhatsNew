@@ -20,7 +20,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <button @click="guardarCambiosBtn()" class="btn btn-primary">Cambiar contraseña</button>
+                                <button @click="guardarCambiosBtn()" class="btn btn-info">Cambiar contraseña</button>
                             </div>
                         </div>
                     </div>

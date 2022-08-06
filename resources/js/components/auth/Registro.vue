@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <button @click="registerUserBtn()" class="btn btn-primary">Registrarse</button>
+                        <button @click="registerUserBtn()" class="btn btn-info">Registrarse</button>
                     </div>
                 </div>
                 <div class="col-md-6 text-right">

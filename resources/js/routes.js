@@ -1,5 +1,5 @@
 import VueRouter from 'vue-router'
-// import store from './store'
+import store from './store'
 import Home from './components/home/Home.vue'
 import Audiovisual from './components/audiovisual/Audiovisual.vue'
 import Capitulo from './components/capitulo/Capitulo.vue'
@@ -29,52 +29,74 @@ const router = new VueRouter ({
         {
             path: '/media/:id',
             name: 'audiovisual',
-            component: Audiovisual
+            component: Audiovisual,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/media/:idAudiovisual/episode/:idCapitulo',
             name: 'capitulo',
-            component: Capitulo
+            component: Capitulo,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/information/:idPersona',
             name: 'informacion',
-            component: Participante
+            component: Participante,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/perfil/:idPersona',
             name: 'perfil',
-            component: Perfil
+            component: Perfil,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/ajustes/:idPersona',
             name: 'ajustes',
-            component: MenuAjustes
+            component: MenuAjustes,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/search/:busqueda',
             name: 'search',
-            component: Search
+            component: Search,
+            meta: {
+                requiresAuth: true
+            }
         },
         {
             path: '/coleccion',
             name: 'coleccion',
-            component: MiColeccion
+            component: MiColeccion,
+            meta: {
+                requiresAuth: true
+            }
         }
     ],
 })
 
-/* router.beforeEach((to, from, next)=>{
+router.beforeEach(async (to, from, next) => {
     if (to.matched.some(rec => rec.meta.requiresAuth)) {  
         // Si no se ha iniciado sesión se redirecciona al login
-        if (user) {
+        await store.dispatch('currentUser/getUser')
+        if (Object.keys(store.state.currentUser.user).length > 0) {
             next()
         } else {
-            const login = router.push('/login')
+            const login = router.push('/')
             next(login)
         }
     }
     next()
-}) */
+})
 
 export default router;

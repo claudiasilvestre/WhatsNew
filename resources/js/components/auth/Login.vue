@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <button @click="handleLoginBtn()" class="btn btn-primary">Iniciar sesión</button>
+                        <button @click="handleLoginBtn()" class="btn btn-info">Iniciar sesión</button>
                     </div>
                 </div>
                 <div class="col-md-6 text-right">

@@ -18,7 +18,7 @@
           </div>
           <div style="width:30%" class="ml-2">
             <h5 v-if="stream.length > 0 || alquilar.length > 0 || comprar.length > 0">Ver ahora</h5>
-            <div v-if="stream.length > 0" class="mt-2 mb-2 mr-2">
+            <div v-if="stream.length > 0" class="mt-2 mb-2">
               <span>Stream</span>
               <div class="d-flex flex-wrap">
                 <div v-for="proveedor in stream" :key="proveedor.id" class="mr-2 mb-2">
@@ -26,7 +26,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="alquilar.length > 0" class="mt-2 mb-2 mr-2">
+            <div v-if="alquilar.length > 0" class="mt-2 mb-2">
               <span>Alquilar</span>
               <div class="d-flex flex-wrap">
                 <div v-for="proveedor in alquilar" :key="proveedor.id" class="mr-2 mb-2">
@@ -34,7 +34,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="comprar.length > 0" class="mt-2 mb-2 mr-2">
+            <div v-if="comprar.length > 0" class="mt-2 mb-2">
               <span>Comprar</span>
               <div class="d-flex flex-wrap">
                 <div v-for="proveedor in comprar" :key="proveedor.id" class="mr-2 mb-2">

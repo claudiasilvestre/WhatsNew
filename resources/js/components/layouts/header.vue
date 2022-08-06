@@ -36,9 +36,6 @@ export default {
             }
         }
     },
-    created() {
-        this.$store.dispatch('currentUser/getUser');
-    },
     methods: {
         handleLogout() {
             this.$store.dispatch('currentUser/logoutUser');

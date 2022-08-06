@@ -21,17 +21,17 @@ const actions = {
         });
     },
     getUser( {commit, state} ) {
-        axios.get('/api/user')
+        return axios.get('/api/user')
             .then(response => {
                 commit('setUser', response.data); })
             .catch(error => { console.log(error.response) });
     },
-    logoutUser() {
+    logoutUser( {commit, state} ) {
         axios.post('/api/logout')
             .then(response => {
                 window.location.replace("/");
                 commit('setUser', {});})
-            .catch(error => console.log(error.response))
+            .catch(error => console.log(error))
     }
 };
 const getters = {};

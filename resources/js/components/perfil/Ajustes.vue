@@ -27,7 +27,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <button @click="guardarCambiosBtn()" class="btn btn-primary">Guardar cambios</button>
+                                <button @click="guardarCambiosBtn()" class="btn btn-info">Guardar cambios</button>
                             </div>
                         </div>
                     </div>
