@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <span>{{ title }} &copy; 2022</span>
+        <span>&copy; {{ year }} {{ title }}</span>
     </footer>
 </template>
 
@@ -9,6 +9,7 @@ export default {
     data() {
         return {
             title: "What's New",
+            year: new Date().getFullYear(),
         }
     },
 }
