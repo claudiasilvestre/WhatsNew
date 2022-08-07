@@ -2,13 +2,13 @@
     <v-app>
         <div>
             <app-header />
-            <div v-if="Object.keys(currentUser).length === 0" class="d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+            <div v-if="Object.keys(currentUser).length === 0" class="content d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
                 <b-spinner
                     :variant="'light'"
                     :key="'light'"
                 ></b-spinner>
             </div>
-            <div v-else-if="!loading" class="header">
+            <div v-else-if="!loading" class="content header">
                 <aside-audiovisual :audiovisual="audiovisual" :currentUser="currentUser" />
                 <div class="width">
                     <header-audiovisual :audiovisual="audiovisual" />
@@ -35,12 +35,14 @@
                     <comentarios :capitulo="capitulo" />
                 </div>
             </div>
+            <app-footer />
         </div>
     </v-app>
 </template>
 
 <script>
 import Header from '../layouts/Header.vue'
+import Footer from '../layouts/Footer.vue'
 import AsideAudiovisual from '../audiovisual/AsideAudiovisual.vue'
 import HeaderAudiovisual from '../audiovisual/HeaderAudiovisual.vue'
 import Comentarios from '../comentarios/Comentarios.vue'
@@ -48,6 +50,7 @@ import Comentarios from '../comentarios/Comentarios.vue'
 export default {
     components: {
         'app-header': Header,
+        'app-footer': Footer,
         AsideAudiovisual,
         HeaderAudiovisual,
         Comentarios

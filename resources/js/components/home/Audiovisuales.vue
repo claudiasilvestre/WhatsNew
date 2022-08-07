@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="content">
         <div v-if="loading" class="d-flex justify-content-center flex-column align-items-center" style="height:80vh;">
             <b-spinner
                 :variant="'light'"

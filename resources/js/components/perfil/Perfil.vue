@@ -2,15 +2,18 @@
     <v-app>
         <div>
             <app-header />
-            <div v-if="Object.keys(currentUser).length === 0" class="d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+            <div v-if="Object.keys(currentUser).length === 0" class="content d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
                 <b-spinner
                     :variant="'light'"
                     :key="'light'"
                 ></b-spinner>
             </div>
-            <div v-else class="list d-flex flex-column">
+            <div v-else class="list content d-flex flex-column">
                 <img class="roundedPerfil" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="100" height="100">
-                <h2>{{ usuario.nombre }}</h2>
+                <div class="d-flex flex-column mb-3">
+                    <span class="titlePerfil">{{ usuario.nombre }}</span>
+                    <span>{{ usuario.usuario }}</span>
+                </div>
                 <span>{{ usuario.puntos }} puntos</span>
                 <div>
                     <a @click="siguiendoShow = !siguiendoShow">{{ usuario.seguidos }} Siguiendo</a>
@@ -52,12 +55,15 @@
             >
                 <seguimiento :usuario="usuario" :tipo="2" @cerrarSeguidores="seguidoresShow = !seguidoresShow" />
             </b-modal>
+
+            <app-footer />
         </div>
     </v-app>
 </template>
 
 <script>
 import Header from '../layouts/Header.vue'
+import Footer from '../layouts/Footer.vue'
 import Actividad from './ActividadPerfil.vue'
 import Coleccion from './Coleccion.vue'
 import ActividadAside from '../ActividadAside.vue'
@@ -66,6 +72,7 @@ import Seguimiento from './Seguimiento.vue'
 export default {
     components: {
         'app-header': Header,
+        'app-footer': Footer,
         Actividad,
         Coleccion,
         ActividadAside,

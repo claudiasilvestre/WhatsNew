@@ -2,7 +2,7 @@
     <v-app>
         <div>
             <app-header />
-            <div v-if="!loading" class="header">
+            <div v-if="!loading" class="content header">
                 <img v-if="participante.foto" class="rounded" v-bind:src="participante.foto" v-bind:alt="participante.nombre" width="200" height="300">
                 <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="participante.nombre" width="200" height="300">
                 <div class="list">
@@ -17,16 +17,19 @@
                     </div>
                 </div>
             </div>
+            <app-footer />
         </div>
     </v-app>
 </template>
 
 <script>
 import Header from './layouts/Header.vue'
+import Footer from './layouts/Footer.vue'
 
 export default {
     components: {
         'app-header': Header,
+        'app-footer': Footer,
     },
     data() {
         return {

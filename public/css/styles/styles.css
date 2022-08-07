@@ -1,13 +1,31 @@
 header {
+    position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 1;
     padding: 10px;
     padding-left: 20px;
     margin: auto;
+    background-color: #121212;
+}
+
+footer {
+    padding: 20px;
+    background-color: #1e1e1e;
+    bottom: 0;
+    width: 100%;
+    position: absolute;
 }
 
 .header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.content {
+    margin-top: 64px;
+    margin-bottom: 64px;
 }
 
 .search {
@@ -93,6 +111,10 @@ body {
     padding-top: 20px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+.titlePerfil {
+    font-size: x-large;
 }
 
 .width {
@@ -220,4 +242,9 @@ a {
 .bg-inicio {
     background-image: url('/img/bg.jpg');
     background-size: contain;
+}
+
+.modal-backdrop
+{
+    opacity: 0.8 !important;
 }

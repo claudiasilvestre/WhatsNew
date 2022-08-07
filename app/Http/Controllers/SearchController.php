@@ -14,14 +14,14 @@ class SearchController extends Controller
         $user = Auth::user();
 
         $usuarios = Persona::query()
-            ->where(DB::raw('lower(nombre)'), "LIKE", "%".strtolower($busqueda)."%")
             ->where('tipoPersona_id', 1)
-            ->where('id', '!=', $user->id)
+            ->where(DB::raw('lower(nombre)'), "LIKE", "%".strtolower($busqueda)."%")
+            ->orWhere(DB::raw('lower(usuario)'), "LIKE", "%".strtolower($busqueda)."%")
             ->get();
         
         $participantes = Persona::query()
-            ->where(DB::raw('lower(nombre)'), "LIKE", "%".strtolower($busqueda)."%")
             ->where('tipoPersona_id', 2)
+            ->where(DB::raw('lower(nombre)'), "LIKE", "%".strtolower($busqueda)."%")
             ->get();
 
         $audiovisuales = Audiovisual::query()

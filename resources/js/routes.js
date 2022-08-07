@@ -87,13 +87,15 @@ const router = new VueRouter ({
 
 router.beforeEach(async (to, from, next) => {
     await store.dispatch('currentUser/getUser')
+    const user = store.state.currentUser.user
 
-    if (to.name === 'index' && Object.keys(store.state.currentUser.user).length > 0) {
+    if (to.name === 'index' && Object.keys(user).length > 0) {
         const home = router.push('/home')
         next(home)
+        
     } else if (to.matched.some(rec => rec.meta.requiresAuth)) {  
         // Si no se ha iniciado sesión se redirecciona al login
-        if (Object.keys(store.state.currentUser.user).length > 0) {
+        if (Object.keys(user).length > 0) {
             next()
         } else {
             const login = router.push('/')

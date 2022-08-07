@@ -3,9 +3,11 @@
         <div class="height width">
             <app-header />
 
-            <div class="d-flex justify-content-center align-items-center m-5">
-                <button class="btn btn-outline-info btn-lg m-1" @click="loginShow = !loginShow">Entra</button>
-                <p class="m-1">¿No tienes una cuenta? <a class="color-registro" @click="registroShow = !registroShow">Regístrate</a></p>
+            <div class="content">
+                <div class="d-flex justify-content-center align-items-center mb-5">
+                    <button class="btn btn-outline-info btn-lg m-1" @click="loginShow = !loginShow">Entra</button>
+                    <p class="m-1">¿No tienes una cuenta? <a class="color-registro" @click="registroShow = !registroShow">Regístrate</a></p>
+                </div>
             </div>
             
             <div class="d-flex justify-content-center width" style="height:75%;">
@@ -31,18 +33,22 @@
             >
                 <registro @login="login" @cerrarRegistro="registroShow = !registroShow" />
             </b-modal>
+
+            <app-footer />
         </div>
     </v-app>
 </template>
 
 <script>
 import Header from './layouts/HeaderIndex.vue'
+import Footer from './layouts/Footer.vue'
 import Login from './auth/Login.vue'
 import Registro from './auth/Registro.vue'
 
 export default {
     components: {
         'app-header': Header,
+        'app-footer': Footer,
         Login,
         Registro,
     },
