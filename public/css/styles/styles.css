@@ -1,8 +1,8 @@
 header {
     position: fixed;
-	top: 0;
-	width: 100%;
-	z-index: 1;
+    top: 0;
+    width: 100%;
+    z-index: 1;
     padding: 10px;
     padding-left: 20px;
     margin: auto;

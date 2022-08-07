@@ -3,15 +3,13 @@
         <div class="height width">
             <app-header />
 
-            <div class="content">
-                <div class="d-flex justify-content-center align-items-center mb-5">
-                    <button class="btn btn-outline-info btn-lg m-1" @click="loginShow = !loginShow">Entra</button>
-                    <p class="m-1">¿No tienes una cuenta? <a class="color-registro" @click="registroShow = !registroShow">Regístrate</a></p>
-                </div>
+            <div class="d-flex justify-content-center align-items-center mb-5" style="margin-top:64px">
+                <button class="btn btn-outline-info btn-lg m-1" @click="loginShow = !loginShow">Entra</button>
+                <p class="m-1">¿No tienes una cuenta? <a class="color-registro" @click="registroShow = !registroShow">Regístrate</a></p>
             </div>
             
-            <div class="d-flex justify-content-center width" style="height:75%;">
-                <div class="bg-inicio height" style="width:60%;"></div>
+            <div class="d-flex justify-content-center width" style="height:75%">
+                <div class="bg-inicio height" style="width:60%;margin-bottom:64px"></div>
             </div>
 
             <b-modal 

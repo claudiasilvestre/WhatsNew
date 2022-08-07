@@ -1,6 +1,6 @@
 <template>
     <footer>
-        <span class="pr-3">{{ title }} &copy; 2022</span>
+        <span>{{ title }} &copy; 2022</span>
     </footer>
 </template>
 
