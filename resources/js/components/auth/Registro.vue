@@ -33,7 +33,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 text-right">
-                    <a class="pointer" @click="login">Ya tengo una cuenta</a>
+                    <a class="pointer color-a" @click="login">Ya tengo una cuenta</a>
                 </div>
             </div>
         </div>

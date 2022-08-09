@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import ListaAudiovisuales from '../ListaAudiovisuales.vue'
+import ListaAudiovisuales from './ListaAudiovisuales.vue'
 
 export default {
     components: {

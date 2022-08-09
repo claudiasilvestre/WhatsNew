@@ -5,14 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Audiovisual;
 use App\Models\Persona;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
     public function search($busqueda) {
-        $user = Auth::user();
-
         $usuarios = Persona::query()
             ->where('tipoPersona_id', 1)
             ->where(DB::raw('lower(nombre)'), "LIKE", "%".strtolower($busqueda)."%")

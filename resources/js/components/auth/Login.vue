@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="col-md-6 text-right">
-                    <a class="pointer" @click="registro">Crear nueva cuenta</a>
+                    <a class="pointer color-a" @click="registro">Crear nueva cuenta</a>
                 </div>
             </div>
         </div>

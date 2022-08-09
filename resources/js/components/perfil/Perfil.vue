@@ -66,7 +66,7 @@ import Header from '../layouts/Header.vue'
 import Footer from '../layouts/Footer.vue'
 import Actividad from './ActividadPerfil.vue'
 import Coleccion from './Coleccion.vue'
-import ActividadAside from '../ActividadAside.vue'
+import ActividadAside from './ActividadAside.vue'
 import Seguimiento from './Seguimiento.vue'
 
 export default {
