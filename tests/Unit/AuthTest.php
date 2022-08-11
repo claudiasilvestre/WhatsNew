@@ -56,4 +56,75 @@ class AuthTest extends TestCase
 
         $response->assertStatus(302);
     }
+
+    /**
+     * Success login user.
+     *
+     * @return void
+     */
+    public function test_success_login()
+    {
+        TipoPersona::factory()->create();
+
+        Persona::factory()->create([
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
+        ]);
+
+        $user = [
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '12345678',
+        ];
+
+        $response = $this->post('/api/login', $user);
+
+        $response->assertStatus(200);
+        $response->assertCookie('jwt');
+    }
+
+    /**
+     * Login user fail.
+     *
+     * @return void
+     */
+    public function test_login_fail()
+    {
+        TipoPersona::factory()->create();
+
+        Persona::factory()->create([
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
+        ]);
+
+        $user = [
+            'email' => 'claudiasilvestre9@gmail.com',
+            'password' => '12345678',
+        ];
+
+        $response = $this->post('/api/login', $user);
+
+        $response->assertStatus(302);
+    }
+
+    /**
+     * Success logout user.
+     *
+     * @return void
+     */
+    public function test_success_logout()
+    {
+        TipoPersona::factory()->create();
+
+        $user = Persona::factory()->create();
+
+        $this->actingAs($user);
+
+        $response = $this->post('/api/logout');
+
+        $response->assertCookieExpired('jwt');
+    }
 }
