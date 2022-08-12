@@ -102,7 +102,7 @@ export default {
     created() {
         moment.locale('es');
 
-        axios.get('/api/actividad_amigos')
+        axios.get('/api/actividad-amigos')
             .then(response => this.actividadTotal = response.data)
             .catch(error => { console.log(error.response) })
             .finally(() => this.loading = false);
@@ -115,7 +115,7 @@ export default {
     },
     watch: {
         cambio: function () {
-            axios.get('/api/actividad_amigos')
+            axios.get('/api/actividad-amigos')
             .then(response => this.actividadTotal = response.data)
             .catch(error => { console.log(error.response) });
         }

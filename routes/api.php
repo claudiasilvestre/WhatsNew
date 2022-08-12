@@ -41,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/search/{busqueda}', [SearchController::class, 'search']);
 
-    Route::get('/actividad_amigos', [ActividadController::class, 'actividad_amigos']);
+    Route::get('/actividad-amigos', [ActividadController::class, 'actividad_amigos']);
     Route::post('/borrar-actividad/{actividad_id}', [ActividadController::class, 'borrar_actividad']);
     Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividad_usuario']);
 

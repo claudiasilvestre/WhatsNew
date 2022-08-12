@@ -30,7 +30,7 @@ class AuthTest extends TestCase
 
         $response = $this->post('/api/register', $user);
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
@@ -80,7 +80,7 @@ class AuthTest extends TestCase
 
         $response = $this->post('/api/login', $user);
 
-        $response->assertStatus(200);
+        $response->assertOk();
         $response->assertCookie('jwt');
     }
 
