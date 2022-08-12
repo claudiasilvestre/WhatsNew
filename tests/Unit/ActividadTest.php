@@ -25,7 +25,7 @@ class ActividadTest extends TestCase
 
         $this->actingAs($user);
         
-        $response = $this->get('/api/actividad-usuario/'.$user->id);
+        $response = $this->getJson('/api/actividad-usuario/'.$user->id);
 
         $response->assertOk();
     }
@@ -41,7 +41,7 @@ class ActividadTest extends TestCase
 
         $user = Persona::factory()->create();
 
-        $response = $this->get('/api/actividad-usuario/'.$user->id);
+        $response = $this->getJson('/api/actividad-usuario/'.$user->id);
 
         $response->assertUnauthorized();
     }
@@ -59,7 +59,7 @@ class ActividadTest extends TestCase
 
         $this->actingAs($user);
         
-        $response = $this->get('/api/actividad-amigos/');
+        $response = $this->getJson('/api/actividad-amigos/');
 
         $response->assertOk();
     }
@@ -75,7 +75,7 @@ class ActividadTest extends TestCase
 
         $user = Persona::factory()->create();
 
-        $response = $this->get('/api/actividad-amigos/');
+        $response = $this->getJson('/api/actividad-amigos/');
 
         $response->assertUnauthorized();
     }
@@ -98,7 +98,7 @@ class ActividadTest extends TestCase
             'tipo' => 1,
         ]);
 
-        $response = $this->post('/api/borrar-actividad/'.$activity->id);
+        $response = $this->postJson('/api/borrar-actividad/'.$activity->id);
 
         $response->assertOk();
     }
@@ -119,7 +119,7 @@ class ActividadTest extends TestCase
             'tipo' => 1,
         ]);
 
-        $response = $this->post('/api/borrar-actividad/'.$activity->id);
+        $response = $this->postJson('/api/borrar-actividad/'.$activity->id);
 
         $response->assertUnauthorized();
     }
@@ -137,7 +137,7 @@ class ActividadTest extends TestCase
 
         $this->actingAs($user);
 
-        $response = $this->post('/api/borrar-actividad/1');
+        $response = $this->postJson('/api/borrar-actividad/1');
 
         $response->assertOk();
     }

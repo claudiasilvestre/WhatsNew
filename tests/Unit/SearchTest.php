@@ -24,7 +24,7 @@ class SearchTest extends TestCase
 
         $this->actingAs($user);
         
-        $response = $this->get('/api/search/prueba');
+        $response = $this->getJson('/api/search/prueba');
 
         $response->assertOk();
     }
@@ -36,7 +36,7 @@ class SearchTest extends TestCase
      */
     public function test_search_empty_text()
     {
-        $response = $this->get('/api/search');
+        $response = $this->getJson('/api/search');
 
         $response->assertNotFound();
     }
@@ -48,7 +48,7 @@ class SearchTest extends TestCase
      */
     public function test_search_not_logged_in_user()
     {
-        $response = $this->get('/api/search/prueba');
+        $response = $this->getJson('/api/search/prueba');
 
         $response->assertUnauthorized();
     }
