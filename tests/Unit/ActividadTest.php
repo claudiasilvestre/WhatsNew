@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Models\Persona;
 use App\Models\TipoPersona;
+use App\Models\Actividad;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -42,7 +43,7 @@ class ActividadTest extends TestCase
 
         $response = $this->get('/api/actividad-usuario/'.$user->id);
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
     }
 
     /**
@@ -76,6 +77,68 @@ class ActividadTest extends TestCase
 
         $response = $this->get('/api/actividad-amigos/');
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Delete activity with logged in user.
+     *
+     * @return void
+     */
+    public function test_delete_activity_logged_in_user()
+    {
+        TipoPersona::factory()->create();
+
+        $user = Persona::factory()->create();
+
+        $this->actingAs($user);
+
+        $activity = Actividad::create([
+            'persona_id' => $user->id,
+            'tipo' => 1,
+        ]);
+
+        $response = $this->post('/api/borrar-actividad/'.$activity->id);
+
+        $response->assertOk();
+    }
+
+    /**
+     * Delete activity without logged in user.
+     *
+     * @return void
+     */
+    public function test_delete_activity_not_logged_in_user()
+    {
+        TipoPersona::factory()->create();
+
+        $user = Persona::factory()->create();
+
+        $activity = Actividad::create([
+            'persona_id' => $user->id,
+            'tipo' => 1,
+        ]);
+
+        $response = $this->post('/api/borrar-actividad/'.$activity->id);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Delete activity that doesn't exist.
+     *
+     * @return void
+     */
+    public function test_delete_activity_that_not_exist()
+    {
+        TipoPersona::factory()->create();
+
+        $user = Persona::factory()->create();
+
+        $this->actingAs($user);
+
+        $response = $this->post('/api/borrar-actividad/1');
+
+        $response->assertOk();
     }
 }

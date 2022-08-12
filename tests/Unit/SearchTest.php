@@ -38,7 +38,7 @@ class SearchTest extends TestCase
     {
         $response = $this->get('/api/search');
 
-        $response->assertStatus(404);
+        $response->assertNotFound();
     }
 
     /**
@@ -50,6 +50,6 @@ class SearchTest extends TestCase
     {
         $response = $this->get('/api/search/prueba');
 
-        $response->assertStatus(401);
+        $response->assertUnauthorized();
     }
 }
