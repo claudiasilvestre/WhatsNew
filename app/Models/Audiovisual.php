@@ -11,6 +11,12 @@ class Audiovisual extends Model
 
     protected $table = 'audiovisual';
 
+    protected $fillable = [
+        'id',
+        'tipoAudiovisual_id',
+        'titulo',
+    ];
+
     public $incrementing = false;
 
     public function genero()

@@ -10,4 +10,10 @@ class Temporada extends Model
     use HasFactory;
 
     protected $table = 'temporada';
+
+    protected $fillable = [
+        'audiovisual_id',
+        'numero',
+        'nombre',
+    ];
 }

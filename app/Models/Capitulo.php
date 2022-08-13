@@ -10,4 +10,9 @@ class Capitulo extends Model
     use HasFactory;
 
     protected $table = 'capitulo';
+
+    protected $fillable = [
+        'temporada_id',
+        'numero',
+    ];
 }

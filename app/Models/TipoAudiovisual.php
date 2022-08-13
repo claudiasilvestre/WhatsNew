@@ -10,4 +10,8 @@ class TipoAudiovisual extends Model
     use HasFactory;
 
     protected $table = 'tipo_audiovisual';
+
+    protected $fillable = [
+        'nombre',
+    ];
 }

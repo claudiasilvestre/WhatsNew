@@ -19,9 +19,7 @@ class SearchTest extends TestCase
     public function test_search_logged_in_user()
     {
         TipoPersona::factory()->create();
-
         $user = Persona::factory()->create();
-
         $this->actingAs($user);
         
         $response = $this->getJson('/api/search/prueba');

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('temporada_id');
             $table->integer('numero');
-            $table->string('nombre', 2048);
-            $table->string('sinopsis', 2048);
+            $table->string('nombre', 2048)->nullable();
+            $table->string('sinopsis', 2048)->nullable();
             $table->string('cartel', 64)->nullable();
             $table->date('fechaLanzamiento')->nullable();
 

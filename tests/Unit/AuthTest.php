@@ -118,9 +118,7 @@ class AuthTest extends TestCase
     public function test_success_logout()
     {
         TipoPersona::factory()->create();
-
         $user = Persona::factory()->create();
-
         $this->actingAs($user);
 
         $response = $this->post('/api/logout');
