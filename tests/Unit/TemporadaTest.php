@@ -113,7 +113,7 @@ class TemporadaTest extends TestCase
     }
 
     /**
-     * Viewed season and viewed season doesn't exist.
+     * Viewed season but viewed season doesn't exist.
      *
      * @return void
      */
