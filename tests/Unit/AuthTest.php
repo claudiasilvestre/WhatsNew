@@ -28,7 +28,7 @@ class AuthTest extends TestCase
             'password_confirmation' => '12345678',
         ];
 
-        $response = $this->post('/api/register', $user);
+        $response = $this->postJson('/api/register', $user);
 
         $response->assertOk();
     }
@@ -50,11 +50,11 @@ class AuthTest extends TestCase
             'password_confirmation' => '12345678',
         ];
 
-        $response = $this->post('/api/register', $user);
+        $response = $this->postJson('/api/register', $user);
 
-        $response = $this->post('/api/register', $user);
+        $response = $this->postJson('/api/register', $user);
 
-        $response->assertStatus(302);
+        $response->assertUnprocessable();
     }
 
     /**
@@ -78,7 +78,7 @@ class AuthTest extends TestCase
             'password' => '12345678',
         ];
 
-        $response = $this->post('/api/login', $user);
+        $response = $this->postJson('/api/login', $user);
 
         $response->assertOk();
         $response->assertCookie('jwt');
@@ -105,9 +105,9 @@ class AuthTest extends TestCase
             'password' => '12345678',
         ];
 
-        $response = $this->post('/api/login', $user);
+        $response = $this->postJson('/api/login', $user);
 
-        $response->assertStatus(302);
+        $response->assertUnprocessable();
     }
 
     /**
@@ -123,6 +123,7 @@ class AuthTest extends TestCase
 
         $response = $this->post('/api/logout');
 
+        $response->assertOk();
         $response->assertCookieExpired('jwt');
     }
 }

@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Persona;
 use App\Models\TipoPersona;
 use Tests\TestCase;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SearchTest extends TestCase
@@ -22,9 +23,15 @@ class SearchTest extends TestCase
         $user = Persona::factory()->create();
         $this->actingAs($user);
         
-        $response = $this->getJson('/api/search/prueba');
+        $response = $this->getJson('/api/search/'.$user->nombre);
 
         $response->assertOk();
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->has('usuarios', 1, fn ($json) =>
+                $json->where('nombre', $user->nombre)
+                        ->etc()
+            )->etc()
+        );
     }
 
     /**

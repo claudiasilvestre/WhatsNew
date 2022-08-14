@@ -241,7 +241,7 @@ class TemporadaTest extends TestCase
      *
      * @return void
      */
-    public function test_viewing_and_season_not_existing()
+    public function test_viewing_and_viewed_season_not_existing()
     {
         TipoPersona::factory()->create();
         $user = Persona::factory()->create();
