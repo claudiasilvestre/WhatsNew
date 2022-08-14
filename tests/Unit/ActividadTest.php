@@ -7,11 +7,25 @@ use App\Models\TipoPersona;
 use App\Models\Actividad;
 use App\Models\SeguimientoPersona;
 use Tests\TestCase;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ActividadTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $user;
+    
+    /**
+     * Set up the test
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        TipoPersona::factory()->create();
+        $this->user = Persona::factory()->create();
+    }
 
     /**
      * User activity with logged in user.
@@ -20,18 +34,23 @@ class ActividadTest extends TestCase
      */
     public function test_user_activity_logged_in_user()
     {
-        TipoPersona::factory()->create();
-        $user = Persona::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($this->user);
         
         Actividad::create([
-            'persona_id' => $user->id,
+            'persona_id' => $this->user->id,
             'tipo' => 1,
         ]);
         
-        $response = $this->getJson('/api/actividad-usuario/'.$user->id);
+        $response = $this->getJson('/api/actividad-usuario/'.$this->user->id);
 
         $response->assertOk();
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->has(1)
+                ->first(fn ($json) =>
+                    $json->where('usuario_id', strval($this->user->id))
+                        ->etc()
+                )
+        );
     }
 
     /**
@@ -41,10 +60,7 @@ class ActividadTest extends TestCase
      */
     public function test_user_activity_not_logged_in_user()
     {
-        TipoPersona::factory()->create();
-        $user = Persona::factory()->create();
-
-        $response = $this->getJson('/api/actividad-usuario/'.$user->id);
+        $response = $this->getJson('/api/actividad-usuario/'.$this->user->id);
 
         $response->assertUnauthorized();
     }
@@ -56,14 +72,12 @@ class ActividadTest extends TestCase
      */
     public function test_friends_activity_logged_in_user()
     {
-        TipoPersona::factory()->create();
-        $user = Persona::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $friend = Persona::factory()->create();
 
         SeguimientoPersona::create([
-            'personaActual_id' => $user->id,
+            'personaActual_id' => $this->user->id,
             'persona_id' => $friend->id,
         ]);
 
@@ -75,6 +89,13 @@ class ActividadTest extends TestCase
         $response = $this->getJson('/api/actividad-amigos/');
 
         $response->assertOk();
+        $response->assertJson(fn (AssertableJson $json) =>
+            $json->has(1)
+                ->first(fn ($json) =>
+                    $json->where('usuario_id', strval($friend->id))
+                        ->etc()
+                )
+        );
     }
 
     /**
@@ -96,18 +117,17 @@ class ActividadTest extends TestCase
      */
     public function test_delete_activity_logged_in_user()
     {
-        TipoPersona::factory()->create();
-        $user = Persona::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $activity = Actividad::create([
-            'persona_id' => $user->id,
+            'persona_id' => $this->user->id,
             'tipo' => 1,
         ]);
 
         $response = $this->postJson('/api/borrar-actividad/'.$activity->id);
 
         $response->assertOk();
+        $this->assertTrue(!Actividad::where('persona_id', $this->user->id)->exists());
     }
 
     /**
@@ -117,11 +137,8 @@ class ActividadTest extends TestCase
      */
     public function test_delete_activity_not_logged_in_user()
     {
-        TipoPersona::factory()->create();
-        $user = Persona::factory()->create();
-
         $activity = Actividad::create([
-            'persona_id' => $user->id,
+            'persona_id' => $this->user->id,
             'tipo' => 1,
         ]);
 
@@ -137,9 +154,7 @@ class ActividadTest extends TestCase
      */
     public function test_delete_activity_that_not_exist()
     {
-        TipoPersona::factory()->create();
-        $user = Persona::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($this->user);
 
         $response = $this->postJson('/api/borrar-actividad/1');
 

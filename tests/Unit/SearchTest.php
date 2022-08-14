@@ -11,6 +11,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class SearchTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected $user;
+    
+    /**
+     * Set up the test
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        TipoPersona::factory()->create();
+        $this->user = Persona::factory()->create();
+    }
     
     /**
      * Search with logged in user.
@@ -19,16 +32,14 @@ class SearchTest extends TestCase
      */
     public function test_search_logged_in_user()
     {
-        TipoPersona::factory()->create();
-        $user = Persona::factory()->create();
-        $this->actingAs($user);
+        $this->actingAs($this->user);
         
-        $response = $this->getJson('/api/search/'.$user->nombre);
+        $response = $this->getJson('/api/search/'.$this->user->nombre);
 
         $response->assertOk();
         $response->assertJson(fn (AssertableJson $json) =>
             $json->has('usuarios', 1, fn ($json) =>
-                $json->where('nombre', $user->nombre)
+                $json->where('nombre', $this->user->nombre)
                         ->etc()
             )->etc()
         );

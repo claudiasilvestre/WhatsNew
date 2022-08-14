@@ -10,6 +10,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class AuthTest extends TestCase
 {
     use RefreshDatabase;
+    
+    /**
+     * Set up the test
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        TipoPersona::factory()->create();
+    }
 
     /**
      * Insert user in the database.
@@ -18,8 +28,6 @@ class AuthTest extends TestCase
      */
     public function test_insert_user()
     {
-        TipoPersona::factory()->create();
-
         $user = [
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
@@ -31,6 +39,7 @@ class AuthTest extends TestCase
         $response = $this->postJson('/api/register', $user);
 
         $response->assertOk();
+        $this->assertTrue(Persona::where('usuario', $user['usuario'])->exists());
     }
 
     /**
@@ -40,8 +49,6 @@ class AuthTest extends TestCase
      */
     public function test_insert_duplicate_user()
     {
-        TipoPersona::factory()->create();
-
         $user = [
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
@@ -64,8 +71,6 @@ class AuthTest extends TestCase
      */
     public function test_success_login()
     {
-        TipoPersona::factory()->create();
-
         Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
@@ -91,8 +96,6 @@ class AuthTest extends TestCase
      */
     public function test_login_fail()
     {
-        TipoPersona::factory()->create();
-
         Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
@@ -117,7 +120,6 @@ class AuthTest extends TestCase
      */
     public function test_success_logout()
     {
-        TipoPersona::factory()->create();
         $user = Persona::factory()->create();
         $this->actingAs($user);
 

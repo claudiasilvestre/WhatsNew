@@ -25,7 +25,7 @@ class ActividadController extends Controller
                                 'audiovisual.id as id_audiovisual', 'audiovisual_capitulo.id as id_audiovisual_capitulo', 
                                 'audiovisual_temporada.id as id_audiovisual_temporada', 'audiovisual.cartel as audiovisual_cartel', 
                                 'audiovisual_capitulo.cartel as capitulo_cartel', 'audiovisual_temporada.cartel as temporada_cartel', 
-                                'actividad.created_at')
+                                'actividad.created_at', 'actividad.persona_id as usuario_id')
                                 ->orderBy('actividad.created_at', 'desc')
                                 ->get();
 
