@@ -57,14 +57,14 @@ class TemporadaTest extends TestCase
         
         $response = $this->getJson('/api/temporadas/'.$serie->id);
 
-        $response->assertOk();
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->has(1)
-                ->first(fn ($json) =>
-                    $json->where('audiovisual_id', strval($serie->id))
-                        ->etc()
-                )
-        );
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has(1)
+                         ->first(fn ($json) =>
+                            $json->where('audiovisual_id', strval($serie->id))
+                                 ->etc()
+                         )
+                 );
     }
 
     /**

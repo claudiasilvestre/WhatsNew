@@ -85,8 +85,8 @@ class AuthTest extends TestCase
 
         $response = $this->postJson('/api/login', $user);
 
-        $response->assertOk();
-        $response->assertCookie('jwt');
+        $response->assertOk()
+                 ->assertCookie('jwt');
     }
 
     /**
@@ -125,7 +125,7 @@ class AuthTest extends TestCase
 
         $response = $this->post('/api/logout');
 
-        $response->assertOk();
-        $response->assertCookieExpired('jwt');
+        $response->assertOk()
+                 ->assertCookieExpired('jwt');
     }
 }

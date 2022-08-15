@@ -36,13 +36,13 @@ class SearchTest extends TestCase
         
         $response = $this->getJson('/api/search/'.$this->user->nombre);
 
-        $response->assertOk();
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->has('usuarios', 1, fn ($json) =>
-                $json->where('nombre', $this->user->nombre)
-                        ->etc()
-            )->etc()
-        );
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('usuarios', 1, fn ($json) =>
+                        $json->where('nombre', $this->user->nombre)
+                             ->etc()
+                    )->etc()
+                 );
     }
 
     /**

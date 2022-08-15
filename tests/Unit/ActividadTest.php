@@ -43,14 +43,14 @@ class ActividadTest extends TestCase
         
         $response = $this->getJson('/api/actividad-usuario/'.$this->user->id);
 
-        $response->assertOk();
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->has(1)
-                ->first(fn ($json) =>
-                    $json->where('usuario_id', strval($this->user->id))
-                        ->etc()
-                )
-        );
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has(1)
+                         ->first(fn ($json) =>
+                            $json->where('usuario_id', strval($this->user->id))
+                                 ->etc()
+                         )
+                 );
     }
 
     /**
@@ -88,14 +88,14 @@ class ActividadTest extends TestCase
     
         $response = $this->getJson('/api/actividad-amigos/');
 
-        $response->assertOk();
-        $response->assertJson(fn (AssertableJson $json) =>
-            $json->has(1)
-                ->first(fn ($json) =>
-                    $json->where('usuario_id', strval($friend->id))
-                        ->etc()
-                )
-        );
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has(1)
+                         ->first(fn ($json) =>
+                            $json->where('usuario_id', strval($friend->id))
+                                 ->etc()
+                         )
+                 );
     }
 
     /**
