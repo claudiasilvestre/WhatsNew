@@ -164,4 +164,101 @@ class CapituloTest extends TestCase
 
         $response->assertUnauthorized();
     }
+
+    /**
+     * Get episode viewing with logged in user.
+     *
+     * @return void
+     */
+    public function test_get_episode_viewing_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $this->capitulo->id,
+            'persona_id' => $this->user->id,
+        ]);
+
+        $response = $this->getJson('/api/saber-visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertOk();
+        $this->assertTrue($response->original);
+    }
+
+    /**
+     * Get episode viewing without episode viewing exists.
+     *
+     * @return void
+     */
+    public function test_get_episode_viewing_and_viewing_not_existing()
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->getJson('/api/saber-visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertOk();
+        $this->assertFalse($response->original);
+    }
+
+    /**
+     * Get episode viewing without logged in user.
+     *
+     * @return void
+     */
+    public function test_get_episode_viewing_not_logged_in_user()
+    {
+        $response = $this->getJson('/api/saber-visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Episode viewing with logged in user.
+     *
+     * @return void
+     */
+    public function test_episode_viewing_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $this->capitulo->id,
+            'persona_id' => $this->user->id,
+        ]);
+
+        $response = $this->postJson('/api/visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertOk();
+        $this->assertFalse($response->original);
+    }
+
+    /**
+     * Episode viewing without episode viewing exists.
+     *
+     * @return void
+     */
+    public function test_episode_viewing_and_viewing_not_existing()
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->postJson('/api/visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertOk();
+        $this->assertTrue($response->original);
+        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                ->where('capitulo_id', $this->capitulo->id)
+                                                ->exists());
+    }
+
+    /**
+     * Episode viewing without logged in user.
+     *
+     * @return void
+     */
+    public function test_episode_viewing_not_logged_in_user()
+    {
+        $response = $this->postJson('/api/visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertUnauthorized();
+    }
 }
