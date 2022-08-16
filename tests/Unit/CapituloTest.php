@@ -118,11 +118,11 @@ class CapituloTest extends TestCase
     }
 
     /**
-     * Get viewings with logged in user.
+     * Get viewings with episode viewing created.
      *
      * @return void
      */
-    public function test_get_viewings_logged_in_user()
+    public function test_get_viewings_with_episode_viewing()
     {
         $this->actingAs($this->user);
 
@@ -146,6 +146,29 @@ class CapituloTest extends TestCase
     }
 
     /**
+     * Get viewings without episode viewing created.
+     *
+     * @return void
+     */
+    public function test_get_viewings_without_episode_viewing()
+    {
+        $this->actingAs($this->user);
+
+        $capitulos = [];
+        array_push($capitulos, $this->capitulo);
+        
+        $request = [
+            'capitulos' => $capitulos,
+            'usuario_id' => $this->user->id,
+        ];
+
+        $response = $this->call('GET', '/api/visualizaciones', $request);
+
+        $response->assertOk();
+        $this->assertFalse($response->getData()[0]);
+    }
+
+    /**
      * Get viewings without logged in user.
      *
      * @return void
@@ -161,6 +184,67 @@ class CapituloTest extends TestCase
         ];
 
         $response = $this->call('GET', '/api/visualizaciones', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Previous and next episodes with logged in user.
+     *
+     * @return void
+     */
+    public function test_previous_next_episode_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $capitulo2 = Capitulo::create([
+            'temporada_id' => $this->temporada->id,
+            'numero' => 2,
+        ]);
+
+        $capitulo3 = Capitulo::create([
+            'temporada_id' => $this->temporada->id,
+            'numero' => 3,
+        ]);
+
+        $request =[
+            'audiovisual_id' => $this->serie->id,
+            'capitulo_id' => $capitulo2->id,
+        ];
+        
+        $response = $this->call('GET', '/api/capitulos-anterior-siguiente', $request);
+
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has(2)
+                          ->where('anteriorCapitulo_id', strval($this->capitulo->id))
+                          ->where('siguienteCapitulo_id', strval($capitulo3->id))
+                 );
+    }
+
+    /**
+     * Previous and next episodes without logged in user.
+     *
+     * @return void
+     */
+    public function test_previous_next_eposide_not_logged_in_user()
+    {
+        $capitulo2 = Capitulo::create([
+            'temporada_id' => $this->temporada->id,
+            'numero' => 2,
+        ]);
+
+        $capitulo3 = Capitulo::create([
+            'temporada_id' => $this->temporada->id,
+            'numero' => 3,
+        ]);
+
+        $request =[
+            'audiovisual_id' => $this->serie->id,
+            'capitulo_id' => $capitulo2->id,
+        ];
+
+        $response = $this->call('GET', '/api/capitulos-anterior-siguiente', $request);
 
         $response->assertUnauthorized();
     }

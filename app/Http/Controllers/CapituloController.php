@@ -113,7 +113,8 @@ class CapituloController extends Controller
                                     ->where('audiovisual.id', $request->audiovisual_id)
                                     ->where('capitulo.id', '<', $request->capitulo_id)
                                     ->select('capitulo.id')
-                                    ->latest('id')->first();
+                                    ->latest('capitulo.id')
+                                    ->first();
 
         $anteriorCapitulo_id = '';
         if ($anteriorCapitulo)
