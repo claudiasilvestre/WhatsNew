@@ -63,7 +63,7 @@ class CapituloController extends Controller
                 'capitulo_id' => $request->capitulo_id,
             ]);
 
-            if ($count+1 === $temporada[0]->numeroCapitulos) {
+            if ($count+1 == $temporada[0]->numeroCapitulos) {
                 VisualizacionTemporada::create([
                     'temporada_id' => $temporada[0]->temporada_id,
                     'persona_id' => $request->usuario_id,
@@ -85,7 +85,7 @@ class CapituloController extends Controller
                 'cambio' => $cambio,
             ]);
         } else {
-            if ($count === $temporada[0]->numeroCapitulos) {
+            if ($count == $temporada[0]->numeroCapitulos) {
                 VisualizacionTemporada::where('persona_id', $request->usuario_id)
                 ->where('temporada_id', $temporada[0]->temporada_id)
                 ->delete();
@@ -150,15 +150,58 @@ class CapituloController extends Controller
     public function visualizacion_capitulo($capitulo_id) {
         $usuario_id = Auth::id();
 
+        $temporada = DB::table('temporada')
+            ->join('capitulo', 'temporada.id', '=', 'capitulo.temporada_id')
+            ->where('capitulo.id', $capitulo_id)
+            ->get();
+                
+        $capitulos = Capitulo::where('temporada_id', $temporada[0]->temporada_id)->get();
+        $count = 0;
+
+        foreach($capitulos as $capitulo) {
+            if (VisualizacionCapitulo::where('persona_id', $usuario_id)->where('capitulo_id', $capitulo->id)->exists())
+                $count++;
+        }
+
         if (!VisualizacionCapitulo::where('persona_id', $usuario_id)->where('capitulo_id', $capitulo_id)->exists()) {
             VisualizacionCapitulo::create([
                 'capitulo_id' => $capitulo_id,
                 'persona_id' => $usuario_id,
             ]);
 
-            return true;
-        }
+            Actividad::create([
+                'persona_id' => $usuario_id,
+                'tipo' => 3,
+                'capitulo_id' => $capitulo_id,
+            ]);
 
-        return false;
+            if ($count+1 == $temporada[0]->numeroCapitulos) {
+                VisualizacionTemporada::create([
+                    'temporada_id' => $temporada[0]->temporada_id,
+                    'persona_id' => $usuario_id,
+                ]);
+
+                Actividad::create([
+                    'persona_id' => $usuario_id,
+                    'tipo' => 3,
+                    'temporada_id' => $temporada[0]->temporada_id,
+                ]);
+            }
+            
+            return true;
+
+        } else {
+            if ($count == $temporada[0]->numeroCapitulos) {
+                VisualizacionTemporada::where('persona_id', $usuario_id)
+                ->where('temporada_id', $temporada[0]->temporada_id)
+                ->delete();
+            }
+            
+            VisualizacionCapitulo::where('persona_id', $usuario_id)
+                ->where('capitulo_id', $capitulo_id)
+                ->delete();
+
+            return false;
+        }
     }
 }

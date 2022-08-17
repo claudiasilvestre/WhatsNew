@@ -15,5 +15,6 @@ class Temporada extends Model
         'audiovisual_id',
         'numero',
         'nombre',
+        'numeroCapitulos'
     ];
 }

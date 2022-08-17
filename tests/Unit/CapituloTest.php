@@ -9,6 +9,8 @@ use App\Models\Audiovisual;
 use App\Models\Temporada;
 use App\Models\Capitulo;
 use App\Models\VisualizacionCapitulo;
+use App\Models\VisualizacionTemporada;
+use App\Models\Actividad;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,6 +45,7 @@ class CapituloTest extends TestCase
             'audiovisual_id' => $this->serie->id,
             'numero' => 1,
             'nombre' => 'Temporada 1',
+            'numeroCapitulos' => 2,
         ]);
 
         $this->capitulo = Capitulo::create([
@@ -189,11 +192,179 @@ class CapituloTest extends TestCase
     }
 
     /**
+     * Create episode viewing and season viewing from all episodes.
+     *
+     * @return void
+     */
+    public function test_create_episode_viewing_and_season_viewing_from_all_episodes()
+    {
+        $this->actingAs($this->user);
+
+        $capitulo2 = Capitulo::create([
+            'temporada_id' => $this->temporada->id,
+            'numero' => 2,
+        ]);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $capitulo2->id,
+            'persona_id' => $this->user->id,
+        ]);
+        
+        $request = [
+            'capitulo_id' => $this->capitulo->id,
+            'usuario_id' => $this->user->id,
+        ];
+
+        $response = $this->call('POST', '/api/visualizacion-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                ->where('capitulo_id', $this->capitulo->id)
+                                                ->exists());
+
+        $this->assertTrue(Actividad::where('persona_id', $this->user->id)
+                                    ->where('capitulo_id', $this->capitulo->id)
+                                    ->exists());
+
+        $this->assertTrue(VisualizacionTemporada::where('persona_id', $this->user->id)
+                                                ->where('temporada_id', $this->temporada->id)
+                                                ->exists());
+
+        $this->assertTrue(Actividad::where('persona_id', $this->user->id)
+                                    ->where('temporada_id', $this->temporada->id)
+                                    ->exists());
+    }
+
+    /**
+     * Create episode viewing from all episodes.
+     *
+     * @return void
+     */
+    public function test_create_episode_viewing_from_all_episodes()
+    {
+        $this->actingAs($this->user);
+        
+        $request = [
+            'capitulo_id' => $this->capitulo->id,
+            'usuario_id' => $this->user->id,
+        ];
+
+        $response = $this->call('POST', '/api/visualizacion-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                ->where('capitulo_id', $this->capitulo->id)
+                                                ->exists());
+
+        $this->assertTrue(Actividad::where('persona_id', $this->user->id)
+                                    ->where('capitulo_id', $this->capitulo->id)
+                                    ->exists());
+
+        $this->assertFalse(VisualizacionTemporada::where('persona_id', $this->user->id)
+                                                ->where('temporada_id', $this->temporada->id)
+                                                ->exists());
+
+        $this->assertFalse(Actividad::where('persona_id', $this->user->id)
+                                    ->where('temporada_id', $this->temporada->id)
+                                    ->exists());
+    }
+
+    /**
+     * Delete episode viewing and season viewing from all episodes.
+     *
+     * @return void
+     */
+    public function test_delete_episode_viewing_and_season_viewing_from_all_episodes()
+    {
+        $this->actingAs($this->user);
+
+        $capitulo2 = Capitulo::create([
+            'temporada_id' => $this->temporada->id,
+            'numero' => 2,
+        ]);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $this->capitulo->id,
+            'persona_id' => $this->user->id,
+        ]);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $capitulo2->id,
+            'persona_id' => $this->user->id,
+        ]);
+
+        VisualizacionTemporada::create([
+            'temporada_id' => $this->temporada->id,
+            'persona_id' => $this->user->id,
+        ]);
+        
+        $request = [
+            'capitulo_id' => $this->capitulo->id,
+            'usuario_id' => $this->user->id,
+        ];
+
+        $response = $this->call('POST', '/api/visualizacion-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                ->where('capitulo_id', $this->capitulo->id)
+                                                ->exists());
+
+        $this->assertFalse(VisualizacionTemporada::where('persona_id', $this->user->id)
+                                                ->where('temporada_id', $this->temporada->id)
+                                                ->exists());
+    }
+
+    /**
+     * Delete episode viewing from all episodes.
+     *
+     * @return void
+     */
+    public function test_delete_episode_viewing_from_all_episodes()
+    {
+        $this->actingAs($this->user);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $this->capitulo->id,
+            'persona_id' => $this->user->id,
+        ]);
+        
+        $request = [
+            'capitulo_id' => $this->capitulo->id,
+            'usuario_id' => $this->user->id,
+        ];
+
+        $response = $this->call('POST', '/api/visualizacion-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                ->where('capitulo_id', $this->capitulo->id)
+                                                ->exists());
+    }
+
+    /**
+     * Create or delete episode viewing without logged in user from all episodes.
+     *
+     * @return void
+     */
+    public function test_create_or_delete_episode_viewing_not_logged_in_user_from_all_episodes()
+    {
+        $request = [
+            'capitulo_id' => $this->capitulo->id,
+            'usuario_id' => $this->user->id,
+        ];
+
+        $response = $this->call('POST', '/api/visualizacion-capitulo', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
      * Previous and next episodes with logged in user.
      *
      * @return void
      */
-    public function test_previous_next_episode_logged_in_user()
+    public function test_previous_next_episodes_logged_in_user()
     {
         $this->actingAs($this->user);
 
@@ -227,7 +398,7 @@ class CapituloTest extends TestCase
      *
      * @return void
      */
-    public function test_previous_next_eposide_not_logged_in_user()
+    public function test_previous_next_eposides_not_logged_in_user()
     {
         $capitulo2 = Capitulo::create([
             'temporada_id' => $this->temporada->id,
@@ -297,11 +468,120 @@ class CapituloTest extends TestCase
     }
 
     /**
-     * Episode viewing with logged in user.
+     * Create episode viewing and season viewing from episode.
      *
      * @return void
      */
-    public function test_episode_viewing_logged_in_user()
+    public function test_create_episode_viewing_and_season_viewing_from_episode()
+    {
+        $this->actingAs($this->user);
+
+        $capitulo2 = Capitulo::create([
+            'temporada_id' => $this->temporada->id,
+            'numero' => 2,
+        ]);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $capitulo2->id,
+            'persona_id' => $this->user->id,
+        ]);
+
+        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertOk();
+        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                ->where('capitulo_id', $this->capitulo->id)
+                                                ->exists());
+
+        $this->assertTrue(Actividad::where('persona_id', $this->user->id)
+                                    ->where('capitulo_id', $this->capitulo->id)
+                                    ->exists());
+
+        $this->assertTrue(VisualizacionTemporada::where('persona_id', $this->user->id)
+                                                ->where('temporada_id', $this->temporada->id)
+                                                ->exists());
+
+        $this->assertTrue(Actividad::where('persona_id', $this->user->id)
+                                    ->where('temporada_id', $this->temporada->id)
+                                    ->exists());
+    }
+
+    /**
+     * Create episode viewing from episode.
+     *
+     * @return void
+     */
+    public function test_create_episode_viewing_from_episode()
+    {
+        $this->actingAs($this->user);
+
+        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertOk();
+        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                ->where('capitulo_id', $this->capitulo->id)
+                                                ->exists());
+
+        $this->assertTrue(Actividad::where('persona_id', $this->user->id)
+                                    ->where('capitulo_id', $this->capitulo->id)
+                                    ->exists());
+
+        $this->assertFalse(VisualizacionTemporada::where('persona_id', $this->user->id)
+                                                ->where('temporada_id', $this->temporada->id)
+                                                ->exists());
+
+        $this->assertFalse(Actividad::where('persona_id', $this->user->id)
+                                    ->where('temporada_id', $this->temporada->id)
+                                    ->exists());
+    }
+
+    /**
+     * Delete episode viewing and season viewing from episode.
+     *
+     * @return void
+     */
+    public function test_delete_episode_viewing_and_season_viewing_from_episode()
+    {
+        $this->actingAs($this->user);
+
+        $capitulo2 = Capitulo::create([
+            'temporada_id' => $this->temporada->id,
+            'numero' => 2,
+        ]);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $this->capitulo->id,
+            'persona_id' => $this->user->id,
+        ]);
+
+        VisualizacionCapitulo::create([
+            'capitulo_id' => $capitulo2->id,
+            'persona_id' => $this->user->id,
+        ]);
+
+        VisualizacionTemporada::create([
+            'temporada_id' => $this->temporada->id,
+            'persona_id' => $this->user->id,
+        ]);
+
+        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
+
+        $response->assertOk();
+        $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                ->where('capitulo_id', $this->capitulo->id)
+                                                ->exists());
+
+        $this->assertFalse(VisualizacionTemporada::where('persona_id', $this->user->id)
+                                                ->where('temporada_id', $this->temporada->id)
+                                                ->exists());
+    }
+
+    /**
+     * Delete episode viewing from episode.
+     *
+     * @return void
+     */
+    public function test_delete_episode_viewing_from_episode()
     {
         $this->actingAs($this->user);
 
@@ -310,38 +590,22 @@ class CapituloTest extends TestCase
             'persona_id' => $this->user->id,
         ]);
 
-        $response = $this->postJson('/api/visualizacion-capitulo/'.$this->capitulo->id);
+        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
 
         $response->assertOk();
-        $this->assertFalse($response->original);
-    }
-
-    /**
-     * Episode viewing without episode viewing exists.
-     *
-     * @return void
-     */
-    public function test_episode_viewing_and_viewing_not_existing()
-    {
-        $this->actingAs($this->user);
-
-        $response = $this->postJson('/api/visualizacion-capitulo/'.$this->capitulo->id);
-
-        $response->assertOk();
-        $this->assertTrue($response->original);
-        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
+        $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->user->id)
                                                 ->where('capitulo_id', $this->capitulo->id)
                                                 ->exists());
     }
 
     /**
-     * Episode viewing without logged in user.
+     * Create or delete episode viewing without logged in user from episode.
      *
      * @return void
      */
-    public function test_episode_viewing_not_logged_in_user()
+    public function test_create_or_delete_episode_viewing_not_logged_in_user_from_episode()
     {
-        $response = $this->postJson('/api/visualizacion-capitulo/'.$this->capitulo->id);
+        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
 
         $response->assertUnauthorized();
     }
