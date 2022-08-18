@@ -262,3 +262,30 @@ a {
 {
     opacity: 0.8 !important;
 }
+
+.width-platforms {
+    width: 30%;
+}
+
+.width-info {
+    width: 70%;
+}
+
+@media screen and (max-width: 633px) {
+    .content {
+        margin-top: 90px;
+        margin-bottom: 90px;
+    }
+
+    .row-between {
+        flex-direction: column;
+    }
+
+    .width-platforms {
+        width: 100%;
+    }
+
+    .width-info {
+        width: 100%;
+    }
+}

@@ -8,7 +8,7 @@
       </div>
       <div v-else>
         <div class="row-between">
-          <div style="width:70%" class="mr-2">
+          <div class="width-info mr-4">
             <h5>Título original</h5>
             <p>{{ audiovisual.tituloOriginal }}</p>
             <h5>Estreno</h5>
@@ -16,7 +16,7 @@
             <h5>Sinopsis</h5>
             <p>{{ audiovisual.sinopsis }}</p>
           </div>
-          <div style="width:30%" class="ml-2">
+          <div class="width-platforms">
             <h5 v-if="stream.length > 0 || alquilar.length > 0 || comprar.length > 0">Ver ahora</h5>
             <div v-if="stream.length > 0" class="mt-2 mb-2">
               <span>Stream</span>

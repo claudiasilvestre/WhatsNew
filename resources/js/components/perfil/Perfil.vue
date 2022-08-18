@@ -27,7 +27,7 @@
                         {{ seguimiento }}
                     </button>
                 </div>
-                <div class="d-flex justify-content-between">
+                <div class="row-between">
                     <b-tabs>
                         <b-tab title="Actividad" active><actividad @cambio="cambio" /></b-tab>
                         <b-tab title="Colección"><coleccion /></b-tab>

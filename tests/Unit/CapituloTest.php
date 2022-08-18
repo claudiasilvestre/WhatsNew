@@ -486,7 +486,7 @@ class CapituloTest extends TestCase
             'persona_id' => $this->user->id,
         ]);
 
-        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
+        $response = $this->post('/api/visualizacion-capitulo/'.$this->capitulo->id);
 
         $response->assertOk();
         $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
@@ -515,7 +515,7 @@ class CapituloTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
+        $response = $this->post('/api/visualizacion-capitulo/'.$this->capitulo->id);
 
         $response->assertOk();
         $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
@@ -564,7 +564,7 @@ class CapituloTest extends TestCase
             'persona_id' => $this->user->id,
         ]);
 
-        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
+        $response = $this->post('/api/visualizacion-capitulo/'.$this->capitulo->id);
 
         $response->assertOk();
         $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->user->id)
@@ -590,7 +590,7 @@ class CapituloTest extends TestCase
             'persona_id' => $this->user->id,
         ]);
 
-        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
+        $response = $this->post('/api/visualizacion-capitulo/'.$this->capitulo->id);
 
         $response->assertOk();
         $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->user->id)
@@ -605,7 +605,7 @@ class CapituloTest extends TestCase
      */
     public function test_create_or_delete_episode_viewing_not_logged_in_user_from_episode()
     {
-        $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
+        $response = $this->post('/api/visualizacion-capitulo/'.$this->capitulo->id);
 
         $response->assertUnauthorized();
     }
