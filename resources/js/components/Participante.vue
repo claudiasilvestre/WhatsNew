@@ -3,15 +3,15 @@
         <div>
             <app-header />
             <div v-if="!loading" class="content header">
-                <img v-if="participante.foto" class="rounded" v-bind:src="participante.foto" v-bind:alt="participante.nombre" width="200" height="300">
-                <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="participante.nombre" width="200" height="300">
+                <img v-if="participante.foto" class="rounded" v-bind:src="participante.foto" v-bind:alt="participante.nombre" height="280">
+                <img v-else class="rounded" src="/img/blank-profile-picture.jpg" v-bind:alt="participante.nombre" height="280">
                 <div class="list">
                     <h3>{{ participante.nombre }}</h3>
                     <h5>Filmografía</h5>
                     <div class="d-flex flex-wrap">
                         <div v-for="audiovisual in audiovisuales" :key="audiovisual.id" class="mr-2">
                             <router-link :to="{ name: 'audiovisual', params: { id: audiovisual.audiovisual_id }}">
-                                <img class="rounded" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="150" height="220">
+                                <img class="rounded" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" height="200">
                             </router-link>
                         </div>
                     </div>

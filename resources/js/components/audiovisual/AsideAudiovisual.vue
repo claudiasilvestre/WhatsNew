@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img class="rounded" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="200" height="300">
+        <img class="rounded img-fluid" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="200" height="300">
         <star-rating v-model="rating" :increment="0.5" :star-size="30" text-class="custom-text"></star-rating>
         <div v-if="!loading" class="buttons width">
             <button v-bind:class="{'btn btn-danger': !clicked1, 'btn btn-outline-danger': clicked1}" @click="seguimiento(1)" class="m-1"><b-icon icon="clock"></b-icon>
