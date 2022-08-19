@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div v-for="(capitulo, index) in capitulos" :key="capitulo.id" class="list d-flex flex-row background2 mb-2">
+        <div v-for="(capitulo, index) in capitulos" :key="capitulo.id" class="list-capitulos background2 mb-2">
             <router-link :to="{ name: 'capitulo', params: { idAudiovisual: idAudiovisual, idCapitulo: capitulo.id }}">
-                <img class="rounded" v-bind:src="capitulo.cartel" v-bind:alt="capitulo.nombre" width="250" height="140">
+                <img class="rounded ml-4" v-bind:src="capitulo.cartel" v-bind:alt="capitulo.nombre" width="250" height="140">
             </router-link>
-            <div class="w-100 pl-4 d-flex flex-row justify-content-between">
+            <div class="w-100 p-4 d-flex flex-row justify-content-between">
                 <div>
                     <router-link :to="{ name: 'capitulo', params: { idAudiovisual: idAudiovisual, idCapitulo: capitulo.id }}">
                         <h5>{{ capitulo.nombre }}</h5>

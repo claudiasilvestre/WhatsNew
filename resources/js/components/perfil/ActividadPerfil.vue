@@ -1,44 +1,46 @@
 <template>
-    <div class="pr-2">
+    <div class="pr-2 mt-4">
         <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mt-2 mb-2 rounded background2 d-flex justify-content-between">
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex flex-column">
-                <div>
+                <div class="d-flex flex-row">
                     <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
-                    {{ usuario.nombre }}
-                    <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
-                    <span v-else-if="actividad.tipo === 2"> sigue </span>
-                    <span v-else-if="actividad.tipo === 3"> ha visto </span>
-                    <span v-if="actividad.tipoAudiovisual_id === 1">la película </span>
-                    <span v-else-if="actividad.tipoAudiovisual_id === 2">la serie </span>
-                    <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
-                        <span>{{ actividad.titulo_audiovisual }}</span>
-                    </router-link>
+                    <div class="m-2">
+                        <span>{{ usuario.nombre }}</span>
+                        <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
+                        <span v-else-if="actividad.tipo === 2"> sigue </span>
+                        <span v-else-if="actividad.tipo === 3"> ha visto </span>
+                        <span v-if="actividad.tipoAudiovisual_id === 1">la película </span>
+                        <span v-else-if="actividad.tipoAudiovisual_id === 2">la serie </span>
+                        <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
+                            <span>{{ actividad.titulo_audiovisual }}</span>
+                        </router-link>
+                    </div>
                 </div>
                 <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
             </div>
             <div v-else-if="actividad.numero_capitulo" class="d-flex flex-column">
-                <span>
+                <div class="d-flex flex-row">
                     <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
-                    {{ usuario.nombre }} ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
+                    <span class="m-2">{{ usuario.nombre }} ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
                     - {{ actividad.nombre }} de 
                     <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
                         {{ actividad.titulo_audiovisual_capitulo }}
-                    </router-link>
-                </span>
+                    </router-link></span>
+                </div>
                 <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
             </div>
             <div v-else-if="actividad.numero_temporada_actividad" class="d-flex flex-column">
-                <span>
+                <div class="d-flex flex-row">
                     <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
-                    {{ usuario.nombre }} ha visto la temporada {{ actividad.numero_temporada_actividad }} 
+                    <span class="m-2">{{ usuario.nombre }} ha visto la temporada {{ actividad.numero_temporada_actividad }} 
                     de 
                     <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
                         {{ actividad.titulo_audiovisual_temporada }}
-                    </router-link>
-                </span>
+                    </router-link></span>
+                </div>
                 <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
             </div>
-            <div class="d-flex align-items-start">
+            <div class="d-flex align-items-center">
                 <router-link v-if="actividad.id_audiovisual" :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
                     <img class="rounded p-2" v-bind:src="actividad.audiovisual_cartel" v-bind:alt="actividad.titulo_audiovisual" width="55" height="80">
                 </router-link>
@@ -50,9 +52,8 @@
                 <router-link v-if="actividad.id_audiovisual_temporada" :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
                     <img class="rounded p-2" v-bind:src="actividad.temporada_cartel" v-bind:alt="actividad.titulo_audiovisual_temporada" width="55" height="80">
                 </router-link>
-
-                <b-icon v-if="Number(usuario_id) === currentUser.id" icon="x-circle" variant="danger" @click="borrarActividad(actividad.id)" class="pointer"></b-icon>
             </div>
+            <b-icon v-if="Number(usuario_id) === currentUser.id" icon="x-circle" variant="danger" @click="borrarActividad(actividad.id)" class="pointer"></b-icon>
         </div>
     </div>
 </template>

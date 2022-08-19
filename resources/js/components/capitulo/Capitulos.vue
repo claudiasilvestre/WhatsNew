@@ -6,7 +6,7 @@
                 :key="'light'"
             ></b-spinner>
         </div>
-        <div v-else class="d-flex justify-content-between listTemporada">
+        <div v-else class="header-capitulos listTemporada">
             <div>
                 <v-select
                     v-model="selected"
@@ -18,7 +18,7 @@
                     v-on:change="updateCapitulos(selected)"
                 />
             </div>
-            <div class="d-flex align-items-start">
+            <div>
                 <button v-bind:class="{'btn btn-light': !state, 'btn btn-danger': state}" @click="vista(selected.id)" class="m-1">
                     Marcar temporada como vista
                 <b-icon icon="check-circle"></b-icon></button>

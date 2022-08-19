@@ -271,6 +271,18 @@ a {
     width: 70%;
 }
 
+.list-capitulos {
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.header-capitulos {
+    display: flex;
+    justify-content: space-between;
+}
+
 @media screen and (max-width: 633px) {
     .content {
         margin-top: 90px;
@@ -287,5 +299,45 @@ a {
 
     .width-info {
         width: 100%;
+    }
+
+    .headerMedia {
+        flex-direction: column;
+    }
+
+    .itemsHeaderMedia {
+        align-items: start;
+        flex-direction: column;
+    }
+
+    .item {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 790px) {
+    .header-capitulos {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .v-text-field__details {
+        display: none !important;
+    }
+
+    .listTemporada {
+        padding-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 970px) {
+    .list-capitulos {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .item {
+        font-size: 14px;
     }
 }

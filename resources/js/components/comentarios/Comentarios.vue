@@ -12,7 +12,7 @@
                 <b-button @click="guardarComentario" variant="info" class="mt-3">Comentar</b-button>
             </div>
         </div>
-        <b-tabs>
+        <b-tabs class="mt-8">
             <b-tab title="Más recientes" class="tabsComentarios" active>
                 <lista-comentarios v-if="audiovisual" :audiovisual="audiovisual" :creado="clicked" :tipo=1 @cambio="cambio" />
                 <lista-comentarios v-else :capitulo="capitulo" :creado="clicked" :tipo=1 @cambio="cambio" />
