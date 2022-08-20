@@ -25,6 +25,8 @@ class Persona extends Authenticatable
         'email',
         'password',
         'foto',
+        'tipoPersona_id',
+        'tipoParticipante_id',
     ];
 
     /**

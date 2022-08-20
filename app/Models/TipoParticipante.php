@@ -10,4 +10,8 @@ class TipoParticipante extends Model
     use HasFactory;
 
     protected $table = 'tipo_participante';
+
+    protected $fillable = [
+        'nombre',
+    ];
 }
