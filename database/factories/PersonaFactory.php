@@ -22,7 +22,7 @@ class PersonaFactory extends Factory
             'usuario' => $this->faker->unique()->word(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
             'remember_token' => Str::random(10),
         ];
     }

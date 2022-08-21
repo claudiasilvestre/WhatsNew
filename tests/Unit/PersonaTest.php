@@ -8,6 +8,7 @@ use App\Models\TipoParticipante;
 use App\Models\Participacion;
 use App\Models\TipoAudiovisual;
 use App\Models\Audiovisual;
+use App\Models\SeguimientoPersona;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -178,6 +179,147 @@ class PersonaTest extends TestCase
     public function test_get_person_info_not_logged_in_user()
     {
         $response = $this->getJson('/api/info-usuario/'.$this->user->id);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Change password with logged in user.
+     *
+     * @return void
+     */
+    public function test_change_password_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $request = [
+            'current_password' => '12345678',
+            'password' => '123456789',
+            'password_confirmation' => '123456789',
+        ];
+        
+        $response = $this->putJson('/api/guardar-password', $request);
+
+        $response->assertOk();
+    }
+
+    /**
+     * Change password with wrong current password.
+     *
+     * @return void
+     */
+    public function test_change_password_with_wrong_current_password()
+    {
+        $this->actingAs($this->user);
+
+        $request = [
+            'current_password' => '12345679',
+            'password' => '123456789',
+            'password_confirmation' => '123456789',
+        ];
+        
+        $response = $this->putJson('/api/guardar-password', $request);
+
+        $response->assertUnprocessable();
+    }
+
+    /**
+     * Change password without logged in user.
+     *
+     * @return void
+     */
+    public function test_change_password_not_logged_in_user()
+    {
+        $request = [
+            'current_password' => '12345678',
+            'password' => '123456789',
+            'password_confirmation' => '123456789',
+        ];
+        
+        $response = $this->putJson('/api/guardar-password', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Get user following with logged in user.
+     *
+     * @return void
+     */
+    public function test_get_user_following_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $user2 = Persona::factory()->create([
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
+        ]);
+
+        SeguimientoPersona::create([
+            'personaActual_id' => $this->user->id,
+            'persona_id' => $user2->id,
+        ]);
+
+        $request = [
+            'usuarioActual_id' => $this->user->id,
+            'usuario_id' => $user2->id,
+        ];
+
+        $response = $this->call('GET', '/api/saber-seguimiento-usuario', $request);
+
+        $response->assertOk();
+        $this->assertTrue($response->original);
+    }
+
+    /**
+     * Get user following without user following existing.
+     *
+     * @return void
+     */
+    public function test_get_user_following_and_user_following_not_existing()
+    {
+        $this->actingAs($this->user);
+
+        $user2 = Persona::factory()->create([
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
+        ]);
+
+        $request = [
+            'usuarioActual_id' => $this->user->id,
+            'usuario_id' => $user2->id,
+        ];
+
+        $response = $this->call('GET', '/api/saber-seguimiento-usuario', $request);
+
+        $response->assertOk();
+        $this->assertFalse($response->original);
+    }
+
+    /**
+     * Get user following without logged in user.
+     *
+     * @return void
+     */
+    public function test_get_user_following_not_logged_in_user()
+    {
+        $user2 = Persona::factory()->create([
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
+        ]);
+
+        $request = [
+            'usuarioActual_id' => $this->user->id,
+            'usuario_id' => $user2->id,
+        ];
+
+        $response = $this->call('GET', '/api/saber-seguimiento-usuario', $request);
 
         $response->assertUnauthorized();
     }
