@@ -10,6 +10,7 @@ use App\Models\TipoAudiovisual;
 use App\Models\Audiovisual;
 use App\Models\SeguimientoPersona;
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -184,11 +185,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Change information user profile with logged in user.
+     * Change information user profile without new profile picture.
      *
      * @return void
      */
-    public function test_change_information_user_profile_logged_in_user()
+    public function test_change_information_user_profile_without_new_picture()
     {
         $this->actingAs($this->user);
 
@@ -201,7 +202,35 @@ class PersonaTest extends TestCase
         $response = $this->postJson('/api/guardar-informacion', $request);
 
         $response->assertOk();
-        $this->assertTrue(Persona::where('nombre', 'Claudia')->where('usuario', 'claudia')->where('email', $this->user->email)->exists());
+        $this->assertTrue(Persona::where('nombre', 'Claudia')
+                                 ->where('usuario', 'claudia')
+                                 ->where('email', $this->user->email)
+                                 ->exists());
+    }
+
+    /**
+     * Change information user profile with new profile picture.
+     *
+     * @return void
+     */
+    public function test_change_information_user_profile_with_new_picture()
+    {
+        $this->actingAs($this->user);
+
+        $request = [
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => $this->user->email,
+            'imagen' => UploadedFile::fake()->image('avatar.jpg'),
+        ];
+        
+        $response = $this->postJson('/api/guardar-informacion', $request);
+
+        $response->assertOk();
+        $this->assertTrue(Persona::where('nombre', 'Claudia')
+                                 ->where('usuario', 'claudia')
+                                 ->where('email', $this->user->email)
+                                 ->exists());
     }
 
     /**
@@ -313,11 +342,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get user following without user following existing.
+     * Get following user without follow existing.
      *
      * @return void
      */
-    public function test_get_user_following_and_user_following_not_existing()
+    public function test_get_following_user_and_follow_not_existing()
     {
         $this->actingAs($this->user);
 
@@ -340,11 +369,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get user following without logged in user.
+     * Get following user without logged in user.
      *
      * @return void
      */
-    public function test_get_user_following_not_logged_in_user()
+    public function test_get_following_user_not_logged_in_user()
     {
         $user2 = Persona::factory()->create([
             'nombre' => 'Claudia',
@@ -364,11 +393,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Create user following.
+     * Create following user.
      *
      * @return void
      */
-    public function test_user_following()
+    public function test_following_user()
     {
         $this->actingAs($this->user);
 
@@ -391,11 +420,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Delete user following because user following exists.
+     * Delete following user because follow exists.
      *
      * @return void
      */
-    public function test_user_following_existing()
+    public function test_following_user_existing()
     {
         $this->actingAs($this->user);
 
@@ -423,11 +452,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Create or delete user following without logged in user.
+     * Create or delete following user without logged in user.
      *
      * @return void
      */
-    public function test_create_or_delete_user_following_not_logged_in_user()
+    public function test_create_or_delete_following_user_not_logged_in_user()
     {
         $user2 = Persona::factory()->create([
             'nombre' => 'Claudia',
