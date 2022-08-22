@@ -38,12 +38,12 @@ class AudiovisualController extends Controller
     }
 
     public function participacion($persona_id) {
-        $personas = DB::table('audiovisual')
+        $audiovisuales = DB::table('audiovisual')
                                 ->join('participacion', 'audiovisual.id', '=', 'participacion.audiovisual_id')
                                 ->where('participacion.persona_id', '=', $persona_id)
                                 ->get();
 
-        return response()->json($personas);
+        return response()->json($audiovisuales);
     }
 
     public function saber_seguimiento_audiovisual(Request $request) {

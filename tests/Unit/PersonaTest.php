@@ -310,11 +310,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get user following with logged in user.
+     * Get user tracking with logged in user.
      *
      * @return void
      */
-    public function test_get_user_following_logged_in_user()
+    public function test_get_user_tracking_logged_in_user()
     {
         $this->actingAs($this->user);
 
@@ -342,11 +342,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get following user without follow existing.
+     * Get user tracking without tracking existing.
      *
      * @return void
      */
-    public function test_get_following_user_and_follow_not_existing()
+    public function test_get_user_tracking_and_tracking_not_existing()
     {
         $this->actingAs($this->user);
 
@@ -369,11 +369,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get following user without logged in user.
+     * Get user tracking without logged in user.
      *
      * @return void
      */
-    public function test_get_following_user_not_logged_in_user()
+    public function test_get_user_tracking_not_logged_in_user()
     {
         $user2 = Persona::factory()->create([
             'nombre' => 'Claudia',
@@ -393,11 +393,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Create following user.
+     * Create user tracking.
      *
      * @return void
      */
-    public function test_following_user()
+    public function test_user_tracking()
     {
         $this->actingAs($this->user);
 
@@ -420,11 +420,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Delete following user because follow exists.
+     * Delete user tracking because tracking exists.
      *
      * @return void
      */
-    public function test_following_user_existing()
+    public function test_user_tracking_existing()
     {
         $this->actingAs($this->user);
 
@@ -452,11 +452,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Create or delete following user without logged in user.
+     * Create or delete user tracking without logged in user.
      *
      * @return void
      */
-    public function test_create_or_delete_following_user_not_logged_in_user()
+    public function test_create_or_delete_user_tracking_not_logged_in_user()
     {
         $user2 = Persona::factory()->create([
             'nombre' => 'Claudia',
