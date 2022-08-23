@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('proveedor', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
             $table->string('nombre', 64);
-            $table->string('logo', 64);
+            $table->string('logo', 64)->nullable();
             $table->timestamps();
         });
     }
