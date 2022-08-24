@@ -12,6 +12,9 @@ use App\Models\SeguimientoAudiovisual;
 use App\Models\Proveedor;
 use App\Models\ProveedorAudiovisual;
 use App\Models\Valoracion;
+use App\Models\Temporada;
+use App\Models\Capitulo;
+use App\Models\VisualizacionCapitulo;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -251,6 +254,181 @@ class AudiovisualTest extends TestCase
     }
 
     /**
+     * Audiovisual tracking with audiovisual tracking existing.
+     *
+     * @return void
+     */
+    public function test_audiovisual_tracking_with_audiovisual_tracking_existing()
+    {
+        $this->actingAs($this->user);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'estado' => 3,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'audiovisual_id' => $this->pelicula->id,
+            'tipo' => 3,
+        ];
+
+        $response = $this->call('POST', '/api/seguimiento-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertFalse(SeguimientoAudiovisual::where('audiovisual_id', $this->pelicula->id)
+                                                 ->where('persona_id', $this->user->id)
+                                                 ->where('estado', 3)->exists());
+    }
+
+    /**
+     * Audiovisual tracking without audiovisual tracking existing.
+     *
+     * @return void
+     */
+    public function test_audiovisual_tracking_without_audiovisual_tracking_existing()
+    {
+        $this->actingAs($this->user);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'audiovisual_id' => $this->pelicula->id,
+            'tipo' => 3,
+        ];
+
+        $response = $this->call('POST', '/api/seguimiento-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(SeguimientoAudiovisual::where('audiovisual_id', $this->pelicula->id)
+                                                 ->where('persona_id', $this->user->id)
+                                                 ->where('estado', 3)->exists());
+    }
+
+    /**
+     * Audiovisual tracking with type 1.
+     *
+     * @return void
+     */
+    public function test_audiovisual_tracking_with_type_1()
+    {
+        $this->actingAs($this->user);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $serie->id,
+            'persona_id' => $this->user->id,
+            'estado' => 2,
+        ]);
+
+        VisualizacionCapitulo::create([
+            'persona_id' => $this->user->id,
+            'capitulo_id' => $capitulo->id
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'audiovisual_id' => $serie->id,
+            'tipo' => 1,
+        ];
+
+        $response = $this->call('POST', '/api/seguimiento-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(SeguimientoAudiovisual::where('audiovisual_id', $serie->id)
+                                                 ->where('persona_id', $this->user->id)
+                                                 ->where('estado', 1)
+                                                 ->exists());
+        $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                 ->where('capitulo_id', $capitulo->id)
+                                                 ->exists());
+    }
+
+    /**
+     * Audiovisual tracking with type 3.
+     *
+     * @return void
+     */
+    public function test_audiovisual_tracking_with_type_3()
+    {
+        $this->actingAs($this->user);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $serie->id,
+            'persona_id' => $this->user->id,
+            'estado' => 2,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'audiovisual_id' => $serie->id,
+            'tipo' => 3,
+        ];
+
+        $response = $this->call('POST', '/api/seguimiento-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(SeguimientoAudiovisual::where('audiovisual_id', $serie->id)
+                                                 ->where('persona_id', $this->user->id)
+                                                 ->where('estado', 3)
+                                                 ->exists());
+        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
+                                                 ->where('capitulo_id', $capitulo->id)
+                                                 ->exists());
+    }
+
+    /**
+     * Audiovisual tracking without logged in user.
+     *
+     * @return void
+     */
+    public function test_audiovisual_tracking_not_logged_in_user()
+    {
+        $request = [
+            'usuario_id' => $this->user->id,
+            'audiovisual_id' => $this->pelicula->id,
+            'tipo' => 3,
+        ];
+
+        $response = $this->call('POST', '/api/seguimiento-audiovisual', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
      * Get providers with logged in user.
      *
      * @return void
@@ -369,6 +547,84 @@ class AudiovisualTest extends TestCase
     }
 
     /**
+     * Audiovisual rating with audiovisual rating existing.
+     *
+     * @return void
+     */
+    public function test_audiovisual_rating_with_audiovisual_rating_existing()
+    {
+        $this->actingAs($this->user);
+
+        Valoracion::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'puntuacion' => 5,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'audiovisual_id' => $this->pelicula->id,
+            'puntuacion' => 4,
+        ];
+
+        $response = $this->call('POST', '/api/valoracion-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(Valoracion::where('audiovisual_id', $this->pelicula->id)
+                                    ->where('persona_id', $this->user->id)
+                                    ->where('puntuacion', 4)
+                                    ->exists());
+        $this->assertTrue(Audiovisual::where('id', $this->pelicula->id)
+                                     ->where('puntuacion', 4)
+                                     ->exists());
+    }
+
+    /**
+     * Audiovisual rating without audiovisual rating existing.
+     *
+     * @return void
+     */
+    public function test_audiovisual_rating_without_audiovisual_rating_existing()
+    {
+        $this->actingAs($this->user);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'audiovisual_id' => $this->pelicula->id,
+            'puntuacion' => 5,
+        ];
+
+        $response = $this->call('POST', '/api/valoracion-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(Valoracion::where('audiovisual_id', $this->pelicula->id)
+                                    ->where('persona_id', $this->user->id)
+                                    ->where('puntuacion', 5)
+                                    ->exists());
+        $this->assertTrue(Audiovisual::where('id', $this->pelicula->id)
+                                     ->where('puntuacion', 5)
+                                     ->exists());
+    }
+
+    /**
+     * Audiovisual rating without logged in user.
+     *
+     * @return void
+     */
+    public function test_audiovisual_rating_not_logged_in_user()
+    {
+        $request = [
+            'usuario_id' => $this->user->id,
+            'audiovisual_id' => $this->pelicula->id,
+            'puntuacion' => 5,
+        ];
+
+        $response = $this->call('POST', '/api/valoracion-audiovisual', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
      * Get audiovisual rating with audiovisual rating existing.
      *
      * @return void
@@ -427,6 +683,110 @@ class AudiovisualTest extends TestCase
         ];
 
         $response = $this->call('GET', '/api/saber-valoracion-audiovisual', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Get my colection with logged in user.
+     *
+     * @return void
+     */
+    public function test_get_my_colection_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $peliculaVista = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
+            'titulo' => 'Fargo',
+        ]);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'estado' => 1,
+        ]);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $peliculaVista->id,
+            'persona_id' => $this->user->id,
+            'estado' => 3,
+        ]);
+
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $seriePendiente = Audiovisual::create([
+            'id' => 3,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $serieSeguida = Audiovisual::create([
+            'id' => 4,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Lost',
+        ]);
+
+        $serieVista = Audiovisual::create([
+            'id' => 5,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Fargo',
+        ]);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $seriePendiente->id,
+            'persona_id' => $this->user->id,
+            'estado' => 1,
+        ]);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $serieSeguida->id,
+            'persona_id' => $this->user->id,
+            'estado' => 2,
+        ]);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $serieVista->id,
+            'persona_id' => $this->user->id,
+            'estado' => 3,
+        ]);
+
+        $response = $this->getJson('/api/mi-coleccion');
+
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has('series', 3)
+                         ->has('series_pendientes', 1, fn ($json) =>
+                            $json->where('audiovisual_id', strval($seriePendiente->id))
+                                ->etc()
+                         )->has('series_siguiendo', 1, fn ($json) =>
+                            $json->where('audiovisual_id', strval($serieSeguida->id))
+                                ->etc()
+                        )->has('series_vistas', 1, fn ($json) =>
+                            $json->where('audiovisual_id', strval($serieVista->id))
+                                ->etc()
+                        )->has('peliculas', 2)
+                         ->has('peliculas_pendientes', 1, fn ($json) =>
+                            $json->where('audiovisual_id', strval($this->pelicula->id))
+                                ->etc()
+                         )->has('peliculas_vistas', 1, fn ($json) =>
+                            $json->where('audiovisual_id', strval($peliculaVista->id))
+                                ->etc()
+                         )
+                 );
+    }
+
+    /**
+     * Get my colection without logged in user.
+     *
+     * @return void
+     */
+    public function test_get_my_colection_not_logged_in_user()
+    {
+        $response = $this->getJson('/api/mi-coleccion');
 
         $response->assertUnauthorized();
     }

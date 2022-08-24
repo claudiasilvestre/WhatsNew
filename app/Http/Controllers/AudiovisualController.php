@@ -58,7 +58,7 @@ class AudiovisualController extends Controller
     public function seguimiento_audiovisual(Request $request) {
         if (SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->exists()) {            
             $seguimiento = SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->first();
-            if ($seguimiento->estado === $request->tipo) {
+            if ($seguimiento->estado == $request->tipo) {
                 $seguimiento->delete();
                 return false;
             }

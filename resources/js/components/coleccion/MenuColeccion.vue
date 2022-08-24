@@ -39,7 +39,7 @@ export default {
         }
     },
     created() {
-        axios.get('/api/mi_coleccion')
+        axios.get('/api/mi-coleccion')
             .then(response => {
                 this.series = response.data['series'];
                 this.series_pendientes = response.data['series_pendientes'];

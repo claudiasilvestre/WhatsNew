@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('/audiovisuales', AudiovisualController::class);
     Route::get('/audiovisuales-participacion/{persona_id}', [AudiovisualController::class, 'participacion']);
-    Route::get('/mi_coleccion', [AudiovisualController::class, 'mi_coleccion']);
+    Route::get('/mi-coleccion', [AudiovisualController::class, 'mi_coleccion']);
     Route::get('/recomendaciones', [AudiovisualController::class, 'recomendaciones']);
     Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracion_audiovisual']);
     Route::get('/saber-seguimiento-audiovisual', [AudiovisualController::class, 'saber_seguimiento_audiovisual']);
