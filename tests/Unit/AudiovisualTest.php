@@ -15,6 +15,7 @@ use App\Models\Valoracion;
 use App\Models\Temporada;
 use App\Models\Capitulo;
 use App\Models\VisualizacionCapitulo;
+use App\Models\VisualizacionTemporada;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -408,6 +409,9 @@ class AudiovisualTest extends TestCase
         $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
                                                  ->where('capitulo_id', $capitulo->id)
                                                  ->exists());
+        $this->assertTrue(VisualizacionTemporada::where('persona_id', $this->user->id)
+                                                 ->where('temporada_id', $temporada->id)
+                                                 ->exists());
     }
 
     /**
@@ -573,6 +577,10 @@ class AudiovisualTest extends TestCase
         $this->assertTrue(Valoracion::where('audiovisual_id', $this->pelicula->id)
                                     ->where('persona_id', $this->user->id)
                                     ->where('puntuacion', 4)
+                                    ->exists());
+        $this->assertFalse(Valoracion::where('audiovisual_id', $this->pelicula->id)
+                                    ->where('persona_id', $this->user->id)
+                                    ->where('puntuacion', 5)
                                     ->exists());
         $this->assertTrue(Audiovisual::where('id', $this->pelicula->id)
                                      ->where('puntuacion', 4)

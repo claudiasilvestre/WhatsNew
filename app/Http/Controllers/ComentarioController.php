@@ -14,6 +14,12 @@ use Illuminate\Support\Facades\Auth;
 class ComentarioController extends Controller
 {
     public function guardarAudiovisual(Request $request) {
+        $request->validate([
+            'tipo_id' => 'required',
+            'usuario_id' => 'required',
+            'texto' => 'required',
+        ]);
+
         ComentarioAudiovisual::create([
             'audiovisual_id' => $request->tipo_id,
             'persona_id' => $request->usuario_id,
@@ -27,6 +33,8 @@ class ComentarioController extends Controller
 
     public function guardarCapitulo(Request $request) {
         $request->validate([
+            'tipo_id' => 'required',
+            'usuario_id' => 'required',
             'texto' => 'required',
         ]);
 
