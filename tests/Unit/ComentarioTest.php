@@ -10,6 +10,8 @@ use App\Models\TipoAudiovisual;
 use App\Models\Audiovisual;
 use App\Models\Temporada;
 use App\Models\Capitulo;
+use App\Models\OpinionComentarioAudiovisual;
+use App\Models\OpinionComentarioCapitulo;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -352,7 +354,7 @@ class ComentarioTest extends TestCase
         $comentario1 = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
             'persona_id' => $this->user->id,
-            'texto' => 'Muy buena'
+            'texto' => 'Muy bueno'
         ]);
 
         $comentario2 = ComentarioCapitulo::create([
@@ -412,6 +414,824 @@ class ComentarioTest extends TestCase
         ];
 
         $response = $this->call('GET', '/api/comentario-capitulo', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Delete audiovisual comment with logged in user.
+     *
+     * @return void
+     */
+    public function test_delete_audiovisual_comment_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+        ]);
+
+        $response = $this->call('POST', '/api/borrar-comentario-audiovisual/'.$comentario->id);
+
+        $response->assertOk();
+        $this->assertFalse(ComentarioAudiovisual::where('audiovisual_id', $this->pelicula->id)
+                                                ->where('persona_id', $this->user->id)
+                                                ->where('texto', 'Muy buena')
+                                                ->exists());
+    }
+
+    /**
+     * Delete audiovisual comment without logged in user.
+     *
+     * @return void
+     */
+    public function test_delete_audiovisual_comment_not_logged_in_user()
+    {
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+        ]);
+
+        $response = $this->call('POST', '/api/borrar-comentario-audiovisual/'.$comentario->id);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Delete episode comment with logged in user.
+     *
+     * @return void
+     */
+    public function test_delete_episode_comment_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+        ]);
+
+        $response = $this->call('POST', '/api/borrar-comentario-capitulo/'.$comentario->id);
+
+        $response->assertOk();
+        $this->assertFalse(ComentarioCapitulo::where('capitulo_id', $capitulo->id)
+                                             ->where('persona_id', $this->user->id)
+                                             ->where('texto', 'Muy bueno')
+                                             ->exists());
+    }
+
+    /**
+     * Delete episode comment without logged in user.
+     *
+     * @return void
+     */
+    public function test_delete_episode_comment_not_logged_in_user()
+    {
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+        ]);
+
+        $response = $this->call('POST', '/api/borrar-comentario-capitulo/'.$comentario->id);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Positive audiovisual opinion with logged in user.
+     *
+     * @return void
+     */
+    public function test_positive_audiovisual_opinion_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(OpinionComentarioAudiovisual::where('persona_id', $this->user->id)
+                                                      ->where('comentarioAudiovisual_id', $comentario->id)
+                                                      ->where('opinion', true)
+                                                      ->exists());
+        $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
+                                                ->where('votosPositivos', 1)
+                                                ->exists());
+    }
+
+    /**
+     * Positive audiovisual opinion and negative opinion existing.
+     *
+     * @return void
+     */
+    public function test_positive_audiovisual_opinion_and_negative_opinion_existing()
+    {
+        $this->actingAs($this->user);
+
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+            'votosNegativos' => 1,
+        ]);
+
+        $opinion = OpinionComentarioAudiovisual::create([
+            'persona_id' => $this->user->id,
+            'comentarioAudiovisual_id' => $comentario->id,
+            'opinion' => false,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(OpinionComentarioAudiovisual::where('id', $opinion->id)
+                                                      ->where('opinion', true)
+                                                      ->exists());
+        $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
+                                                ->where('votosPositivos', 1)
+                                                ->where('votosNegativos', 0)
+                                                ->exists());
+    }
+
+    /**
+     * Positive audiovisual opinion and positive opinion existing.
+     *
+     * @return void
+     */
+    public function test_positive_audiovisual_opinion_and_positive_opinion_existing()
+    {
+        $this->actingAs($this->user);
+
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+            'votosPositivos' => 1,
+        ]);
+
+        $opinion = OpinionComentarioAudiovisual::create([
+            'persona_id' => $this->user->id,
+            'comentarioAudiovisual_id' => $comentario->id,
+            'opinion' => true,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertFalse(OpinionComentarioAudiovisual::where('id', $opinion->id)
+                                                        ->exists());
+        $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
+                                                ->where('votosPositivos', 0)
+                                                ->exists());
+    }
+
+    /**
+     * Positive audiovisual opinion without logged in user.
+     *
+     * @return void
+     */
+    public function test_positive_audiovisual_opinion_not_logged_in_user()
+    {
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Negative audiovisual opinion with logged in user.
+     *
+     * @return void
+     */
+    public function test_negative_audiovisual_opinion_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(OpinionComentarioAudiovisual::where('persona_id', $this->user->id)
+                                                      ->where('comentarioAudiovisual_id', $comentario->id)
+                                                      ->where('opinion', false)
+                                                      ->exists());
+        $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
+                                                ->where('votosNegativos', 1)
+                                                ->exists());
+    }
+
+    /**
+     * Negative audiovisual opinion and positive opinion existing.
+     *
+     * @return void
+     */
+    public function test_negative_audiovisual_opinion_and_positive_opinion_existing()
+    {
+        $this->actingAs($this->user);
+
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+            'votosPositivos' => 1,
+        ]);
+
+        $opinion = OpinionComentarioAudiovisual::create([
+            'persona_id' => $this->user->id,
+            'comentarioAudiovisual_id' => $comentario->id,
+            'opinion' => true,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertTrue(OpinionComentarioAudiovisual::where('id', $opinion->id)
+                                                      ->where('opinion', false)
+                                                      ->exists());
+        $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
+                                                ->where('votosPositivos', 0)
+                                                ->where('votosNegativos', 1)
+                                                ->exists());
+    }
+
+    /**
+     * Negative audiovisual opinion and negative opinion existing.
+     *
+     * @return void
+     */
+    public function test_negative_audiovisual_opinion_and_negative_opinion_existing()
+    {
+        $this->actingAs($this->user);
+
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+            'votosNegativos' => 1,
+        ]);
+
+        $opinion = OpinionComentarioAudiovisual::create([
+            'persona_id' => $this->user->id,
+            'comentarioAudiovisual_id' => $comentario->id,
+            'opinion' => false,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertFalse(OpinionComentarioAudiovisual::where('id', $opinion->id)
+                                                        ->exists());
+        $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
+                                                ->where('votosNegativos', 0)
+                                                ->exists());
+    }
+
+    /**
+     * Negative audiovisual opinion without logged in user.
+     *
+     * @return void
+     */
+    public function test_negative_audiovisual_opinion_not_logged_in_user()
+    {
+        $comentario = ComentarioAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy buena',
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Positive episode opinion with logged in user.
+     *
+     * @return void
+     */
+    public function test_positive_episode_opinion_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->user->id)
+                                                      ->where('comentarioCapitulo_id', $comentario->id)
+                                                      ->where('opinion', true)
+                                                      ->exists());
+        $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
+                                                ->where('votosPositivos', 1)
+                                                ->exists());
+    }
+
+    /**
+     * Positive episode opinion and negative opinion existing.
+     *
+     * @return void
+     */
+    public function test_positive_episode_opinion_and_negative_opinion_existing()
+    {
+        $this->actingAs($this->user);
+
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+            'votosNegativos' => 1,
+        ]);
+
+        $opinion = OpinionComentarioCapitulo::create([
+            'persona_id' => $this->user->id,
+            'comentarioCapitulo_id' => $comentario->id,
+            'opinion' => false,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertTrue(OpinionComentarioCapitulo::where('id', $opinion->id)
+                                                      ->where('opinion', true)
+                                                      ->exists());
+        $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
+                                                ->where('votosPositivos', 1)
+                                                ->where('votosNegativos', 0)
+                                                ->exists());
+    }
+
+    /**
+     * Positive episode opinion and positive opinion existing.
+     *
+     * @return void
+     */
+    public function test_positive_episode_opinion_and_positive_opinion_existing()
+    {
+        $this->actingAs($this->user);
+
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+            'votosPositivos' => 1,
+        ]);
+
+        $opinion = OpinionComentarioCapitulo::create([
+            'persona_id' => $this->user->id,
+            'comentarioCapitulo_id' => $comentario->id,
+            'opinion' => true,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertFalse(OpinionComentarioCapitulo::where('id', $opinion->id)
+                                                        ->exists());
+        $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
+                                                ->where('votosPositivos', 0)
+                                                ->exists());
+    }
+
+    /**
+     * Positive episode opinion without logged in user.
+     *
+     * @return void
+     */
+    public function test_positive_episode_opinion_not_logged_in_user()
+    {
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Negative episode opinion with logged in user.
+     *
+     * @return void
+     */
+    public function test_negative_episode_opinion_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->user->id)
+                                                      ->where('comentarioCapitulo_id', $comentario->id)
+                                                      ->where('opinion', false)
+                                                      ->exists());
+        $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
+                                                ->where('votosNegativos', 1)
+                                                ->exists());
+    }
+
+    /**
+     * Negative episode opinion and positive opinion existing.
+     *
+     * @return void
+     */
+    public function test_negative_episode_opinion_and_positive_opinion_existing()
+    {
+        $this->actingAs($this->user);
+
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+            'votosPositivos' => 1,
+        ]);
+
+        $opinion = OpinionComentarioCapitulo::create([
+            'persona_id' => $this->user->id,
+            'comentarioCapitulo_id' => $comentario->id,
+            'opinion' => true,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertTrue(OpinionComentarioCapitulo::where('id', $opinion->id)
+                                                      ->where('opinion', false)
+                                                      ->exists());
+        $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
+                                                ->where('votosPositivos', 0)
+                                                ->where('votosNegativos', 1)
+                                                ->exists());
+    }
+
+    /**
+     * Negative episode opinion and negative opinion existing.
+     *
+     * @return void
+     */
+    public function test_negative_episode_opinion_and_negative_opinion_existing()
+    {
+        $this->actingAs($this->user);
+
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+            'votosNegativos' => 1,
+        ]);
+
+        $opinion = OpinionComentarioCapitulo::create([
+            'persona_id' => $this->user->id,
+            'comentarioCapitulo_id' => $comentario->id,
+            'opinion' => false,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
+
+        $response->assertOk();
+        $this->assertFalse(OpinionComentarioCapitulo::where('id', $opinion->id)
+                                                        ->exists());
+        $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
+                                                ->where('votosNegativos', 0)
+                                                ->exists());
+    }
+
+    /**
+     * Negative episode opinion without logged in user.
+     *
+     * @return void
+     */
+    public function test_negative_episode_opinion_not_logged_in_user()
+    {
+        $tipoSerie = TipoAudiovisual::create([
+            'nombre' => 'Serie',
+        ]);
+
+        $serie = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $tipoSerie->id,
+            'titulo' => 'Breaking Bad',
+        ]);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $comentario = ComentarioCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->user->id,
+            'texto' => 'Muy bueno',
+        ]);
+
+        $request = [
+            'usuario_id' => $this->user->id,
+            'comentario_id' => $comentario->id,
+        ];
+
+        $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
 
         $response->assertUnauthorized();
     }

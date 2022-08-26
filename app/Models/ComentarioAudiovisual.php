@@ -15,6 +15,7 @@ class ComentarioAudiovisual extends Model
         'audiovisual_id',
         'persona_id',
         'texto',
-        'votosPositivos'
+        'votosPositivos',
+        'votosNegativos',
     ];
 }

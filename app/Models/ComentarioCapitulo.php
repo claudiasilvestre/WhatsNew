@@ -15,6 +15,7 @@ class ComentarioCapitulo extends Model
         'capitulo_id',
         'persona_id',
         'texto',
-        'votosPositivos'
+        'votosPositivos',
+        'votosNegativos',
     ];
 }
