@@ -15,6 +15,9 @@ class Audiovisual extends Model
         'id',
         'tipoAudiovisual_id',
         'titulo',
+        'genero_id',
+        'idioma_id',
+        'puntuacion',
     ];
 
     public $incrementing = false;

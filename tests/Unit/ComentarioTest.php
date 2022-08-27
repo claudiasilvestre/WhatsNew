@@ -436,9 +436,7 @@ class ComentarioTest extends TestCase
         $response = $this->call('POST', '/api/borrar-comentario-audiovisual/'.$comentario->id);
 
         $response->assertOk();
-        $this->assertFalse(ComentarioAudiovisual::where('audiovisual_id', $this->pelicula->id)
-                                                ->where('persona_id', $this->user->id)
-                                                ->where('texto', 'Muy buena')
+        $this->assertFalse(ComentarioAudiovisual::where('id', $comentario->id)
                                                 ->exists());
     }
 
@@ -499,9 +497,7 @@ class ComentarioTest extends TestCase
         $response = $this->call('POST', '/api/borrar-comentario-capitulo/'.$comentario->id);
 
         $response->assertOk();
-        $this->assertFalse(ComentarioCapitulo::where('capitulo_id', $capitulo->id)
-                                             ->where('persona_id', $this->user->id)
-                                             ->where('texto', 'Muy bueno')
+        $this->assertFalse(ComentarioCapitulo::where('id', $comentario->id)
                                              ->exists());
     }
 
@@ -851,12 +847,12 @@ class ComentarioTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->user->id)
-                                                      ->where('comentarioCapitulo_id', $comentario->id)
-                                                      ->where('opinion', true)
-                                                      ->exists());
+                                                    ->where('comentarioCapitulo_id', $comentario->id)
+                                                    ->where('opinion', true)
+                                                    ->exists());
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
-                                                ->where('votosPositivos', 1)
-                                                ->exists());
+                                            ->where('votosPositivos', 1)
+                                            ->exists());
     }
 
     /**
@@ -911,12 +907,12 @@ class ComentarioTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioCapitulo::where('id', $opinion->id)
-                                                      ->where('opinion', true)
-                                                      ->exists());
+                                                    ->where('opinion', true)
+                                                    ->exists());
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
-                                                ->where('votosPositivos', 1)
-                                                ->where('votosNegativos', 0)
-                                                ->exists());
+                                            ->where('votosPositivos', 1)
+                                            ->where('votosNegativos', 0)
+                                            ->exists());
     }
 
     /**
@@ -971,10 +967,10 @@ class ComentarioTest extends TestCase
 
         $response->assertOk();
         $this->assertFalse(OpinionComentarioCapitulo::where('id', $opinion->id)
-                                                        ->exists());
+                                                    ->exists());
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
-                                                ->where('votosPositivos', 0)
-                                                ->exists());
+                                            ->where('votosPositivos', 0)
+                                            ->exists());
     }
 
     /**
@@ -1066,12 +1062,12 @@ class ComentarioTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->user->id)
-                                                      ->where('comentarioCapitulo_id', $comentario->id)
-                                                      ->where('opinion', false)
-                                                      ->exists());
+                                                    ->where('comentarioCapitulo_id', $comentario->id)
+                                                    ->where('opinion', false)
+                                                    ->exists());
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
-                                                ->where('votosNegativos', 1)
-                                                ->exists());
+                                            ->where('votosNegativos', 1)
+                                            ->exists());
     }
 
     /**
@@ -1126,12 +1122,12 @@ class ComentarioTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioCapitulo::where('id', $opinion->id)
-                                                      ->where('opinion', false)
-                                                      ->exists());
+                                                    ->where('opinion', false)
+                                                    ->exists());
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
-                                                ->where('votosPositivos', 0)
-                                                ->where('votosNegativos', 1)
-                                                ->exists());
+                                            ->where('votosPositivos', 0)
+                                            ->where('votosNegativos', 1)
+                                            ->exists());
     }
 
     /**
@@ -1186,10 +1182,10 @@ class ComentarioTest extends TestCase
 
         $response->assertOk();
         $this->assertFalse(OpinionComentarioCapitulo::where('id', $opinion->id)
-                                                        ->exists());
+                                                    ->exists());
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
-                                                ->where('votosNegativos', 0)
-                                                ->exists());
+                                            ->where('votosNegativos', 0)
+                                            ->exists());
     }
 
     /**

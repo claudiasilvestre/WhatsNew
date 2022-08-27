@@ -16,6 +16,8 @@ use App\Models\Temporada;
 use App\Models\Capitulo;
 use App\Models\VisualizacionCapitulo;
 use App\Models\VisualizacionTemporada;
+use App\Models\Genero;
+use App\Models\Idioma;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -795,6 +797,97 @@ class AudiovisualTest extends TestCase
     public function test_get_my_colection_not_logged_in_user()
     {
         $response = $this->getJson('/api/mi-coleccion');
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Get recommended audiovisuals with logged in user.
+     *
+     * @return void
+     */
+    public function test_get_recommended_audiovisuals_logged_in_user()
+    {
+        $this->actingAs($this->user);
+
+        $generoAccion = Genero::create([
+            'id' => 1,
+            'nombre' => 'Acción'
+        ]);
+
+        $generoThriller = Genero::create([
+            'id' => 2,
+            'nombre' => 'Thriller',
+        ]);
+
+        $idiomaIngles = Idioma::create([
+            'nombre' => 'Inglés'
+        ]);
+
+        $idiomaEspanol = Idioma::create([
+            'nombre' => 'Español'
+        ]);
+
+        Audiovisual::where('id', $this->pelicula->id)
+                    ->update([
+                        'genero_id' => $generoAccion->id,
+                        'idioma_id' => $idiomaIngles->id,
+                        'puntuacion' => 5,
+                    ]);
+
+        $pelicula2 = Audiovisual::create([
+            'id' => 2,
+            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
+            'titulo' => 'El inocente',
+            'genero_id' => $generoThriller->id,
+            'idioma_id' => $idiomaEspanol->id,
+            'puntuacion' => 4,
+        ]);
+
+        $pelicula3 = Audiovisual::create([
+            'id' => 3,
+            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
+            'titulo' => 'Fargo',
+            'genero_id' => $generoAccion->id,
+            'idioma_id' => $idiomaIngles->id,
+            'puntuacion' => 4,
+        ]);
+
+        $pelicula4 = Audiovisual::create([
+            'id' => 4,
+            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
+            'titulo' => 'The Silence of the Lambs',
+            'genero_id' => $generoAccion->id,
+            'idioma_id' => $idiomaIngles->id,
+            'puntuacion' => 5,
+        ]);
+
+        SeguimientoAudiovisual::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->user->id,
+            'estado' => 3,
+        ]);
+
+        $response = $this->getJson('/api/recomendaciones');
+
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has(2)
+                    ->first(fn ($json) =>
+                        $json->where('id', strval($pelicula4->id))
+                            ->etc()
+                    )
+                 );
+    }
+
+    /**
+     * Get recommended audiovisuals without logged in user.
+     *
+     * @return void
+     */
+    public function test_get_recommended_audiovisuals_not_logged_in_user()
+    {
+        $response = $this->getJson('/api/recomendaciones');
 
         $response->assertUnauthorized();
     }

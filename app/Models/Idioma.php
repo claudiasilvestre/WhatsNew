@@ -11,7 +11,9 @@ class Idioma extends Model
 
     protected $table = 'idioma';
 
-    public $incrementing = false;
+    protected $fillable = [
+        'nombre',
+    ];
 
     public function audiovisuales()
     {

@@ -11,6 +11,11 @@ class Genero extends Model
 
     protected $table = 'genero';
 
+    protected $fillable = [
+        'id',
+        'nombre',
+    ];
+
     public $incrementing = false;
 
     public function audiovisuales()
