@@ -10,12 +10,26 @@ use App\Models\Actividad;
 
 class TemporadaController extends Controller
 {
+    /**
+     * Consulta y devuelve las temporadas de una serie por el ID de la serie.
+     * 
+     * @param integer $idSerie ID de la serie cuyas temporadas se quieren consultar.
+     *
+     * @return Response
+     */
     public function index($idSerie) {
         $temporadas = Temporada::where('audiovisual_id', $idSerie)->get();
 
         return response()->json($temporadas);
     }
 
+    /**
+     * Comprueba si el usuario actual ha visualizado una temporada o no.
+     * 
+     * @param Request $request Contiene el usuario actual y el ID de la temporada.
+     *
+     * @return boolean
+     */
     public function saber_visualizacion(Request $request) {
         if (VisualizacionTemporada::where('persona_id', $request->usuario_id)->where('temporada_id', $request->temporada_id)->exists()) {
             return true;
@@ -24,6 +38,14 @@ class TemporadaController extends Controller
         return false;
     }
 
+    /**
+     * Crea o borra visualización de temporada y de sus capítulos del usuario actual dependiendo de si existen ya
+     * y crea la actividad correspondiente en caso de creación de visualización de temporada.
+     * 
+     * @param Request $request Contiene el usuario actual, el ID de la temporada y los capítulos de la temporada.
+     *
+     * @return boolean
+     */
     public function visualizacion(Request $request) {
         if (!VisualizacionTemporada::where('persona_id', $request->usuario_id)->where('temporada_id', $request->temporada_id)->exists()) {
             VisualizacionTemporada::create([
@@ -45,7 +67,9 @@ class TemporadaController extends Controller
                     ]);
                 }
             }
+
             return true;
+
         } else {
             VisualizacionTemporada::where('persona_id', $request->usuario_id)
                 ->where('temporada_id', $request->temporada_id)

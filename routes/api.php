@@ -9,7 +9,7 @@ use App\Http\Controllers\PersonaController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ActividadController;
-use App\Http\Controllers\SearchController;
+use App\Http\Controllers\BusquedaController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -39,7 +39,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/info-usuario/{usuario_id}', [PersonaController::class, 'info']);
     Route::get('/saber-seguimiento-usuario', [PersonaController::class, 'saber_seguimiento_usuario']);
 
-    Route::get('/search/{busqueda}', [SearchController::class, 'search']);
+    Route::get('/busqueda/{busqueda}', [BusquedaController::class, 'busqueda']);
 
     Route::get('/actividad-amigos', [ActividadController::class, 'actividad_amigos']);
     Route::post('/borrar-actividad/{actividad_id}', [ActividadController::class, 'borrar_actividad']);

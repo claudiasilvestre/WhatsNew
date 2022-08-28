@@ -6,7 +6,7 @@ import Capitulo from './components/capitulo/Capitulo.vue'
 import Participante from './components/Participante.vue'
 import Perfil from './components/perfil/Perfil.vue'
 import MenuAjustes from './components/perfil/MenuAjustes.vue'
-import Search from './components/Search.vue'
+import Busqueda from './components/Busqueda.vue'
 import MiColeccion from './components/coleccion/MiColeccion.vue'
 import Index from './components/Index.vue'
 
@@ -67,9 +67,9 @@ const router = new VueRouter ({
             }
         },
         {
-            path: '/search/:busqueda',
-            name: 'search',
-            component: Search,
+            path: '/busqueda/:busqueda',
+            name: 'busqueda',
+            component: Busqueda,
             meta: {
                 requiresAuth: true
             }

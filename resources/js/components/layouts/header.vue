@@ -9,8 +9,8 @@
             </router-link>
         </div>
         <div class="d-flex flex-row search rounded">
-            <input type="search" @keydown.enter="redirectBusqueda()" name="search" v-model="busqueda" placeholder="Buscar" required/>
-            <button type="submit" @click="redirectBusqueda()">Search</button>
+            <input type="search" @keydown.enter="redirectBusqueda()" v-model="busqueda" placeholder="Buscar" required/>
+            <button type="submit" @click="redirectBusqueda()">Buscar</button>
         </div>
         <div v-if="Object.keys(currentUser).length > 0" class="header-content">
             <router-link :to="{ name: 'perfil', params: { idPersona: currentUser.id }}">
@@ -42,7 +42,7 @@ export default {
         },
         redirectBusqueda() {
             if (this.busqueda)
-                this.$router.push('/search/'+this.busqueda)
+                this.$router.push('/busqueda/'+this.busqueda)
         }
     }
 }

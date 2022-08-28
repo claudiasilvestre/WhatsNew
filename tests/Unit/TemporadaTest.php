@@ -9,6 +9,8 @@ use App\Models\Audiovisual;
 use App\Models\Temporada;
 use App\Models\Capitulo;
 use App\Models\VisualizacionTemporada;
+use App\Models\Actividad;
+use App\Models\VisualizacionCapitulo;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -17,102 +19,90 @@ class TemporadaTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user, $tipoAudiovisual;
+    protected $usuario, $tipoAudiovisual, $serie;
     
     /**
-     * Set up the test
+     * Inicializa el test
      */
     public function setUp(): void
     {
         parent::setUp();
 
         TipoPersona::factory()->create();
-        $this->user = Persona::factory()->create();
+        $this->usuario = Persona::factory()->create();
 
         $this->tipoAudiovisual = TipoAudiovisual::create([
             'nombre' => 'Serie',
         ]);
-    }
 
-    /**
-     * Get season with logged in user.
-     *
-     * @return void
-     */
-    public function test_get_season_logged_in_user()
-    {
-        $this->actingAs($this->user);
-
-        $serie = Audiovisual::create([
+        $this->serie = Audiovisual::create([
             'id' => 1,
             'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
             'titulo' => 'Breaking Bad',
         ]);
+    }
 
-        Temporada::create([
-            'audiovisual_id' => $serie->id,
+    /**
+     * Obtiene temporadas por el ID de su serie.
+     *
+     * @return void
+     */
+    public function test_obtener_temporadas()
+    {
+        $this->actingAs($this->usuario);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $this->serie->id,
             'numero' => 1,
             'nombre' => 'Temporada 1',
         ]);
         
-        $response = $this->getJson('/api/temporadas/'.$serie->id);
+        $response = $this->getJson('/api/temporadas/'.$this->serie->id);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
                     $json->has(1)
                          ->first(fn ($json) =>
-                            $json->where('audiovisual_id', strval($serie->id))
+                            $json->where('id', $temporada->id)
                                  ->etc()
                          )
                  );
     }
 
     /**
-     * Get season without logged in user.
+     * Obtiene temporadas por el ID de su serie sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_season_not_logged_in_user()
-    {
-        $serie = Audiovisual::create([
-            'id' => 1,
-            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
-            'titulo' => 'Breaking Bad',
-        ]);
-        
-        $response = $this->getJson('/api/temporadas/'.$serie->id);
+    public function test_obtener_temporadas_usuario_sin_sesion_iniciada()
+    { 
+        $response = $this->getJson('/api/temporadas/'.$this->serie->id);
 
         $response->assertUnauthorized();
     }
 
     /**
-     * Viewed season and viewed season exists.
+     * Comprueba visualización de temporada del usuario actual existiendo la visualización.
      *
      * @return void
      */
-    public function test_viewed_season_exists()
+    public function test_visualizacion_temporada_existe()
     {
-        $this->actingAs($this->user);
-
-        $serie = Audiovisual::create([
-            'id' => 1,
-            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
-            'titulo' => 'Breaking Bad',
-        ]);
+        $this->actingAs($this->usuario);
 
         $temporada = Temporada::create([
-            'audiovisual_id' => $serie->id,
+            'audiovisual_id' => $this->serie->id,
             'numero' => 1,
             'nombre' => 'Temporada 1',
         ]);
 
         VisualizacionTemporada::create([
             'temporada_id' => $temporada->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'temporada_id' => $temporada->id,
         ];
         
@@ -123,28 +113,22 @@ class TemporadaTest extends TestCase
     }
 
     /**
-     * Viewed season but viewed season doesn't exist.
+     * Comprueba visualización de temporada del usuario actual sin que exista la visualización.
      *
      * @return void
      */
-    public function test_viewed_season_not_existing()
+    public function test_visualizacion_temporada_no_existe()
     {
-        $this->actingAs($this->user);
-
-        $serie = Audiovisual::create([
-            'id' => 1,
-            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
-            'titulo' => 'Breaking Bad',
-        ]);
+        $this->actingAs($this->usuario);
 
         $temporada = Temporada::create([
-            'audiovisual_id' => $serie->id,
+            'audiovisual_id' => $this->serie->id,
             'numero' => 1,
             'nombre' => 'Temporada 1',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'temporada_id' => $temporada->id,
         ];
         
@@ -155,26 +139,20 @@ class TemporadaTest extends TestCase
     }
 
     /**
-     * Viewed season without logged in user.
+     * Comprueba visualización de temporada del usuario actual sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_viewed_season_not_logged_in_user()
+    public function test_visualizacion_temporada_sin_sesion_iniciada()
     {
-        $serie = Audiovisual::create([
-            'id' => 1,
-            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
-            'titulo' => 'Breaking Bad',
-        ]);
-
         $temporada = Temporada::create([
-            'audiovisual_id' => $serie->id,
+            'audiovisual_id' => $this->serie->id,
             'numero' => 1,
             'nombre' => 'Temporada 1',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'temporada_id' => $temporada->id,
         ];
 
@@ -184,29 +162,19 @@ class TemporadaTest extends TestCase
     }
 
     /**
-     * Viewing and viewed season exists.
+     * Crea visualización de temporada y actividad de esta y visualización de los capítulos de la temporada 
+     * del usuario actual.
      *
      * @return void
      */
-    public function test_viewing_and_season_exists()
+    public function test_crear_visualizacion_temporada()
     {
-        $this->actingAs($this->user);
-
-        $serie = Audiovisual::create([
-            'id' => 1,
-            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
-            'titulo' => 'Breaking Bad',
-        ]);
+        $this->actingAs($this->usuario);
 
         $temporada = Temporada::create([
-            'audiovisual_id' => $serie->id,
+            'audiovisual_id' => $this->serie->id,
             'numero' => 1,
             'nombre' => 'Temporada 1',
-        ]);
-
-        VisualizacionTemporada::create([
-            'temporada_id' => $temporada->id,
-            'persona_id' => $this->user->id,
         ]);
 
         $capitulo = Capitulo::create([
@@ -218,7 +186,7 @@ class TemporadaTest extends TestCase
         array_push($capitulos, $capitulo);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'temporada_id' => $temporada->id,
             'capitulos' => $capitulos,
         ];
@@ -226,28 +194,36 @@ class TemporadaTest extends TestCase
         $response = $this->call('POST', '/api/visualizacion-temporada', $request);
 
         $response->assertOk();
-        $this->assertFalse($response->original);
+        $this->assertTrue(VisualizacionTemporada::where('temporada_id', $temporada->id)
+                                                ->where('persona_id', $this->usuario->id)
+                                                ->exists());
+        $this->assertTrue(Actividad::where('persona_id', $this->usuario->id)
+                                    ->where('tipo', 3)
+                                    ->where('temporada_id', $temporada->id)
+                                    ->exists());
+        $this->assertTrue(VisualizacionCapitulo::where('capitulo_id', $capitulo->id)
+                                                ->where('persona_id', $this->usuario->id)
+                                                ->exists());
     }
 
     /**
-     * Viewing and viewed season doesn't exist.
+     * Borra visualización de temporada y de sus capítulos del usuario actual.
      *
      * @return void
      */
-    public function test_viewing_and_viewed_season_not_existing()
+    public function test_borrar_visualizacion_temporada()
     {
-        $this->actingAs($this->user);
-
-        $serie = Audiovisual::create([
-            'id' => 1,
-            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
-            'titulo' => 'Breaking Bad',
-        ]);
+        $this->actingAs($this->usuario);
 
         $temporada = Temporada::create([
-            'audiovisual_id' => $serie->id,
+            'audiovisual_id' => $this->serie->id,
             'numero' => 1,
             'nombre' => 'Temporada 1',
+        ]);
+
+        $visualizacionTemporada = VisualizacionTemporada::create([
+            'temporada_id' => $temporada->id,
+            'persona_id' => $this->usuario->id,
         ]);
 
         $capitulo = Capitulo::create([
@@ -255,11 +231,16 @@ class TemporadaTest extends TestCase
             'numero' => 1,
         ]);
 
+        $visualizacionCapitulo = VisualizacionCapitulo::create([
+            'capitulo_id' => $capitulo->id,
+            'persona_id' => $this->usuario->id,
+        ]);
+
         $capitulos = [];
         array_push($capitulos, $capitulo);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'temporada_id' => $temporada->id,
             'capitulos' => $capitulos,
         ];
@@ -267,24 +248,21 @@ class TemporadaTest extends TestCase
         $response = $this->call('POST', '/api/visualizacion-temporada', $request);
 
         $response->assertOk();
-        $this->assertTrue($response->original);
+        $this->assertFalse(VisualizacionTemporada::where('id', $visualizacionTemporada->id)
+                                                ->exists());
+        $this->assertFalse(VisualizacionCapitulo::where('id', $visualizacionCapitulo->id)
+                                                ->exists());
     }
 
     /**
-     * Viewing without logged in user.
+     * Crea o borra visualización de temporada y de sus capítulos sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_viewing_and_not_logged_in_user()
+    public function test_crear_o_borrar_visualizacion_temporada_sin_sesion_iniciada()
     {
-        $serie = Audiovisual::create([
-            'id' => 1,
-            'tipoAudiovisual_id' => $this->tipoAudiovisual->id,
-            'titulo' => 'Breaking Bad',
-        ]);
-
         $temporada = Temporada::create([
-            'audiovisual_id' => $serie->id,
+            'audiovisual_id' => $this->serie->id,
             'numero' => 1,
             'nombre' => 'Temporada 1',
         ]);
@@ -298,7 +276,7 @@ class TemporadaTest extends TestCase
         array_push($capitulos, $capitulo);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'temporada_id' => $temporada->id,
             'capitulos' => $capitulos,
         ];
