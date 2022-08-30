@@ -2,7 +2,7 @@
     <v-app>
         <div>
             <app-header />
-            <div v-if="Object.keys(currentUser).length === 0" class="content d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+            <div v-if="Object.keys(usuarioActual).length === 0" class="content d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
                 <b-spinner
                     :variant="'light'"
                     :key="'light'"
@@ -18,7 +18,7 @@
                 <div>
                     <a @click="siguiendoShow = !siguiendoShow">{{ usuario.seguidos }} Siguiendo</a>
                     <a @click="seguidoresShow = !seguidoresShow">{{ usuario.seguidores }} Seguidores</a>
-                    <router-link v-if="Number(usuario_id) === currentUser.id" :to="{ name: 'ajustes', params: { idPersona: currentUser.id }}">
+                    <router-link v-if="Number(usuario_id) === usuarioActual.id" :to="{ name: 'ajustes', params: { idPersona: usuarioActual.id }}">
                         <button class="btn btn-info m-1"><b-icon icon="tools"></b-icon>
                             Editar perfil
                         </button>
@@ -32,7 +32,7 @@
                         <b-tab title="Actividad" active><actividad @cambio="cambio" /></b-tab>
                         <b-tab title="Colección"><coleccion /></b-tab>
                     </b-tabs>
-                    <actividad-aside v-if="Number(usuario_id) === currentUser.id" :cambio="componentKey" />
+                    <actividad-aside v-if="Number(usuario_id) === usuarioActual.id" :cambio="componentKey" />
                 </div>
             </div>
 
@@ -90,9 +90,9 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },
@@ -105,7 +105,7 @@ export default {
     beforeUpdate() {
         axios.get('/api/saber-seguimiento-usuario/', {
             params: { 
-                usuarioActual_id: this.currentUser.id, 
+                usuarioActual_id: this.usuarioActual.id, 
                 usuario_id: this.usuario_id,
             }})
             .then(response => {
@@ -120,7 +120,7 @@ export default {
         seguimientoUsuario() {
             axios.post('/api/seguimiento-usuario/', 
             { 
-                usuarioActual_id: this.currentUser.id, 
+                usuarioActual_id: this.usuarioActual.id, 
                 usuario_id: this.usuario_id, 
             })
             .then(response => {

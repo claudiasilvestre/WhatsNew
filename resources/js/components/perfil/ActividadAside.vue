@@ -12,11 +12,11 @@
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex justify-content-between">
                 <div class="d-flex flex-column">
                     <div>
-                        <img v-if="actividad.usuario_id === currentUser.id" class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
+                        <img v-if="actividad.usuario_id === usuarioActual.id" class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
                         <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
                             <img class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
                         </router-link>
-                        <span v-if="actividad.usuario_id === currentUser.id">{{ actividad.usuario_nombre }}</span>
+                        <span v-if="actividad.usuario_id === usuarioActual.id">{{ actividad.usuario_nombre }}</span>
                         <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
                             {{ actividad.usuario_nombre }}
                         </router-link>
@@ -40,7 +40,7 @@
                     <div class="d-flex flex-column">
                         <div>
                             <img class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
-                            <span v-if="actividad.usuario_id === currentUser.id">{{ actividad.usuario_nombre }}</span>
+                            <span v-if="actividad.usuario_id === usuarioActual.id">{{ actividad.usuario_nombre }}</span>
                             <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
                                 {{ actividad.usuario_nombre }}
                             </router-link>
@@ -62,7 +62,7 @@
                     <div class="d-flex flex-column">
                         <div>
                             <img class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
-                            <span v-if="actividad.usuario_id === currentUser.id">{{ actividad.usuario_nombre }}</span>
+                            <span v-if="actividad.usuario_id === usuarioActual.id">{{ actividad.usuario_nombre }}</span>
                             <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
                                 {{ actividad.usuario_nombre }}
                             </router-link>
@@ -94,9 +94,9 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },

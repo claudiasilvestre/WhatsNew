@@ -36,7 +36,7 @@ class AuthTest extends TestCase
             'password_confirmation' => '12345678',
         ];
 
-        $response = $this->postJson('/api/register', $user);
+        $response = $this->postJson('/api/registro', $user);
 
         $response->assertOk();
         $this->assertTrue(Persona::where('usuario', $user['usuario'])->exists());
@@ -57,9 +57,9 @@ class AuthTest extends TestCase
             'password_confirmation' => '12345678',
         ];
 
-        $response = $this->postJson('/api/register', $user);
+        $response = $this->postJson('/api/registro', $user);
 
-        $response = $this->postJson('/api/register', $user);
+        $response = $this->postJson('/api/registro', $user);
 
         $response->assertUnprocessable();
     }
@@ -83,7 +83,7 @@ class AuthTest extends TestCase
             'password' => '12345678',
         ];
 
-        $response = $this->postJson('/api/login', $user);
+        $response = $this->postJson('/api/inicio-sesion', $user);
 
         $response->assertOk()
                  ->assertCookie('jwt');
@@ -108,7 +108,7 @@ class AuthTest extends TestCase
             'password' => '12345678',
         ];
 
-        $response = $this->postJson('/api/login', $user);
+        $response = $this->postJson('/api/inicio-sesion', $user);
 
         $response->assertUnprocessable();
     }
@@ -123,7 +123,7 @@ class AuthTest extends TestCase
         $user = Persona::factory()->create();
         $this->actingAs($user);
 
-        $response = $this->post('/api/logout');
+        $response = $this->post('/api/cierre-sesion');
 
         $response->assertOk()
                  ->assertCookieExpired('jwt');

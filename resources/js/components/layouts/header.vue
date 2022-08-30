@@ -12,11 +12,11 @@
             <input type="search" @keydown.enter="redirectBusqueda()" v-model="busqueda" placeholder="Buscar" required/>
             <button type="submit" @click="redirectBusqueda()">Buscar</button>
         </div>
-        <div v-if="Object.keys(currentUser).length > 0" class="header-content">
-            <router-link :to="{ name: 'perfil', params: { idPersona: currentUser.id }}">
-                <span class="p-2">{{ currentUser.nombre }}</span>
+        <div v-if="Object.keys(usuarioActual).length > 0" class="header-content">
+            <router-link :to="{ name: 'perfil', params: { idPersona: usuarioActual.id }}">
+                <span class="p-2">{{ usuarioActual.nombre }}</span>
             </router-link>
-            <b-icon icon="box-arrow-left" class="h3 pointer m-2" @click="handleLogout"></b-icon>
+            <b-icon icon="box-arrow-left" class="h3 pointer m-2" @click="handleCierreSesion"></b-icon>
         </div>
     </header>
 </template>
@@ -30,15 +30,15 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },
     methods: {
-        handleLogout() {
-            this.$store.dispatch('currentUser/logoutUser');
+        handleCierreSesion() {
+            this.$store.dispatch('usuarioActual/cierreSesionUsuario');
         },
         redirectBusqueda() {
             if (this.busqueda)

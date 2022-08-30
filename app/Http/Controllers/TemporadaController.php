@@ -30,7 +30,7 @@ class TemporadaController extends Controller
      *
      * @return boolean
      */
-    public function saber_visualizacion(Request $request) {
+    public function saberVisualizacion(Request $request) {
         if (VisualizacionTemporada::where('persona_id', $request->usuario_id)->where('temporada_id', $request->temporada_id)->exists()) {
             return true;
         }

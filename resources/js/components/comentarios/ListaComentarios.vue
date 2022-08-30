@@ -20,7 +20,7 @@
                         <b-icon v-else icon="hand-thumbs-down-fill"></b-icon>
                         <span>{{ comentario.votosNegativos }}</span>
                     </button>
-                    <b-icon v-if="comentario.persona_id === currentUser.id" icon="trash" variant="danger" class="pointer m-2" @click="borrarComentario(comentario.id)"></b-icon>
+                    <b-icon v-if="comentario.persona_id === usuarioActual.id" icon="trash" variant="danger" class="pointer m-2" @click="borrarComentario(comentario.id)"></b-icon>
                 </div>
             </div>
         </div>
@@ -60,9 +60,9 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },
@@ -128,7 +128,7 @@ export default {
         },
         votoPositivo(comentario_id) {
             this.formData.comentario_id = comentario_id;
-            this.formData.usuario_id = this.currentUser.id;
+            this.formData.usuario_id = this.usuarioActual.id;
             if (this.audiovisual) {
                 axios.post('/api/opinion-positiva-audiovisual', this.formData)
                 .then(() => {
@@ -151,7 +151,7 @@ export default {
         },
         votoNegativo(comentario_id) {
             this.formData.comentario_id = comentario_id;
-            this.formData.usuario_id = this.currentUser.id;
+            this.formData.usuario_id = this.usuarioActual.id;
             if (this.audiovisual) {
                 axios.post('/api/opinion-negativa-audiovisual', this.formData)
                 .then(() => {

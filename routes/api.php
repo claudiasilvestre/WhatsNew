@@ -11,12 +11,12 @@ use App\Http\Controllers\ComentarioController;
 use App\Http\Controllers\ActividadController;
 use App\Http\Controllers\BusquedaController;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/registro', [PersonaController::class, 'registro']);
+Route::post('/inicio-sesion', [AuthController::class, 'inicioSesion']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', [AuthController::class, 'user']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/usuario', [AuthController::class, 'usuario']);
+    Route::post('/cierre-sesion', [AuthController::class, 'cierreSesion']);
 
     Route::resource('/audiovisuales', AudiovisualController::class);
     Route::get('/audiovisuales-participacion/{persona_id}', [AudiovisualController::class, 'participacion']);
@@ -41,9 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/busqueda/{busqueda}', [BusquedaController::class, 'busqueda']);
 
-    Route::get('/actividad-amigos', [ActividadController::class, 'actividad_amigos']);
-    Route::post('/borrar-actividad/{actividad_id}', [ActividadController::class, 'borrar_actividad']);
-    Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividad_usuario']);
+    Route::get('/actividad-amigos', [ActividadController::class, 'actividadAmigos']);
+    Route::post('/borrar-actividad/{actividad_id}', [ActividadController::class, 'borrarActividad']);
+    Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividadUsuario']);
 
     Route::get('/capitulos-anterior-siguiente', [CapituloController::class, 'capitulos_anterior_siguiente']);
     Route::get('/saber-visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'saber_visualizacion_capitulo']);
@@ -54,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/visualizacion-capitulo', [CapituloController::class, 'visualizacion']);
 
     Route::get('/temporadas/{idSerie}', [TemporadaController::class, 'index']);
-    Route::get('/saber-visualizacion-temporada', [TemporadaController::class, 'saber_visualizacion']);
+    Route::get('/saber-visualizacion-temporada', [TemporadaController::class, 'saberVisualizacion']);
     Route::post('/visualizacion-temporada', [TemporadaController::class, 'visualizacion']);
 
     Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarAudiovisual']);

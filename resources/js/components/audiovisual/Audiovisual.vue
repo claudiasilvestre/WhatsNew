@@ -2,14 +2,14 @@
     <v-app>
         <div>
             <app-header />
-            <div v-if="Object.keys(currentUser).length === 0" class="content d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
+            <div v-if="Object.keys(usuarioActual).length === 0" class="content d-flex justify-content-center flex-column align-items-center" style="height:40vh;">
                 <b-spinner
                     :variant="'light'"
                     :key="'light'"
                 ></b-spinner>
             </div>
             <div v-else-if="!loading" class="content header">
-                <aside-audiovisual :audiovisual="audiovisual" :currentUser="currentUser" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
+                <aside-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
                 <div class="width">
                     <header-audiovisual :audiovisual="audiovisual" />
                     <menu-audiovisual :audiovisual="audiovisual" :cambioAside="cambioAside" />
@@ -44,9 +44,9 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },

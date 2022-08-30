@@ -56,9 +56,9 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },
@@ -68,7 +68,7 @@ export default {
             axios.get('/api/visualizaciones/', {
                 params: { 
                     capitulos: this.capitulos,
-                    usuario_id: this.currentUser.id,
+                    usuario_id: this.usuarioActual.id,
                 }})
                 .then(response => {
                     this.clicked = response.data;
@@ -92,7 +92,7 @@ export default {
                 axios.get('/api/visualizaciones/', {
                     params: { 
                         capitulos: this.capitulos,
-                        usuario_id: this.currentUser.id,
+                        usuario_id: this.usuarioActual.id,
                     }})
                     .then(response => {
                         this.clicked = response.data;
@@ -106,7 +106,7 @@ export default {
                 axios.get('/api/visualizaciones/', {
                     params: { 
                         capitulos: this.capitulos,
-                        usuario_id: this.currentUser.id,
+                        usuario_id: this.usuarioActual.id,
                     }})
                     .then(response => {
                         this.clicked = response.data;
@@ -120,7 +120,7 @@ export default {
             axios.post('/api/visualizacion-capitulo/', 
             { 
                 capitulo_id, 
-                usuario_id: this.currentUser.id,
+                usuario_id: this.usuarioActual.id,
             })
             .then(response => {
                 this.loading = true;

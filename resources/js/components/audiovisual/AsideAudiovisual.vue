@@ -41,7 +41,7 @@ export default {
         required: true,
         type: Object
       },
-      currentUser: {
+      usuarioActual: {
         required: true,
         type: Object
       },
@@ -53,7 +53,7 @@ export default {
         axios.get('/api/saber-seguimiento-audiovisual/', {
             params: { 
                 audiovisual_id: this.audiovisual.id, 
-                usuario_id: this.currentUser.id,
+                usuario_id: this.usuarioActual.id,
             }})
             .then(response => {
                 if (response.data === 1) {
@@ -73,7 +73,7 @@ export default {
         axios.get('/api/saber-valoracion-audiovisual/', {
             params: { 
                 audiovisual_id: this.audiovisual.id, 
-                usuario_id: this.currentUser.id,
+                usuario_id: this.usuarioActual.id,
             }})
             .then(response => {
                 this.watcher = false;
@@ -87,7 +87,7 @@ export default {
             axios.post('/api/seguimiento-audiovisual/', 
             { 
                 audiovisual_id: this.audiovisual.id, 
-                usuario_id: this.currentUser.id, 
+                usuario_id: this.usuarioActual.id, 
                 tipo 
             })
             .then(response => {
@@ -139,7 +139,7 @@ export default {
                 axios.post('/api/valoracion-audiovisual/', 
                 { 
                     audiovisual_id: this.audiovisual.id, 
-                    usuario_id: this.currentUser.id, 
+                    usuario_id: this.usuarioActual.id, 
                     puntuacion: this.rating 
                 })
                 .catch(error => console.log(error.response));

@@ -16,7 +16,7 @@
                         <a>{{ seguimiento.nombre }}</a>
                     </router-link>
                 </div>
-                <button v-if="seguimiento.id !== currentUser.id" v-bind:class="{'btn btn-info': !clicked[index], 'btn btn-outline-info': clicked[index]}" @click="seguimientoUsuario(seguimiento.id, index)" class="m-1">
+                <button v-if="seguimiento.id !== usuarioActual.id" v-bind:class="{'btn btn-info': !clicked[index], 'btn btn-outline-info': clicked[index]}" @click="seguimientoUsuario(seguimiento.id, index)" class="m-1">
                     {{ btnSeguimiento[index] }}
                 </button>
             </li>
@@ -34,9 +34,9 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },
@@ -78,7 +78,7 @@ export default {
         seguimientoUsuario(usuario_id, index) {
             axios.post('/api/seguimiento-usuario/', 
             { 
-                usuarioActual_id: this.currentUser.id, 
+                usuarioActual_id: this.usuarioActual.id, 
                 usuario_id: usuario_id, 
             })
             .then(response => {

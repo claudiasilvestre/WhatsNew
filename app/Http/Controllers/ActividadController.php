@@ -9,7 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class ActividadController extends Controller
 {
-    public function actividad_usuario($usuario_id) {
+    /**
+     * Consulta y devuelve la actividad de un usuario.
+     * 
+     * @param integer $usuario_id ID del usuario del que se quiere consultar su actividad.
+     *
+     * @return Response
+     */
+    public function actividadUsuario($usuario_id) {
         $actividad = DB::table('actividad')
                                 ->leftJoin('audiovisual', 'actividad.audiovisual_id', 'audiovisual.id')
                                 ->leftJoin('capitulo', 'actividad.capitulo_id', 'capitulo.id')
@@ -32,7 +39,12 @@ class ActividadController extends Controller
         return response()->json($actividad);
     }
 
-    public function actividad_amigos() {
+    /**
+     * Consulta y devuelve la actividad de los amigos del usuario actual.
+     *
+     * @return Response
+     */
+    public function actividadAmigos() {
         $usuario_id = Auth::id();
 
         $actividad = DB::table('actividad')
@@ -59,7 +71,14 @@ class ActividadController extends Controller
         return response()->json($actividad);
     }
 
-    public function borrar_actividad($actividad_id) {
+    /**
+     * Borra una actividad del usuario actual.
+     * 
+     * @param integer $actividad_id ID de la actividad que se desea borrar.
+     *
+     * @return void
+     */
+    public function borrarActividad($actividad_id) {
         Actividad::where('id', $actividad_id)->delete();
     }
 }

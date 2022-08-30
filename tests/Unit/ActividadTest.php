@@ -14,70 +14,70 @@ class ActividadTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user;
+    protected $usuario;
     
     /**
-     * Set up the test
+     * Inicializa el test
      */
     public function setUp(): void
     {
         parent::setUp();
 
         TipoPersona::factory()->create();
-        $this->user = Persona::factory()->create();
+        $this->usuario = Persona::factory()->create();
     }
 
     /**
-     * User activity with logged in user.
+     * Obtiene la actividad de un usuario por su ID.
      *
      * @return void
      */
-    public function test_user_activity_logged_in_user()
+    public function test_obtener_actividad_usuario()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
         
         Actividad::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'tipo' => 1,
         ]);
         
-        $response = $this->getJson('/api/actividad-usuario/'.$this->user->id);
+        $response = $this->getJson('/api/actividad-usuario/'.$this->usuario->id);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
                     $json->has(1)
                          ->first(fn ($json) =>
-                            $json->where('usuario_id', strval($this->user->id))
+                            $json->where('usuario_id', strval($this->usuario->id))
                                  ->etc()
                          )
                  );
     }
 
     /**
-     * User activity without logged in user.
+     * Obtiene la actividad de un usuario por su ID sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_user_activity_not_logged_in_user()
+    public function test_obtener_actividad_usuario_sin_sesion_iniciada()
     {
-        $response = $this->getJson('/api/actividad-usuario/'.$this->user->id);
+        $response = $this->getJson('/api/actividad-usuario/'.$this->usuario->id);
 
         $response->assertUnauthorized();
     }
 
     /**
-     * Friends activity with logged in user.
+     * Obtiene la actividad de los amigos del usuario actual.
      *
      * @return void
      */
-    public function test_friends_activity_logged_in_user()
+    public function test_obtener_actividad_amigos_usuario_actual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $friend = Persona::factory()->create();
 
         SeguimientoPersona::create([
-            'personaActual_id' => $this->user->id,
+            'personaActual_id' => $this->usuario->id,
             'persona_id' => $friend->id,
         ]);
 
@@ -99,11 +99,11 @@ class ActividadTest extends TestCase
     }
 
     /**
-     * Friends activity without logged in user.
+     * Obtiene la actividad de los amigos del usuario actual sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_friends_activity_not_logged_in_user()
+    public function test_obtener_actividad_amigos_usuario_actual_sin_sesion_iniciada()
     {
         $response = $this->getJson('/api/actividad-amigos/');
 
@@ -111,53 +111,53 @@ class ActividadTest extends TestCase
     }
 
     /**
-     * Delete activity with logged in user.
+     * Borra una actividad del usuario actual por su ID.
      *
      * @return void
      */
-    public function test_delete_activity_logged_in_user()
+    public function test_borrar_actividad()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $activity = Actividad::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'tipo' => 1,
         ]);
 
         $response = $this->postJson('/api/borrar-actividad/'.$activity->id);
 
         $response->assertOk();
-        $this->assertTrue(!Actividad::where('persona_id', $this->user->id)->exists());
+        $this->assertTrue(!Actividad::where('persona_id', $this->usuario->id)->exists());
     }
 
     /**
-     * Delete activity without logged in user.
+     * Borra una actividad que no existe.
      *
      * @return void
      */
-    public function test_delete_activity_not_logged_in_user()
+    public function test_borrar_actividad_inexistente()
+    {
+        $this->actingAs($this->usuario);
+
+        $response = $this->postJson('/api/borrar-actividad/1');
+
+        $response->assertOk();
+    }
+
+    /**
+     * Borra una actividad por su ID sin que el usuario tenga iniciada la sesión.
+     *
+     * @return void
+     */
+    public function test_borrar_actividad_usuario_sin_sesion_iniciada()
     {
         $activity = Actividad::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'tipo' => 1,
         ]);
 
         $response = $this->postJson('/api/borrar-actividad/'.$activity->id);
 
         $response->assertUnauthorized();
-    }
-
-    /**
-     * Delete activity that doesn't exist.
-     *
-     * @return void
-     */
-    public function test_delete_activity_that_not_exist()
-    {
-        $this->actingAs($this->user);
-
-        $response = $this->postJson('/api/borrar-actividad/1');
-
-        $response->assertOk();
     }
 }

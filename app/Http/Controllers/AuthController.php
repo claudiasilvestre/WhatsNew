@@ -12,28 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    public function register(Request $request) {
-        $request->validate([
-            'nombre' => 'required',
-            'usuario' => 'required|unique:persona',
-            'email' => 'required|unique:persona',
-            'password' => 'required|min:8|confirmed',
-            'password_confirmation' => 'required',
-        ], [], [
-            'password' => 'contraseña',
-            'password_confirmation' => 'confirmar contraseña'
-        ]);
-
-        Persona::create([
-            'nombre' => $request->nombre,
-            'usuario' => $request->usuario,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'foto' => '/img/blank-profile-picture2.jpg',
-        ]);
-    }
-
-    public function login(Request $request) {
+    public function inicioSesion(Request $request) {
         if (!Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
                 'credenciales' => 'Las credenciales proporcionadas no son correctas.',
@@ -46,21 +25,17 @@ class AuthController extends Controller
 
         $cookie = cookie('jwt', $token, 60 * 24);
 
-        return response([
-            'message' => 'Success'
-        ])->withCookie($cookie);
+        return response([])->withCookie($cookie);
     }
 
-    public function user() {
+    public function usuario() {
         return Auth::user();
     }
 
-    public function logout(Request $request) {
+    public function cierreSesion(Request $request) {
         $cookie = Cookie::forget('jwt');
         $request->user()->tokens()->delete();
 
-        return response([
-            'message' => 'Success'
-        ])->withCookie($cookie);
+        return response([])->withCookie($cookie);
     }
 }

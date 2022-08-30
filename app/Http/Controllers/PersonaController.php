@@ -13,6 +13,27 @@ use App\Models\SeguimientoPersona;
 
 class PersonaController extends Controller
 {
+    public function registro(Request $request) {
+        $request->validate([
+            'nombre' => 'required',
+            'usuario' => 'required|unique:persona',
+            'email' => 'required|unique:persona',
+            'password' => 'required|min:8|confirmed',
+            'password_confirmation' => 'required',
+        ], [], [
+            'password' => 'contraseña',
+            'password_confirmation' => 'confirmar contraseña'
+        ]);
+
+        Persona::create([
+            'nombre' => $request->nombre,
+            'usuario' => $request->usuario,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'foto' => '/img/blank-profile-picture2.jpg',
+        ]);
+    }
+
     public function show($id) {
         $persona = Persona::where('id', $id)->get();
 
@@ -47,17 +68,17 @@ class PersonaController extends Controller
     }
 
     public function guardar_informacion(Request $request) {
-        $user = Auth::user();
+        $usuario = Auth::user();
 
         $request->validate([
             'nombre' => 'required',
             'usuario' => [
                 'required',
-                Rule::unique('persona')->ignore($user),
+                Rule::unique('persona')->ignore($usuario),
             ],
             'email' => [
                 'required',
-                Rule::unique('persona')->ignore($user),
+                Rule::unique('persona')->ignore($usuario),
             ],
         ]);
 
@@ -70,7 +91,7 @@ class PersonaController extends Controller
                 'img', $file_name
             ); */
 
-            Persona::where('id', $user->id)->update([
+            Persona::where('id', $usuario->id)->update([
                 'nombre' => $request->nombre,
                 'usuario' => $request->usuario,
                 'email' => $request->email,
@@ -78,7 +99,7 @@ class PersonaController extends Controller
             ]);
             
         } else {
-            Persona::where('id', $user->id)->update([
+            Persona::where('id', $usuario->id)->update([
                 'nombre' => $request->nombre,
                 'usuario' => $request->usuario,
                 'email' => $request->email,
@@ -87,9 +108,9 @@ class PersonaController extends Controller
     }
 
     public function guardar_password(Request $request) {
-        $user = Auth::user();
+        $usuario = Auth::user();
 
-        if (!Hash::check($request->current_password, $user->password)) {
+        if (!Hash::check($request->current_password, $usuario->password)) {
             throw ValidationException::withMessages([
                 'current_password' => ['La contraseña proporcionada no coincide con la actual.'],
             ]);
@@ -103,7 +124,7 @@ class PersonaController extends Controller
             'password_confirmation' => 'confirmar nueva contraseña'
         ]);
 
-        Persona::where('id', $user->id)->update(['password' => Hash::make($request->password)]);
+        Persona::where('id', $usuario->id)->update(['password' => Hash::make($request->password)]);
     }
 
     public function saber_seguimiento_usuario(Request $request) {

@@ -53,7 +53,7 @@
                     <img class="rounded p-2" v-bind:src="actividad.temporada_cartel" v-bind:alt="actividad.titulo_audiovisual_temporada" width="55" height="80">
                 </router-link>
             </div>
-            <b-icon v-if="Number(usuario_id) === currentUser.id" icon="x-circle" variant="danger" @click="borrarActividad(actividad.id)" class="pointer"></b-icon>
+            <b-icon v-if="Number(usuario_id) === usuarioActual.id" icon="x-circle" variant="danger" @click="borrarActividad(actividad.id)" class="pointer"></b-icon>
         </div>
     </div>
 </template>
@@ -70,9 +70,9 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },

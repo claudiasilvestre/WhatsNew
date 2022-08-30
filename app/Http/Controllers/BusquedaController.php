@@ -12,7 +12,7 @@ class BusquedaController extends Controller
     /**
      * Consulta y devuelve los usuarios, participantes o audiovisuales que contienen la búsqueda.
      * 
-     * @param string $busqueda Búsqueda que realiza el usuario
+     * @param string $busqueda Búsqueda que realiza el usuario.
      *
      * @return Response
      */

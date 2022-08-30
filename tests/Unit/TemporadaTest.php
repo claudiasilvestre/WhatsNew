@@ -143,7 +143,7 @@ class TemporadaTest extends TestCase
      *
      * @return void
      */
-    public function test_visualizacion_temporada_sin_sesion_iniciada()
+    public function test_visualizacion_temporada_usuario_sin_sesion_iniciada()
     {
         $temporada = Temporada::create([
             'audiovisual_id' => $this->serie->id,
@@ -259,7 +259,7 @@ class TemporadaTest extends TestCase
      *
      * @return void
      */
-    public function test_crear_o_borrar_visualizacion_temporada_sin_sesion_iniciada()
+    public function test_crear_o_borrar_visualizacion_temporada_usuario_sin_sesion_iniciada()
     {
         $temporada = Temporada::create([
             'audiovisual_id' => $this->serie->id,

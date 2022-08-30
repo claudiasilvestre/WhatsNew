@@ -2,7 +2,7 @@
     <div class="list">
         <div>
             <div class="d-flex flex-row">
-                <img class="roundedPerfil m-3" v-bind:src="currentUser.foto" v-bind:alt="currentUser.nombre" width="50" height="50">
+                <img class="roundedPerfil m-3" v-bind:src="usuarioActual.foto" v-bind:alt="usuarioActual.nombre" width="50" height="50">
                 <p class="width">
                     <textarea v-if="audiovisual" v-model="formData.texto" v-bind:placeholder="'¿Qué te ha parecido '+audiovisual.titulo+'?'"></textarea>
                     <textarea v-else v-model="formData.texto" placeholder="¿Qué te ha parecido este capítulo?"></textarea>
@@ -51,16 +51,16 @@ export default {
         }
     },
     computed: {
-        currentUser: {
+        usuarioActual: {
             get() {
-                return this.$store.state.currentUser.user;
+                return this.$store.state.usuarioActual.usuario;
             }
         }
     },
     methods: {
         guardarComentario() {
             if (this.formData.texto) {
-                this.formData.usuario_id = this.currentUser.id;
+                this.formData.usuario_id = this.usuarioActual.id;
                 if (this.audiovisual) {
                     this.formData.tipo_id = this.audiovisual.id;
                     axios.post('/api/guardar-comentario-audiovisual', this.formData).then(() => {
