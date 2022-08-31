@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Persona;
 use App\Models\TipoPersona;
 use Tests\TestCase;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class AuthTest extends TestCase
@@ -12,7 +13,7 @@ class AuthTest extends TestCase
     use RefreshDatabase;
     
     /**
-     * Set up the test
+     * Inicializa el test
      */
     public function setUp(): void
     {
@@ -22,54 +23,11 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Insert user in the database.
+     * Inicio sesión con credenciales correctas.
      *
      * @return void
      */
-    public function test_insert_user()
-    {
-        $user = [
-            'nombre' => 'Claudia',
-            'usuario' => 'claudia',
-            'email' => 'claudiasilvestre98@gmail.com',
-            'password' => '12345678',
-            'password_confirmation' => '12345678',
-        ];
-
-        $response = $this->postJson('/api/registro', $user);
-
-        $response->assertOk();
-        $this->assertTrue(Persona::where('usuario', $user['usuario'])->exists());
-    }
-
-    /**
-     * Insert duplicate user in the database.
-     *
-     * @return void
-     */
-    public function test_insert_duplicate_user()
-    {
-        $user = [
-            'nombre' => 'Claudia',
-            'usuario' => 'claudia',
-            'email' => 'claudiasilvestre98@gmail.com',
-            'password' => '12345678',
-            'password_confirmation' => '12345678',
-        ];
-
-        $response = $this->postJson('/api/registro', $user);
-
-        $response = $this->postJson('/api/registro', $user);
-
-        $response->assertUnprocessable();
-    }
-
-    /**
-     * Success login user.
-     *
-     * @return void
-     */
-    public function test_success_login()
+    public function test_inicio_sesion_correcto()
     {
         Persona::factory()->create([
             'nombre' => 'Claudia',
@@ -78,23 +36,23 @@ class AuthTest extends TestCase
             'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
         ]);
 
-        $user = [
+        $usuario = [
             'email' => 'claudiasilvestre98@gmail.com',
             'password' => '12345678',
         ];
 
-        $response = $this->postJson('/api/inicio-sesion', $user);
+        $response = $this->postJson('/api/inicio-sesion', $usuario);
 
         $response->assertOk()
                  ->assertCookie('jwt');
     }
 
     /**
-     * Login user fail.
+     * Inicio de sesión con credenciales incorrectas.
      *
      * @return void
      */
-    public function test_login_fail()
+    public function test_inicio_sesion_incorrecto()
     {
         Persona::factory()->create([
             'nombre' => 'Claudia',
@@ -103,25 +61,57 @@ class AuthTest extends TestCase
             'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
         ]);
 
-        $user = [
+        $usuario = [
             'email' => 'claudiasilvestre9@gmail.com',
             'password' => '12345678',
         ];
 
-        $response = $this->postJson('/api/inicio-sesion', $user);
+        $response = $this->postJson('/api/inicio-sesion', $usuario);
 
         $response->assertUnprocessable();
     }
 
     /**
-     * Success logout user.
+     * Devuelve el usuario actual.
      *
      * @return void
      */
-    public function test_success_logout()
+    public function test_obtener_usuario_actual()
     {
-        $user = Persona::factory()->create();
-        $this->actingAs($user);
+        $usuario = Persona::factory()->create();
+        $this->actingAs($usuario);
+
+        $response = $this->getJson('/api/usuario');
+
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has(7)
+                         ->where('id', $usuario->id)
+                         ->etc()
+                 );
+    }
+
+    /**
+     * Devuelve el usuario actual sin que el usuario tenga iniciada la sesión.
+     *
+     * @return void
+     */
+    public function test_obtener_usuario_actual_sin_sesion_iniciada()
+    {
+        $response = $this->getJson('/api/usuario');
+
+        $response->assertUnauthorized();
+    }
+
+    /**
+     * Cierra la sesión del usuario actual.
+     *
+     * @return void
+     */
+    public function test_cierre_sesion()
+    {
+        $usuario = Persona::factory()->create();
+        $this->actingAs($usuario);
 
         $response = $this->post('/api/cierre-sesion');
 

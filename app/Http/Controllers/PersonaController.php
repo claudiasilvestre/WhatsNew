@@ -13,6 +13,13 @@ use App\Models\SeguimientoPersona;
 
 class PersonaController extends Controller
 {
+    /**
+     * Valida y registra a un nuevo usuario.
+     * 
+     * @param Request $request Contiene los datos de un nuevo usuario.
+     *
+     * @return void
+     */
     public function registro(Request $request) {
         $request->validate([
             'nombre' => 'required',
@@ -34,12 +41,26 @@ class PersonaController extends Controller
         ]);
     }
 
+    /**
+     * Consulta y devuelve a una persona por su ID.
+     * 
+     * @param integer $id ID de la persona que se quiere consultar.
+     *
+     * @return Response
+     */
     public function show($id) {
         $persona = Persona::where('id', $id)->get();
 
         return response()->json($persona);
     }
 
+    /**
+     * Consulta y devuelve los participantes de un audiovisual.
+     * 
+     * @param integer $audiovisual_id ID del audiovisual al que pertenecen los participantes.
+     *
+     * @return Response
+     */
     public function participacion($audiovisual_id) {
         $personas_reparto = DB::table('persona')
                                 ->join('participacion', 'persona.id', '=', 'participacion.persona_id')
@@ -59,6 +80,13 @@ class PersonaController extends Controller
         ]);
     }
 
+    /**
+     * Consulta y devuelve información sobre un usuario.
+     * 
+     * @param integer $id ID del usuario del que se quiere consultar información.
+     *
+     * @return Response
+     */
     public function info($id) {
         $persona = Persona::where('id', $id)
                             ->select('foto', 'nombre', 'usuario', 'email')
@@ -67,6 +95,13 @@ class PersonaController extends Controller
         return response()->json($persona);
     }
 
+    /**
+     * Actualiza la información del usuario actual.
+     * 
+     * @param Request $request Contiene la información a actualizar del usuario actual.
+     *
+     * @return void
+     */
     public function guardar_informacion(Request $request) {
         $usuario = Auth::user();
 
@@ -107,6 +142,13 @@ class PersonaController extends Controller
         }
     }
 
+    /**
+     * Actualiza la contraseña del usuario actual.
+     * 
+     * @param Request $request Contiene la contraseña actual y la contraseña nueva del usuario actual.
+     *
+     * @return void
+     */
     public function guardar_password(Request $request) {
         $usuario = Auth::user();
 
@@ -127,6 +169,13 @@ class PersonaController extends Controller
         Persona::where('id', $usuario->id)->update(['password' => Hash::make($request->password)]);
     }
 
+    /**
+     * Comprueba si el usuario actual sigue al usuario proporcionado o no.
+     * 
+     * @param Request $request Contiene el usuario actual y el usuario que se quiere saber si sigue.
+     *
+     * @return boolean
+     */
     public function saber_seguimiento_usuario(Request $request) {
         if (SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->exists()) {
             return true;
@@ -135,6 +184,14 @@ class PersonaController extends Controller
         return false;
     }
 
+    /**
+     * Crea o borra el seguimiento del usuario actual a otro usuario, modifica los seguidos o seguidores del usuario actual
+     * y sus puntos.
+     * 
+     * @param Request $request Contiene el usuario actual y el usuario que se quiere seguir o dejar de seguir.
+     *
+     * @return boolean
+     */
     public function seguimiento_usuario(Request $request) {
         if (SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->exists()) {
             $seguimiento = SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->first();
@@ -167,6 +224,14 @@ class PersonaController extends Controller
         }
     }
 
+    /**
+     * Consulta y devuelve los usuarios que sigue un usuario, comprueba cuales de esos usuario sigue el usuario actual
+     * y cambia el estado del botón Seguir/Siguiendo.
+     * 
+     * @param integer $usuario_id ID del usuario del que se quieren consultar los usuarios que sigue.
+     *
+     * @return Response
+     */
     public function siguiendo($usuario_id) {
         $usuarioActual_id = Auth::id();
 
@@ -192,6 +257,14 @@ class PersonaController extends Controller
         ]);
     }
 
+    /**
+     * Consulta y devuelve los seguidores de un usuario, comprueba cuales de esos usuario sigue el usuario actual
+     * y cambia el estado del botón Seguir/Siguiendo.
+     * 
+     * @param integer $usuario_id ID del usuario del que se quieren consultar los seguidores.
+     *
+     * @return Response
+     */
     public function seguidores($usuario_id) {
         $usuarioActual_id = Auth::id();
 

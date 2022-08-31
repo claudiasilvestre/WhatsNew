@@ -32,6 +32,49 @@ class PersonaTest extends TestCase
     }
 
     /**
+     * Insert user in the database.
+     *
+     * @return void
+     */
+    public function test_insert_user()
+    {
+        $user = [
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '12345678',
+            'password_confirmation' => '12345678',
+        ];
+
+        $response = $this->postJson('/api/registro', $user);
+
+        $response->assertOk();
+        $this->assertTrue(Persona::where('usuario', $user['usuario'])->exists());
+    }
+
+    /**
+     * Insert duplicate user in the database.
+     *
+     * @return void
+     */
+    public function test_insert_duplicate_user()
+    {
+        $user = [
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '12345678',
+            'password_confirmation' => '12345678',
+        ];
+
+        $response = $this->postJson('/api/registro', $user);
+
+        $response = $this->postJson('/api/registro', $user);
+
+        $response->assertUnprocessable();
+    }
+
+    /**
      * Get person with logged in user.
      *
      * @return void
