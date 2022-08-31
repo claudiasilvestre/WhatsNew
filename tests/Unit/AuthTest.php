@@ -23,7 +23,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Inicio sesión con credenciales correctas.
+     * Inicio de sesión con credenciales correctas.
      *
      * @return void
      */
@@ -92,7 +92,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Devuelve el usuario actual sin que el usuario tenga iniciada la sesión.
+     * Devuelve el usuario actual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */

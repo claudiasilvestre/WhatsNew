@@ -27,6 +27,9 @@ class Persona extends Authenticatable
         'foto',
         'tipoPersona_id',
         'tipoParticipante_id',
+        'seguidos',
+        'seguidores',
+        'puntos',
     ];
 
     /**

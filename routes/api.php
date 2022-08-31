@@ -29,15 +29,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/coleccion-usuario/{usuario_id}', [AudiovisualController::class, 'coleccion_usuario']);
     Route::get('/saber-valoracion-audiovisual', [AudiovisualController::class, 'saber_valoracion_audiovisual']);
 
-    Route::post('/guardar-informacion', [PersonaController::class, 'guardar_informacion']);
-    Route::put('/guardar-password', [PersonaController::class, 'guardar_password']);
-    Route::post('/seguimiento-usuario', [PersonaController::class, 'seguimiento_usuario']);
+    Route::post('/guardar-informacion', [PersonaController::class, 'guardarInformacion']);
+    Route::put('/guardar-password', [PersonaController::class, 'guardarPassword']);
+    Route::post('/seguimiento-usuario', [PersonaController::class, 'seguimientoUsuario']);
     Route::get('/siguiendo/{usuario_id}', [PersonaController::class, 'siguiendo']);
     Route::get('/seguidores/{usuario_id}', [PersonaController::class, 'seguidores']);
     Route::get('/personas-participacion/{audiovisual_id}', [PersonaController::class, 'participacion']);
     Route::resource('/personas', PersonaController::class);
     Route::get('/info-usuario/{usuario_id}', [PersonaController::class, 'info']);
-    Route::get('/saber-seguimiento-usuario', [PersonaController::class, 'saber_seguimiento_usuario']);
+    Route::get('/saber-seguimiento-usuario', [PersonaController::class, 'saberSeguimientoUsuario']);
 
     Route::get('/busqueda/{busqueda}', [BusquedaController::class, 'busqueda']);
 

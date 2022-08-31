@@ -21,22 +21,22 @@ class PersonaTest extends TestCase
     protected $user;
     
     /**
-     * Set up the test
+     * Inicializa el test
      */
     public function setUp(): void
     {
         parent::setUp();
 
         TipoPersona::factory()->create();
-        $this->user = Persona::factory()->create();
+        $this->usuario = Persona::factory()->create();
     }
 
     /**
-     * Insert user in the database.
+     * Crea un usuario.
      *
      * @return void
      */
-    public function test_insert_user()
+    public function test_crear_usuario()
     {
         $user = [
             'nombre' => 'Claudia',
@@ -53,11 +53,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Insert duplicate user in the database.
+     * Crea un usuario duplicado.
      *
      * @return void
      */
-    public function test_insert_duplicate_user()
+    public function test_crear_usuario_duplicado()
     {
         $user = [
             'nombre' => 'Claudia',
@@ -75,46 +75,46 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get person with logged in user.
+     * Obtiene una persona por su ID.
      *
      * @return void
      */
-    public function test_get_person_logged_in_user()
+    public function test_obtener_persona()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
         
-        $response = $this->getJson('/api/personas/'.$this->user->id);
+        $response = $this->getJson('/api/personas/'.$this->usuario->id);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
                     $json->has(1)
                          ->first(fn ($json) =>
-                            $json->where('id', $this->user->id)
+                            $json->where('id', $this->usuario->id)
                                  ->etc()
                          )
                  );
     }
 
     /**
-     * Get person without logged in user.
+     * Obtiene una persona por su ID sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_person_not_logged_in_user()
+    public function test_obtener_persona_usuario_sin_sesion_iniciada()
     {
-        $response = $this->getJson('/api/personas/'.$this->user->id);
+        $response = $this->getJson('/api/personas/'.$this->usuario->id);
 
         $response->assertUnauthorized();
     }
 
     /**
-     * Get participation with logged in user.
+     * Obtiene los participantes de un audiovisual por el ID del audiovisual.
      *
      * @return void
      */
-    public function test_get_participation_logged_in_user()
+    public function test_obtener_participantes_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoAudiovisual = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -175,11 +175,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get participation without logged in user.
+     * Obtiene los participantes de un audiovisual por el ID del audiovisual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_participation_not_logged_in_user()
+    public function test_obtener_participantes_audiovisual_usuario_sin_sesion_iniciada()
     {
         $tipoAudiovisual = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -197,49 +197,49 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get person info with logged in user.
+     * Obtiene la información de un usuario
      *
      * @return void
      */
-    public function test_get_person_info_logged_in_user()
+    public function test_obtener_informacion_usuario()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
         
-        $response = $this->getJson('/api/info-usuario/'.$this->user->id);
+        $response = $this->getJson('/api/info-usuario/'.$this->usuario->id);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
                     $json->has(4)
-                         ->where('usuario', $this->user->usuario)
+                         ->where('usuario', $this->usuario->usuario)
                          ->etc()
                  );
     }
 
     /**
-     * Get person info without logged in user.
+     * Obtiene la información de un usuario sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_person_info_not_logged_in_user()
+    public function test_obtener_informacion_usuario_sin_sesion_iniciada()
     {
-        $response = $this->getJson('/api/info-usuario/'.$this->user->id);
+        $response = $this->getJson('/api/info-usuario/'.$this->usuario->id);
 
         $response->assertUnauthorized();
     }
 
     /**
-     * Change information user profile without new profile picture.
+     * Cambia información del usuario actual sin cambiar la foto de perfil.
      *
      * @return void
      */
-    public function test_change_information_user_profile_without_new_picture()
+    public function test_cambiar_informacion_usuario_actual_sin_cambiar_foto_perfil()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
-            'email' => $this->user->email,
+            'email' => $this->usuario->email,
         ];
         
         $response = $this->postJson('/api/guardar-informacion', $request);
@@ -247,23 +247,23 @@ class PersonaTest extends TestCase
         $response->assertOk();
         $this->assertTrue(Persona::where('nombre', 'Claudia')
                                  ->where('usuario', 'claudia')
-                                 ->where('email', $this->user->email)
+                                 ->where('email', $this->usuario->email)
                                  ->exists());
     }
 
     /**
-     * Change information user profile with new profile picture.
+     * Cambia información del usuario actual.
      *
      * @return void
      */
-    public function test_change_information_user_profile_with_new_picture()
+    public function test_cambiar_informacion_usuario_actual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
-            'email' => $this->user->email,
+            'email' => $this->usuario->email,
             'imagen' => UploadedFile::fake()->image('avatar.jpg'),
         ];
         
@@ -272,21 +272,21 @@ class PersonaTest extends TestCase
         $response->assertOk();
         $this->assertTrue(Persona::where('nombre', 'Claudia')
                                  ->where('usuario', 'claudia')
-                                 ->where('email', $this->user->email)
+                                 ->where('email', $this->usuario->email)
                                  ->exists());
     }
 
     /**
-     * Change information user profile without logged in user.
+     * Cambia información del usuario actual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_change_information_user_profile_not_logged_in_user()
+    public function test_cambiar_informacion_usuario_actual_sin_sesion_iniciada()
     {
         $request = [
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
-            'email' => $this->user->email,
+            'email' => $this->usuario->email,
         ];
         
         $response = $this->postJson('/api/guardar-informacion', $request);
@@ -295,13 +295,13 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Change password with logged in user.
+     * Cambia la contraseña del usuario actual.
      *
      * @return void
      */
-    public function test_change_password_logged_in_user()
+    public function test_cambiar_contraseña_usuario_actual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
             'current_password' => '12345678',
@@ -315,13 +315,13 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Change password with wrong current password.
+     * Cambia la contraseña del usuario actual por una no válida.
      *
      * @return void
      */
-    public function test_change_password_with_wrong_current_password()
+    public function test_cambiar_contraseña_usuario_actual_por_una_no_valida()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
             'current_password' => '12345679',
@@ -335,11 +335,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Change password without logged in user.
+     * Cambia la contraseña del usuario actual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_change_password_not_logged_in_user()
+    public function test_cambiar_contraseña_usuario_actual_sin_sesion_iniciada()
     {
         $request = [
             'current_password' => '12345678',
@@ -353,15 +353,15 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get user tracking with logged in user.
+     * Comprueba que el usuario actual sigue al usuario proporcionado.
      *
      * @return void
      */
-    public function test_get_user_tracking_logged_in_user()
+    public function test_usuario_actual_sigue_al_usuario()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
-        $user2 = Persona::factory()->create([
+        $usuario2 = Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => 'claudiasilvestre98@gmail.com',
@@ -369,13 +369,13 @@ class PersonaTest extends TestCase
         ]);
 
         SeguimientoPersona::create([
-            'personaActual_id' => $this->user->id,
-            'persona_id' => $user2->id,
+            'personaActual_id' => $this->usuario->id,
+            'persona_id' => $usuario2->id,
         ]);
 
         $request = [
-            'usuarioActual_id' => $this->user->id,
-            'usuario_id' => $user2->id,
+            'usuarioActual_id' => $this->usuario->id,
+            'usuario_id' => $usuario2->id,
         ];
 
         $response = $this->call('GET', '/api/saber-seguimiento-usuario', $request);
@@ -385,15 +385,15 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get user tracking without tracking existing.
+     * Comprueba que el usuario actual no sigue al usuario proporcionado.
      *
      * @return void
      */
-    public function test_get_user_tracking_and_tracking_not_existing()
+    public function test_usuario_actual_no_sigue_al_usuario()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
-        $user2 = Persona::factory()->create([
+        $usuario2 = Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => 'claudiasilvestre98@gmail.com',
@@ -401,8 +401,8 @@ class PersonaTest extends TestCase
         ]);
 
         $request = [
-            'usuarioActual_id' => $this->user->id,
-            'usuario_id' => $user2->id,
+            'usuarioActual_id' => $this->usuario->id,
+            'usuario_id' => $usuario2->id,
         ];
 
         $response = $this->call('GET', '/api/saber-seguimiento-usuario', $request);
@@ -412,13 +412,13 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get user tracking without logged in user.
+     * Comprueba si el usuario actual sigue al usuario proporcionado sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_user_tracking_not_logged_in_user()
+    public function test_saber_seguimiento_usuario_sin_sesion_iniciada()
     {
-        $user2 = Persona::factory()->create([
+        $usuario2 = Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => 'claudiasilvestre98@gmail.com',
@@ -426,8 +426,8 @@ class PersonaTest extends TestCase
         ]);
 
         $request = [
-            'usuarioActual_id' => $this->user->id,
-            'usuario_id' => $user2->id,
+            'usuarioActual_id' => $this->usuario->id,
+            'usuario_id' => $usuario2->id,
         ];
 
         $response = $this->call('GET', '/api/saber-seguimiento-usuario', $request);
@@ -436,72 +436,53 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Create user tracking.
+     * Borra un seguimiento de usuario porque el seguimiento ya existe.
      *
      * @return void
      */
-    public function test_user_tracking()
+    public function test_borrar_seguimiento_usuario()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
-        $user2 = Persona::factory()->create([
+        Persona::where('id', $this->usuario->id)->update(['seguidos' => 1]);
+
+        $usuario2 = Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => 'claudiasilvestre98@gmail.com',
             'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
-        ]);
-
-        $request = [
-            'usuarioActual_id' => $this->user->id,
-            'usuario_id' => $user2->id,
-        ];
-
-        $response = $this->postJson('/api/seguimiento-usuario', $request);
-
-        $response->assertOk();
-        $this->assertTrue(SeguimientoPersona::where('personaActual_id', $this->user->id)->where('persona_id', $user2->id)->exists());
-    }
-
-    /**
-     * Delete user tracking because tracking exists.
-     *
-     * @return void
-     */
-    public function test_user_tracking_existing()
-    {
-        $this->actingAs($this->user);
-
-        $user2 = Persona::factory()->create([
-            'nombre' => 'Claudia',
-            'usuario' => 'claudia',
-            'email' => 'claudiasilvestre98@gmail.com',
-            'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
+            'seguidores' => 1,
+            'puntos' => 5,
         ]);
 
         SeguimientoPersona::create([
-            'personaActual_id' => $this->user->id,
-            'persona_id' => $user2->id,
+            'personaActual_id' => $this->usuario->id,
+            'persona_id' => $usuario2->id,
         ]);
 
         $request = [
-            'usuarioActual_id' => $this->user->id,
-            'usuario_id' => $user2->id,
+            'usuarioActual_id' => $this->usuario->id,
+            'usuario_id' => $usuario2->id,
         ];
 
         $response = $this->postJson('/api/seguimiento-usuario', $request);
 
         $response->assertOk();
-        $this->assertFalse(SeguimientoPersona::where('personaActual_id', $this->user->id)->where('persona_id', $user2->id)->exists());
+        $this->assertFalse(SeguimientoPersona::where('personaActual_id', $this->usuario->id)->where('persona_id', $usuario2->id)->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)->where('seguidos', 0)->exists());
+        $this->assertTrue(Persona::where('id', $usuario2->id)->where('seguidores', 0)->where('puntos', 0)->exists());
     }
 
     /**
-     * Create or delete user tracking without logged in user.
+     * Crea un seguimiento de usuario.
      *
      * @return void
      */
-    public function test_create_or_delete_user_tracking_not_logged_in_user()
+    public function test_crear_seguimiento_usuario()
     {
-        $user2 = Persona::factory()->create([
+        $this->actingAs($this->usuario);
+
+        $usuario2 = Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => 'claudiasilvestre98@gmail.com',
@@ -509,8 +490,35 @@ class PersonaTest extends TestCase
         ]);
 
         $request = [
-            'usuarioActual_id' => $this->user->id,
-            'usuario_id' => $user2->id,
+            'usuarioActual_id' => $this->usuario->id,
+            'usuario_id' => $usuario2->id,
+        ];
+
+        $response = $this->postJson('/api/seguimiento-usuario', $request);
+
+        $response->assertOk();
+        $this->assertTrue(SeguimientoPersona::where('personaActual_id', $this->usuario->id)->where('persona_id', $usuario2->id)->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)->where('seguidos', 1)->exists());
+        $this->assertTrue(Persona::where('id', $usuario2->id)->where('seguidores', 1)->where('puntos', 5)->exists());
+    }
+
+    /**
+     * Crea o borra un seguimiento de usuario sin que un usuario tenga iniciada la sesión.
+     *
+     * @return void
+     */
+    public function test_crear_o_borrar_seguimiento_usuario_sin_sesion_iniciada()
+    {
+        $usuario2 = Persona::factory()->create([
+            'nombre' => 'Claudia',
+            'usuario' => 'claudia',
+            'email' => 'claudiasilvestre98@gmail.com',
+            'password' => '$2y$10$6kNsORbwNXD1SyN8E6uHK.zITd80IYwFj1vikDr6zR1szG1uot6OG',
+        ]);
+
+        $request = [
+            'usuarioActual_id' => $this->usuario->id,
+            'usuario_id' => $usuario2->id,
         ];
 
         $response = $this->postJson('/api/seguimiento-usuario', $request);
@@ -519,15 +527,15 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Get following.
+     * Obtiene los usuarios que sigue el usuario.
      *
      * @return void
      */
-    public function test_get_following()
+    public function test_obtener_usuarios_seguidos()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
-        $user2 = Persona::factory()->create([
+        $usuario2 = Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => 'claudiasilvestre98@gmail.com',
@@ -535,43 +543,43 @@ class PersonaTest extends TestCase
         ]);
 
         SeguimientoPersona::create([
-            'personaActual_id' => $this->user->id,
-            'persona_id' => $user2->id,
+            'personaActual_id' => $this->usuario->id,
+            'persona_id' => $usuario2->id,
         ]);
 
-        $response = $this->getJson('/api/siguiendo/'.$this->user->id);
+        $response = $this->getJson('/api/siguiendo/'.$this->usuario->id);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
                     $json->has('siguiendo', 1, fn ($json) =>
-                        $json->where('id', strval($user2->id))
+                        $json->where('id', strval($usuario2->id))
                             ->etc()
                         )->etc()
                  );
     }
 
     /**
-     * Get following without logged in user.
+     * Obtiene los usuarios que sigue el usuario sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_following_not_logged_in_user()
+    public function test_obtener_usuarios_seguidos_usuario_sin_sesion_iniciada()
     {
-        $response = $this->getJson('/api/siguiendo/'.$this->user->id);
+        $response = $this->getJson('/api/siguiendo/'.$this->usuario->id);
 
         $response->assertUnauthorized();
     }
 
     /**
-     * Get followers.
+     * Obtiene los seguidores de un usuario.
      *
      * @return void
      */
-    public function test_get_followers()
+    public function test_obtener_seguidores_usuario()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
-        $user2 = Persona::factory()->create([
+        $usuario2 = Persona::factory()->create([
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => 'claudiasilvestre98@gmail.com',
@@ -579,29 +587,29 @@ class PersonaTest extends TestCase
         ]);
 
         SeguimientoPersona::create([
-            'personaActual_id' => $this->user->id,
-            'persona_id' => $user2->id,
+            'personaActual_id' => $this->usuario->id,
+            'persona_id' => $usuario2->id,
         ]);
 
-        $response = $this->getJson('/api/seguidores/'.$user2->id);
+        $response = $this->getJson('/api/seguidores/'.$usuario2->id);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
                     $json->has('seguidores', 1, fn ($json) =>
-                        $json->where('id', strval($this->user->id))
+                        $json->where('id', strval($this->usuario->id))
                             ->etc()
                         )->etc()
                  );
     }
 
     /**
-     * Get followers without logged in user.
+     * Obtiene los seguidores de un usuario sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_followers_not_logged_in_user()
+    public function test_obtener_seguidores_usuario_sin_sesion_iniciada()
     {
-        $response = $this->getJson('/api/seguidores/'.$this->user->id);
+        $response = $this->getJson('/api/seguidores/'.$this->usuario->id);
 
         $response->assertUnauthorized();
     }

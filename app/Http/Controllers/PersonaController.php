@@ -102,7 +102,7 @@ class PersonaController extends Controller
      *
      * @return void
      */
-    public function guardar_informacion(Request $request) {
+    public function guardarInformacion(Request $request) {
         $usuario = Auth::user();
 
         $request->validate([
@@ -149,7 +149,7 @@ class PersonaController extends Controller
      *
      * @return void
      */
-    public function guardar_password(Request $request) {
+    public function guardarPassword(Request $request) {
         $usuario = Auth::user();
 
         if (!Hash::check($request->current_password, $usuario->password)) {
@@ -176,7 +176,7 @@ class PersonaController extends Controller
      *
      * @return boolean
      */
-    public function saber_seguimiento_usuario(Request $request) {
+    public function saberSeguimientoUsuario(Request $request) {
         if (SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->exists()) {
             return true;
         }
@@ -192,7 +192,7 @@ class PersonaController extends Controller
      *
      * @return boolean
      */
-    public function seguimiento_usuario(Request $request) {
+    public function seguimientoUsuario(Request $request) {
         if (SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->exists()) {
             $seguimiento = SeguimientoPersona::where('personaActual_id', $request->usuarioActual_id)->where('persona_id', $request->usuario_id)->first();
             $seguimiento->delete();
@@ -226,7 +226,7 @@ class PersonaController extends Controller
 
     /**
      * Consulta y devuelve los usuarios que sigue un usuario, comprueba cuales de esos usuario sigue el usuario actual
-     * y cambia el estado del botón Seguir/Siguiendo.
+     * y proporciona el estado del botón Seguir/Siguiendo.
      * 
      * @param integer $usuario_id ID del usuario del que se quieren consultar los usuarios que sigue.
      *
@@ -259,7 +259,7 @@ class PersonaController extends Controller
 
     /**
      * Consulta y devuelve los seguidores de un usuario, comprueba cuales de esos usuario sigue el usuario actual
-     * y cambia el estado del botón Seguir/Siguiendo.
+     * y proporciona el estado del botón Seguir/Siguiendo.
      * 
      * @param integer $usuario_id ID del usuario del que se quieren consultar los seguidores.
      *
