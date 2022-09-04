@@ -26,7 +26,7 @@ class TemporadaController extends Controller
     /**
      * Comprueba si el usuario actual ha visualizado una temporada o no.
      * 
-     * @param Request $request Contiene el usuario actual y el ID de la temporada.
+     * @param Request $request Contiene el ID usuario actual y el ID de la temporada.
      *
      * @return boolean
      */
@@ -42,7 +42,7 @@ class TemporadaController extends Controller
      * Crea o borra visualización de temporada y de sus capítulos del usuario actual dependiendo de si existen ya
      * y crea la actividad correspondiente en caso de creación de visualización de temporada.
      * 
-     * @param Request $request Contiene el usuario actual, el ID de la temporada y los capítulos de la temporada.
+     * @param Request $request Contiene el ID del usuario actual, el ID de la temporada y los capítulos de la temporada.
      *
      * @return boolean
      */

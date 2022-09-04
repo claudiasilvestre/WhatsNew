@@ -45,13 +45,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/borrar-actividad/{actividad_id}', [ActividadController::class, 'borrarActividad']);
     Route::get('/actividad-usuario/{usuario_id}', [ActividadController::class, 'actividadUsuario']);
 
-    Route::get('/capitulos-anterior-siguiente', [CapituloController::class, 'capitulos_anterior_siguiente']);
-    Route::get('/saber-visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'saber_visualizacion_capitulo']);
-    Route::post('/visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'visualizacion_capitulo']);
+    Route::get('/capitulos-anterior-siguiente', [CapituloController::class, 'capitulosAnteriorSiguiente']);
+    Route::get('/saber-visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'saberVisualizacionCapitulo']);
+    Route::post('/visualizacion-capitulo/{capitulo_id}', [CapituloController::class, 'visualizacionCapitulo']);
     Route::get('/capitulos/{temporada_id}', [CapituloController::class, 'index']);
     Route::resource('/capitulo', CapituloController::class);
     Route::get('/visualizaciones', [CapituloController::class, 'visualizaciones']);
-    Route::post('/visualizacion-capitulo', [CapituloController::class, 'visualizacion']);
 
     Route::get('/temporadas/{idSerie}', [TemporadaController::class, 'index']);
     Route::get('/saber-visualizacion-temporada', [TemporadaController::class, 'saberVisualizacion']);

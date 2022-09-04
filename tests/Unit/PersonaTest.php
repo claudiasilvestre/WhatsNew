@@ -197,7 +197,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Obtiene la información de un usuario
+     * Obtiene la información de un usuario.
      *
      * @return void
      */
@@ -527,7 +527,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Obtiene los usuarios que sigue el usuario.
+     * Obtiene los usuarios que sigue un usuario.
      *
      * @return void
      */
@@ -559,7 +559,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Obtiene los usuarios que sigue el usuario sin que un usuario tenga iniciada la sesión.
+     * Obtiene los usuarios que sigue un usuario sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */

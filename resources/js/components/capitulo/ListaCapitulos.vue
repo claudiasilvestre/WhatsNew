@@ -117,11 +117,7 @@ export default {
     },
     methods: {
         visto(capitulo_id, index) {
-            axios.post('/api/visualizacion-capitulo/', 
-            { 
-                capitulo_id, 
-                usuario_id: this.usuarioActual.id,
-            })
+            axios.post('/api/visualizacion-capitulo/'+capitulo_id)
             .then(response => {
                 this.loading = true;
                 if (response.data['estado']) {

@@ -139,7 +139,7 @@ class TemporadaTest extends TestCase
     }
 
     /**
-     * Comprueba visualización de temporada del usuario actual sin que un usuario tenga iniciada la sesión.
+     * Comprueba visualización de temporada sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */

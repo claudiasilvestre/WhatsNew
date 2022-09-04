@@ -226,7 +226,7 @@ class PersonaController extends Controller
 
     /**
      * Consulta y devuelve los usuarios que sigue un usuario, comprueba cuales de esos usuario sigue el usuario actual
-     * y proporciona el estado del botón Seguir/Siguiendo.
+     * y proporciona el estado de los botones Seguir/Siguiendo.
      * 
      * @param integer $usuario_id ID del usuario del que se quieren consultar los usuarios que sigue.
      *
@@ -259,7 +259,7 @@ class PersonaController extends Controller
 
     /**
      * Consulta y devuelve los seguidores de un usuario, comprueba cuales de esos usuario sigue el usuario actual
-     * y proporciona el estado del botón Seguir/Siguiendo.
+     * y proporciona el estado de los botones Seguir/Siguiendo.
      * 
      * @param integer $usuario_id ID del usuario del que se quieren consultar los seguidores.
      *

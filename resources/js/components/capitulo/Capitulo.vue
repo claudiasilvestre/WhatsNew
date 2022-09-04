@@ -117,7 +117,7 @@ export default {
         seguimiento() {
             axios.post('/api/visualizacion-capitulo/'+this.idCapitulo)
             .then(response => {
-                this.clicked = response.data;
+                this.clicked = response.data['estado'];
             })
             .catch(error => console.log(error.response));
         }
