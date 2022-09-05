@@ -59,7 +59,7 @@ class CapituloController extends Controller
     }
 
     /**
-     * Crea o borra visualización de capítulo, de temporada y de actividad según corresponda.
+     * Crea o borra visualización de capítulo, visualización de temporada y sus respectivas actividades.
      * 
      * @param integer $capitulo_id ID del capítulo.
      *

@@ -172,7 +172,7 @@ class PersonaController extends Controller
     /**
      * Comprueba si el usuario actual sigue al usuario proporcionado o no.
      * 
-     * @param Request $request Contiene el usuario actual y el usuario que se quiere saber si sigue.
+     * @param Request $request Contiene el ID del usuario actual y el ID del usuario que se quiere saber si sigue.
      *
      * @return boolean
      */
@@ -188,7 +188,7 @@ class PersonaController extends Controller
      * Crea o borra el seguimiento del usuario actual a otro usuario, modifica los seguidos o seguidores del usuario actual
      * y sus puntos.
      * 
-     * @param Request $request Contiene el usuario actual y el usuario que se quiere seguir o dejar de seguir.
+     * @param Request $request Contiene el ID del usuario actual y el usuario que se quiere seguir o dejar de seguir.
      *
      * @return boolean
      */

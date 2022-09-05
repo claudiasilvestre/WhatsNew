@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Auth;
 
 class ComentarioController extends Controller
 {
+    /**
+     * Valida y crea un nuevo comentario sobre un audiovisual e incrementa los puntos del usuario actual.
+     * 
+     * @param Request $request Contiene los datos de un nuevo comentario.
+     *
+     * @return void
+     */
     public function guardarAudiovisual(Request $request) {
         $request->validate([
             'tipo_id' => 'required',
@@ -31,6 +38,13 @@ class ComentarioController extends Controller
         Persona::where('id', $usuario_id)->increment('puntos', 5);
     }
 
+    /**
+     * Valida y crea un nuevo comentario sobre un capítulo e incrementa los puntos del usuario actual.
+     * 
+     * @param Request $request Contiene los datos de un nuevo comentario.
+     *
+     * @return void
+     */
     public function guardarCapitulo(Request $request) {
         $request->validate([
             'tipo_id' => 'required',
@@ -49,7 +63,17 @@ class ComentarioController extends Controller
         Persona::where('id', $usuario_id)->increment('puntos', 5);
     }
 
+    /**
+     * Consulta y devuelve los comentarios de un audiovisual dependiendo de su tipo 
+     * y comprueba a que comentarios ha dado "Me gusta" o "No me gusta" el usuario actual.
+     * 
+     * @param Request $request Contiene el ID del audiovisual del que se quieren consultar los comentarios.
+     *
+     * @return Response
+     */
     public function audiovisual(Request $request) {
+        $usuario_id = Auth::id();
+
         if ($request->tipo == 1)
             $comentarios = DB::table('persona')
                                     ->join('comentario_audiovisual', 'persona.id', '=', 'comentario_audiovisual.persona_id')
@@ -69,12 +93,18 @@ class ComentarioController extends Controller
         $clickedDislike = [];
 
         foreach ($comentarios as $comentario) {
-            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)->where('opinion', true)->exists())
+            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)
+                                            ->where('persona_id', $usuario_id)
+                                            ->where('opinion', true)
+                                            ->exists())
                 array_push($clickedLike, true);
             else
                 array_push($clickedLike, false);
 
-            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)->where('opinion', false)->exists())
+            if (OpinionComentarioAudiovisual::where('comentarioAudiovisual_id', $comentario->id)
+                                            ->where('persona_id', $usuario_id)
+                                            ->where('opinion', false)
+                                            ->exists())
                 array_push($clickedDislike, true);
             else
                 array_push($clickedDislike, false);
@@ -87,7 +117,17 @@ class ComentarioController extends Controller
         ]);
     }
 
+    /**
+     * Consulta y devuelve los comentarios de un capítulo dependiendo de su tipo 
+     * y comprueba a que comentarios ha dado "Me gusta" o "No me gusta" el usuario actual.
+     * 
+     * @param Request $request Contiene el ID del capítulo del que se quieren consultar los comentarios.
+     *
+     * @return Response
+     */
     public function capitulo(Request $request) {
+        $usuario_id = Auth::id();
+
         if ($request->tipo == 1)
             $comentarios = DB::table('persona')
                                     ->join('comentario_capitulo', 'persona.id', '=', 'comentario_capitulo.persona_id')
@@ -106,12 +146,18 @@ class ComentarioController extends Controller
         $clickedDislike = [];
         
         foreach ($comentarios as $comentario) {
-            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)->where('opinion', true)->exists())
+            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)
+                                        ->where('persona_id', $usuario_id)
+                                        ->where('opinion', true)
+                                        ->exists())
                 array_push($clickedLike, true);
             else
                 array_push($clickedLike, false);
 
-            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)->where('opinion', false)->exists())
+            if (OpinionComentarioCapitulo::where('comentarioCapitulo_id', $comentario->id)
+                                        ->where('persona_id', $usuario_id)
+                                        ->where('opinion', false)
+                                        ->exists())
                 array_push($clickedDislike, true);
             else
                 array_push($clickedDislike, false);
@@ -124,6 +170,13 @@ class ComentarioController extends Controller
         ]);
     }
 
+    /**
+     * Borra un comentario de un audiovisual por su ID y decrementa los puntos del usuario actual.
+     * 
+     * @param integer $comentario_id ID del comentario.
+     *
+     * @return void
+     */
     public function borrarAudiovisual($comentario_id) {
         ComentarioAudiovisual::where('id', $comentario_id)
                                 ->delete();
@@ -133,6 +186,13 @@ class ComentarioController extends Controller
         Persona::where('id', $usuario_id)->decrement('puntos', 5);
     }
 
+    /**
+     * Borra un comentario de un capítulo por su ID y decrementa los puntos del usuario actual.
+     * 
+     * @param integer $comentario_id ID del comentario.
+     *
+     * @return void
+     */
     public function borrarCapitulo($comentario_id) {
         ComentarioCapitulo::where('id', $comentario_id)
                             ->delete();
@@ -142,6 +202,15 @@ class ComentarioController extends Controller
         Persona::where('id', $usuario_id)->decrement('puntos', 5);
     }
 
+    /**
+     * Crea o borra una opinión positiva de un comentario de un audiovisual dependiendo de si la opinión ya existe o no,
+     * incrementa o decrementa los votos del comentario dependiendo de si existe o no la opinión
+     * e incrementa o decrementa los puntos del usuario actual dependiendo de si se crea la opinión o se borra.
+     * 
+     * @param Request $request Contiene el ID del usuario actual y el ID del comentario.
+     *
+     * @return void
+     */
     public function opinionPositivaAudiovisual(Request $request) {
         $usuario_id = Auth::id();
 
@@ -181,6 +250,15 @@ class ComentarioController extends Controller
         }
     }
 
+    /**
+     * Crea o borra una opinión negativa de un comentario de un audiovisual dependiendo de si la opinión ya existe o no,
+     * incrementa o decrementa los votos del comentario dependiendo de si existe o no la opinión
+     * e incrementa o decrementa los puntos del usuario actual dependiendo de si se crea la opinión o se borra.
+     * 
+     * @param Request $request Contiene el ID del usuario actual y el ID del comentario.
+     *
+     * @return void
+     */
     public function opinionNegativaAudiovisual(Request $request) {
         $usuario_id = Auth::id();
 
@@ -220,6 +298,15 @@ class ComentarioController extends Controller
         }
     }
 
+    /**
+     * Crea o borra una opinión positiva de un comentario de un capítulo dependiendo de si la opinión ya existe o no,
+     * incrementa o decrementa los votos del comentario dependiendo de si existe o no la opinión
+     * e incrementa o decrementa los puntos del usuario actual dependiendo de si se crea la opinión o se borra.
+     * 
+     * @param Request $request Contiene el ID del usuario actual y el ID del comentario.
+     *
+     * @return void
+     */
     public function opinionPositivaCapitulo(Request $request) {
         $usuario_id = Auth::id();
 
@@ -259,6 +346,15 @@ class ComentarioController extends Controller
         }
     }
 
+    /**
+     * Crea o borra una opinión negativa de un comentario de un capítulo dependiendo de si la opinión ya existe o no,
+     * incrementa o decrementa los votos del comentario dependiendo de si existe o no la opinión
+     * e incrementa o decrementa los puntos del usuario actual dependiendo de si se crea la opinión o se borra.
+     * 
+     * @param Request $request Contiene el ID del usuario actual y el ID del comentario.
+     *
+     * @return void
+     */
     public function opinionNegativaCapitulo(Request $request) {
         $usuario_id = Auth::id();
 
