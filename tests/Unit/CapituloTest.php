@@ -76,7 +76,7 @@ class CapituloTest extends TestCase
     }
 
     /**
-     * Obtiene capítulos por el ID de su temporada sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener capítulos por el ID de su temporada sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -109,7 +109,7 @@ class CapituloTest extends TestCase
     }
 
     /**
-     * Obtiene un capítulo por su ID sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener un capítulo por su ID sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -172,7 +172,7 @@ class CapituloTest extends TestCase
     }
 
     /**
-     * Comprobar la visualización del único capítulo de la temporada sin que un usuario tenga iniciada la sesión.
+     * Intenta comprobar la visualización del único capítulo de la temporada sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -323,11 +323,11 @@ class CapituloTest extends TestCase
     }
 
     /**
-     * Crear o borrar visualización de capítulo sin que un usuario tenga iniciada la sesión.
+     * Intenta crear la visualización de capítulo sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_crear_o_borrar_visualizacion_capitulo_usuario_sin_sesion_iniciada()
+    public function test_crear_visualizacion_capitulo_usuario_sin_sesion_iniciada()
     {
         $response = $this->call('POST', '/api/visualizacion-capitulo/'.$this->capitulo->id);
 
@@ -369,7 +369,7 @@ class CapituloTest extends TestCase
     }
 
     /**
-     * Obtiene el capítulo anterior y el capítulo siguiente de un capítulo sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener el capítulo anterior y el capítulo siguiente de un capítulo sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -431,7 +431,7 @@ class CapituloTest extends TestCase
     }
 
     /**
-     * Comprueba visualización de capítulo sin que un usuario tenga iniciada la sesión.
+     * Intenta comprobar visualización de capítulo sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */

@@ -20,17 +20,17 @@ class ComentarioTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user, $tipoAudiovisual, $pelicula;
+    protected $usuario, $tipoAudiovisual, $pelicula;
     
     /**
-     * Set up the test
+     * Inicializa el test
      */
     public function setUp(): void
     {
         parent::setUp();
 
         TipoPersona::factory()->create();
-        $this->user = Persona::factory()->create();
+        $this->usuario = Persona::factory()->create();
 
         $this->tipoAudiovisual = TipoAudiovisual::create([
             'nombre' => 'Pelicula',
@@ -44,17 +44,17 @@ class ComentarioTest extends TestCase
     } 
 
     /**
-     * Create audiovisual comment with logged in user.
+     * Crea un nuevo comentario sobre un audiovisual e incrementa los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_create_audiovisual_comment_logged_in_user()
+    public function test_crear_comentario_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
             'tipo_id' => $this->pelicula->id,
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'texto' => 'Muy buena',
         ];
 
@@ -62,21 +62,24 @@ class ComentarioTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(ComentarioAudiovisual::where('audiovisual_id', $this->pelicula->id)
-                                                ->where('persona_id', $this->user->id)
-                                                ->where('texto', 'Muy buena')
-                                                ->exists());
+                                               ->where('persona_id', $this->usuario->id)
+                                               ->where('texto', 'Muy buena')
+                                               ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 5)
+                                 ->exists());
     }
 
     /**
-     * Create audiovisual comment without logged in user.
+     * Intenta crear un nuevo comentario sobre un audiovisual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_create_audiovisual_comment_not_logged_in_user()
+    public function test_crear_comentario_audiovisual_usuario_sin_sesion_iniciada()
     {
         $request = [
             'tipo_id' => $this->pelicula->id,
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'texto' => 'Muy buena',
         ];
 
@@ -86,13 +89,13 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Create episode comment with logged in user.
+     * Crea un nuevo comentario sobre un capítulo e incrementa los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_create_episode_comment_logged_in_user()
+    public function test_crear_comentario_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -117,7 +120,7 @@ class ComentarioTest extends TestCase
 
         $request = [
             'tipo_id' => $capitulo->id,
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
         ];
 
@@ -125,17 +128,20 @@ class ComentarioTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(ComentarioCapitulo::where('capitulo_id', $capitulo->id)
-                                            ->where('persona_id', $this->user->id)
+                                            ->where('persona_id', $this->usuario->id)
                                             ->where('texto', 'Muy bueno')
                                             ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 5)
+                                 ->exists());
     }
 
     /**
-     * Create episode comment without logged in user.
+     * Intenta crear un nuevo comentario sobre un capítulo sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_create_episode_comment_not_logged_in_user()
+    public function test_crear_comentario_capitulo_usuario_sin_sesion_iniciada()
     {
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -160,7 +166,7 @@ class ComentarioTest extends TestCase
 
         $request = [
             'tipo_id' => $capitulo->id,
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
         ];
 
@@ -170,23 +176,23 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Get audiovisual comments type 1 with logged in user.
+     * Obtiene comentarios de tipo 1 sobre un audiovisual.
      *
      * @return void
      */
-    public function test_get_audiovisual_comments_type_1_logged_in_user()
+    public function test_obtener_comentarios_tipo_1_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario1 = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena'
         ]);
 
         $comentario2 = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'No está mal',
             'votosPositivos' => 1,
         ]);
@@ -208,23 +214,23 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Get audiovisual comments type 2 with logged in user.
+     * Obtiene comentarios de tipo 2 sobre un audiovisual.
      *
      * @return void
      */
-    public function test_get_audiovisual_comments_type_2_logged_in_user()
+    public function test_obtener_comentarios_tipo_2_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario1 = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena'
         ]);
 
         $comentario2 = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'No está mal',
             'votosPositivos' => 1,
         ]);
@@ -246,11 +252,11 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Get audiovisual comments without logged in user.
+     * Intenta obtener comentarios de tipo 1 sobre un audiovisual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_audiovisual_comments_not_logged_in_user()
+    public function test_obtener_comentarios_tipo_1_audiovisual_usuario_sin_sesion_iniciada()
     {
         $request = [
             'tipo' => 1,
@@ -263,13 +269,13 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Get episode comments type 1 with logged in user.
+     * Obtiene comentarios de tipo 1 sobre un capítulo.
      *
      * @return void
      */
-    public function test_get_episode_comments_type_1_logged_in_user()
+    public function test_obtener_comentarios_tipo_1_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -294,13 +300,13 @@ class ComentarioTest extends TestCase
 
         $comentario1 = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno'
         ]);
 
         $comentario2 = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'No está mal',
             'votosPositivos' => 1,
         ]);
@@ -322,13 +328,13 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Get episode comments type 2 with logged in user.
+     * Obtiene comentarios de tipo 2 sobre un capítulo.
      *
      * @return void
      */
-    public function test_get_episode_comments_type_2_logged_in_user()
+    public function test_obtener_comentarios_tipo_2_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -353,13 +359,13 @@ class ComentarioTest extends TestCase
 
         $comentario1 = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno'
         ]);
 
         $comentario2 = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'No está mal',
             'votosPositivos' => 1,
         ]);
@@ -381,11 +387,11 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Get episode comments without logged in user.
+     * Intenta obtener comentarios de tipo 1 sobre un capítulo sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_episode_comments_not_logged_in_user()
+    public function test_obtener_comentarios_tipo_1_capitulo_usuario_sin_sesion_iniciada()
     {
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -419,37 +425,42 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Delete audiovisual comment with logged in user.
+     * Borra un comentario sobre un audiovisual y decrementa los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_delete_audiovisual_comment_logged_in_user()
+    public function test_borrar_comentario_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
         ]);
+
+        Persona::where('id', $this->usuario->id)->update(['puntos' => 5]);
 
         $response = $this->call('POST', '/api/borrar-comentario-audiovisual/'.$comentario->id);
 
         $response->assertOk();
         $this->assertFalse(ComentarioAudiovisual::where('id', $comentario->id)
                                                 ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 0)
+                                 ->exists());
     }
 
     /**
-     * Delete audiovisual comment without logged in user.
+     * Intenta borrar un comentario sobre un audiovisual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_delete_audiovisual_comment_not_logged_in_user()
+    public function test_borrar_comentario_audiovisual_usuario_sin_sesion_iniciada()
     {
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
         ]);
 
@@ -459,13 +470,13 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Delete episode comment with logged in user.
+     * Borra un comentario sobre un capítulo y decrementa los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_delete_episode_comment_logged_in_user()
+    public function test_borrar_comentario_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -490,23 +501,28 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
         ]);
+
+        Persona::where('id', $this->usuario->id)->update(['puntos' => 5]);
 
         $response = $this->call('POST', '/api/borrar-comentario-capitulo/'.$comentario->id);
 
         $response->assertOk();
         $this->assertFalse(ComentarioCapitulo::where('id', $comentario->id)
                                              ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 0)
+                                 ->exists());
     }
 
     /**
-     * Delete episode comment without logged in user.
+     * Intenta borrar un comentario sobre un capitulo sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_delete_episode_comment_not_logged_in_user()
+    public function test_borrar_comentario_capitulo_usuario_sin_sesion_iniciada()
     {
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -531,7 +547,7 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
         ]);
 
@@ -541,61 +557,66 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Positive audiovisual opinion with logged in user.
+     * Crea una opinión positiva de un comentario sobre un audiovisual para el usuario actual e 
+     * incrementa los votos positivos del comentario y los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_positive_audiovisual_opinion_logged_in_user()
+    public function test_crear_opinion_positiva_comentario_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
         $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
 
         $response->assertOk();
-        $this->assertTrue(OpinionComentarioAudiovisual::where('persona_id', $this->user->id)
+        $this->assertTrue(OpinionComentarioAudiovisual::where('persona_id', $this->usuario->id)
                                                       ->where('comentarioAudiovisual_id', $comentario->id)
                                                       ->where('opinion', true)
                                                       ->exists());
         $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
                                                 ->where('votosPositivos', 1)
                                                 ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 1)
+                                 ->exists());
     }
 
     /**
-     * Positive audiovisual opinion and negative opinion existing.
+     * Actualiza la opinión a positiva de un comentario sobre un audiovisual del usuario actual (la cual era negativa),
+     * incrementa los votos positivos y decrementa los votos negativos del comentario.
      *
      * @return void
      */
-    public function test_positive_audiovisual_opinion_and_negative_opinion_existing()
+    public function test_actualizar_opinion_a_positiva_comentario_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
             'votosNegativos' => 1,
         ]);
 
         $opinion = OpinionComentarioAudiovisual::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'comentarioAudiovisual_id' => $comentario->id,
             'opinion' => false,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -612,29 +633,32 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Positive audiovisual opinion and positive opinion existing.
+     * Borra la opinión positiva de un comentario sobre un audiovisual del usuario actual
+     * y decrementa los votos positivos del comentario y los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_positive_audiovisual_opinion_and_positive_opinion_existing()
+    public function test_borrar_opinion_positiva_comentario_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
             'votosPositivos' => 1,
         ]);
 
         $opinion = OpinionComentarioAudiovisual::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'comentarioAudiovisual_id' => $comentario->id,
             'opinion' => true,
         ]);
 
+        Persona::where('id', $this->usuario->id)->update(['puntos' => 1]);
+
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -646,23 +670,26 @@ class ComentarioTest extends TestCase
         $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
                                                 ->where('votosPositivos', 0)
                                                 ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 0)
+                                 ->exists());
     }
 
     /**
-     * Positive audiovisual opinion without logged in user.
+     * Intenta crear una opinión positiva de un comentario sobre un audiovisual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_positive_audiovisual_opinion_not_logged_in_user()
+    public function test_crear_opinion_positiva_comentario_audiovisual_usuario_sin_sesion_iniciada()
     {
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -672,61 +699,66 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Negative audiovisual opinion with logged in user.
+     * Crea una opinión negativa de un comentario sobre un audiovisual para el usuario actual e 
+     * incrementa los votos negativos del comentario y los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_negative_audiovisual_opinion_logged_in_user()
+    public function test_crear_opinion_negativa_comentario_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
         $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
 
         $response->assertOk();
-        $this->assertTrue(OpinionComentarioAudiovisual::where('persona_id', $this->user->id)
+        $this->assertTrue(OpinionComentarioAudiovisual::where('persona_id', $this->usuario->id)
                                                       ->where('comentarioAudiovisual_id', $comentario->id)
                                                       ->where('opinion', false)
                                                       ->exists());
         $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
                                                 ->where('votosNegativos', 1)
                                                 ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 1)
+                                 ->exists());
     }
 
     /**
-     * Negative audiovisual opinion and positive opinion existing.
+     * Actualiza la opinión a negativa de un comentario sobre un audiovisual del usuario actual (la cual era positiva),
+     * incrementa los votos negativos y decrementa los votos positivos del comentario.
      *
      * @return void
      */
-    public function test_negative_audiovisual_opinion_and_positive_opinion_existing()
+    public function test_actualizar_opinion_a_negativa_comentario_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
             'votosPositivos' => 1,
         ]);
 
         $opinion = OpinionComentarioAudiovisual::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'comentarioAudiovisual_id' => $comentario->id,
             'opinion' => true,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -743,29 +775,32 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Negative audiovisual opinion and negative opinion existing.
+     * Borra la opinión negativa de un comentario sobre un audiovisual del usuario actual
+     * y decrementa los votos negativos del comentario y los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_negative_audiovisual_opinion_and_negative_opinion_existing()
+    public function test_borrar_opinion_negativa_comentario_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
             'votosNegativos' => 1,
         ]);
 
         $opinion = OpinionComentarioAudiovisual::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'comentarioAudiovisual_id' => $comentario->id,
             'opinion' => false,
         ]);
 
+        Persona::where('id', $this->usuario->id)->update(['puntos' => 1]);
+
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -777,23 +812,26 @@ class ComentarioTest extends TestCase
         $this->assertTrue(ComentarioAudiovisual::where('id', $comentario->id)
                                                 ->where('votosNegativos', 0)
                                                 ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 0)
+                                 ->exists());
     }
 
     /**
-     * Negative audiovisual opinion without logged in user.
+     * Intenta crear una opinión negativa de un comentario sobre un audiovisual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_negative_audiovisual_opinion_not_logged_in_user()
+    public function test_crear_opinion_negativa_comentario_audiovisual_usuario_sin_sesion_iniciada()
     {
         $comentario = ComentarioAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy buena',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -803,13 +841,14 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Positive episode opinion with logged in user.
+     * Crea una opinión positiva de un comentario sobre un capitulo para el usuario actual e 
+     * incrementa los votos positivos del comentario y los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_positive_episode_opinion_logged_in_user()
+    public function test_crear_opinion_positiva_comentario_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -834,35 +873,39 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
         $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
 
         $response->assertOk();
-        $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->user->id)
+        $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->usuario->id)
                                                     ->where('comentarioCapitulo_id', $comentario->id)
                                                     ->where('opinion', true)
                                                     ->exists());
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
                                             ->where('votosPositivos', 1)
                                             ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 1)
+                                 ->exists());
     }
 
     /**
-     * Positive episode opinion and negative opinion existing.
+     * Actualiza la opinión a positiva de un comentario sobre un capitulo del usuario actual (la cual era negativa),
+     * incrementa los votos positivos y decrementa los votos negativos del comentario.
      *
      * @return void
      */
-    public function test_positive_episode_opinion_and_negative_opinion_existing()
+    public function test_actualizar_opinion_a_positiva_comentario_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -887,19 +930,19 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
             'votosNegativos' => 1,
         ]);
 
         $opinion = OpinionComentarioCapitulo::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'comentarioCapitulo_id' => $comentario->id,
             'opinion' => false,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -916,13 +959,14 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Positive episode opinion and positive opinion existing.
+     * Borra la opinión positiva de un comentario sobre un capitulo del usuario actual
+     * y decrementa los votos positivos del comentario y los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_positive_episode_opinion_and_positive_opinion_existing()
+    public function test_borrar_opinion_positiva_comentario_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -947,19 +991,21 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
             'votosPositivos' => 1,
         ]);
 
         $opinion = OpinionComentarioCapitulo::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'comentarioCapitulo_id' => $comentario->id,
             'opinion' => true,
         ]);
 
+        Persona::where('id', $this->usuario->id)->update(['puntos' => 1]);
+
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -971,14 +1017,17 @@ class ComentarioTest extends TestCase
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
                                             ->where('votosPositivos', 0)
                                             ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 0)
+                                 ->exists());
     }
 
     /**
-     * Positive episode opinion without logged in user.
+     * Intenta crear una opinión positiva de un comentario sobre un capitulo sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_positive_episode_opinion_not_logged_in_user()
+    public function test_crear_opinion_positiva_comentario_capitulo_usuario_sin_sesion_iniciada()
     {
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -1003,12 +1052,12 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -1018,13 +1067,14 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Negative episode opinion with logged in user.
+     * Crea una opinión negativa de un comentario sobre un capitulo para el usuario actual e 
+     * incrementa los votos negativos del comentario y los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_negative_episode_opinion_logged_in_user()
+    public function test_crear_opinion_negativa_comentario_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -1049,35 +1099,39 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
         $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
 
         $response->assertOk();
-        $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->user->id)
+        $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->usuario->id)
                                                     ->where('comentarioCapitulo_id', $comentario->id)
                                                     ->where('opinion', false)
                                                     ->exists());
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
                                             ->where('votosNegativos', 1)
                                             ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 1)
+                                 ->exists());
     }
 
     /**
-     * Negative episode opinion and positive opinion existing.
+     * Actualiza la opinión a negativa de un comentario sobre un capitulo del usuario actual (la cual era positiva),
+     * incrementa los votos negativos y decrementa los votos positivos del comentario.
      *
      * @return void
      */
-    public function test_negative_episode_opinion_and_positive_opinion_existing()
+    public function test_actualizar_opinion_a_negativa_comentario_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -1102,19 +1156,19 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
             'votosPositivos' => 1,
         ]);
 
         $opinion = OpinionComentarioCapitulo::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'comentarioCapitulo_id' => $comentario->id,
             'opinion' => true,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -1131,13 +1185,14 @@ class ComentarioTest extends TestCase
     }
 
     /**
-     * Negative episode opinion and negative opinion existing.
+     * Borra la opinión negativa de un comentario sobre un capitulo del usuario actual
+     * y decrementa los votos negativos del comentario y los puntos del usuario actual.
      *
      * @return void
      */
-    public function test_negative_episode_opinion_and_negative_opinion_existing()
+    public function test_borrar_opinion_negativa_comentario_capitulo()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -1162,19 +1217,21 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
             'votosNegativos' => 1,
         ]);
 
         $opinion = OpinionComentarioCapitulo::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'comentarioCapitulo_id' => $comentario->id,
             'opinion' => false,
         ]);
 
+        Persona::where('id', $this->usuario->id)->update(['puntos' => 1]);
+
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 
@@ -1186,14 +1243,17 @@ class ComentarioTest extends TestCase
         $this->assertTrue(ComentarioCapitulo::where('id', $comentario->id)
                                             ->where('votosNegativos', 0)
                                             ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 0)
+                                 ->exists());
     }
 
     /**
-     * Negative episode opinion without logged in user.
+     * Intenta crear una opinión negativa de un comentario sobre un capitulo sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_negative_episode_opinion_not_logged_in_user()
+    public function test_crear_opinion_negativa_comentario_capitulo_usuario_sin_sesion_iniciada()
     {
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -1218,12 +1278,12 @@ class ComentarioTest extends TestCase
 
         $comentario = ComentarioCapitulo::create([
             'capitulo_id' => $capitulo->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'texto' => 'Muy bueno',
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'comentario_id' => $comentario->id,
         ];
 

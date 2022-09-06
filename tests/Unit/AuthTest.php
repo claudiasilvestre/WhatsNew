@@ -92,7 +92,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * Devuelve el usuario actual sin que un usuario tenga iniciada la sesión.
+     * Intenta devolver el usuario actual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */

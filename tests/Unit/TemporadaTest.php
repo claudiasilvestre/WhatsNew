@@ -70,7 +70,7 @@ class TemporadaTest extends TestCase
     }
 
     /**
-     * Obtiene temporadas por el ID de su serie sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener temporadas por el ID de su serie sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -139,7 +139,7 @@ class TemporadaTest extends TestCase
     }
 
     /**
-     * Comprueba visualización de temporada sin que un usuario tenga iniciada la sesión.
+     * Intenta comprobar visualización de temporada sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -255,11 +255,11 @@ class TemporadaTest extends TestCase
     }
 
     /**
-     * Crea o borra visualización de temporada y de sus capítulos sin que un usuario tenga iniciada la sesión.
+     * Intenta crear visualización de temporada y de sus capítulos sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_crear_o_borrar_visualizacion_temporada_usuario_sin_sesion_iniciada()
+    public function test_crear_visualizacion_temporada_usuario_sin_sesion_iniciada()
     {
         $temporada = Temporada::create([
             'audiovisual_id' => $this->serie->id,

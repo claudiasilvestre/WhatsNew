@@ -77,7 +77,7 @@ class BusquedaTest extends TestCase
     }
 
     /**
-     * Búsqueda sin que un usuario tenga iniciada la sesión.
+     * Intenta realizar la búsqueda sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */

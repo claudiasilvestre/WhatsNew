@@ -64,7 +64,7 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Consulta y devuelve los comentarios de un audiovisual dependiendo de su tipo 
+     * Consulta y devuelve los comentarios sobre un audiovisual dependiendo de su tipo 
      * y comprueba a que comentarios ha dado "Me gusta" o "No me gusta" el usuario actual.
      * 
      * @param Request $request Contiene el ID del audiovisual del que se quieren consultar los comentarios.
@@ -118,7 +118,7 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Consulta y devuelve los comentarios de un capítulo dependiendo de su tipo 
+     * Consulta y devuelve los comentarios sobre un capítulo dependiendo de su tipo 
      * y comprueba a que comentarios ha dado "Me gusta" o "No me gusta" el usuario actual.
      * 
      * @param Request $request Contiene el ID del capítulo del que se quieren consultar los comentarios.
@@ -171,7 +171,7 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Borra un comentario de un audiovisual por su ID y decrementa los puntos del usuario actual.
+     * Borra un comentario sobre un audiovisual por su ID y decrementa los puntos del usuario actual.
      * 
      * @param integer $comentario_id ID del comentario.
      *
@@ -187,7 +187,7 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Borra un comentario de un capítulo por su ID y decrementa los puntos del usuario actual.
+     * Borra un comentario sobre un capítulo por su ID y decrementa los puntos del usuario actual.
      * 
      * @param integer $comentario_id ID del comentario.
      *
@@ -203,7 +203,7 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Crea o borra una opinión positiva de un comentario de un audiovisual dependiendo de si la opinión ya existe o no,
+     * Crea o borra una opinión positiva de un comentario sobre un audiovisual dependiendo de si la opinión ya existe o no,
      * incrementa o decrementa los votos del comentario dependiendo de si existe o no la opinión
      * e incrementa o decrementa los puntos del usuario actual dependiendo de si se crea la opinión o se borra.
      * 
@@ -251,7 +251,7 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Crea o borra una opinión negativa de un comentario de un audiovisual dependiendo de si la opinión ya existe o no,
+     * Crea o borra una opinión negativa de un comentario sobre un audiovisual dependiendo de si la opinión ya existe o no,
      * incrementa o decrementa los votos del comentario dependiendo de si existe o no la opinión
      * e incrementa o decrementa los puntos del usuario actual dependiendo de si se crea la opinión o se borra.
      * 
@@ -299,7 +299,7 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Crea o borra una opinión positiva de un comentario de un capítulo dependiendo de si la opinión ya existe o no,
+     * Crea o borra una opinión positiva de un comentario sobre un capítulo dependiendo de si la opinión ya existe o no,
      * incrementa o decrementa los votos del comentario dependiendo de si existe o no la opinión
      * e incrementa o decrementa los puntos del usuario actual dependiendo de si se crea la opinión o se borra.
      * 
@@ -347,7 +347,7 @@ class ComentarioController extends Controller
     }
 
     /**
-     * Crea o borra una opinión negativa de un comentario de un capítulo dependiendo de si la opinión ya existe o no,
+     * Crea o borra una opinión negativa de un comentario sobre un capítulo dependiendo de si la opinión ya existe o no,
      * incrementa o decrementa los votos del comentario dependiendo de si existe o no la opinión
      * e incrementa o decrementa los puntos del usuario actual dependiendo de si se crea la opinión o se borra.
      * 

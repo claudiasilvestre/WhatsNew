@@ -96,7 +96,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Obtiene una persona por su ID sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener una persona por su ID sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -175,7 +175,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Obtiene los participantes de un audiovisual por el ID del audiovisual sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener los participantes de un audiovisual por el ID del audiovisual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -216,7 +216,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Obtiene la información de un usuario sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener la información de un usuario sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -277,7 +277,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Cambia información del usuario actual sin que un usuario tenga iniciada la sesión.
+     * Intenta cambiar información del usuario actual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -335,7 +335,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Cambia la contraseña del usuario actual sin que un usuario tenga iniciada la sesión.
+     * Intenta cambiar la contraseña del usuario actual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -412,7 +412,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Comprueba si el usuario actual sigue al usuario proporcionado sin que un usuario tenga iniciada la sesión.
+     * Intenta comprobar si el usuario actual sigue al usuario proporcionado sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -503,11 +503,11 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Crea o borra un seguimiento de usuario sin que un usuario tenga iniciada la sesión.
+     * Intenta crear un seguimiento de usuario sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_crear_o_borrar_seguimiento_usuario_sin_sesion_iniciada()
+    public function test_crear_seguimiento_usuario_sin_sesion_iniciada()
     {
         $usuario2 = Persona::factory()->create([
             'nombre' => 'Claudia',
@@ -559,7 +559,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Obtiene los usuarios que sigue un usuario sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener los usuarios que sigue un usuario sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -603,7 +603,7 @@ class PersonaTest extends TestCase
     }
 
     /**
-     * Obtiene los seguidores de un usuario sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener los seguidores de un usuario sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */

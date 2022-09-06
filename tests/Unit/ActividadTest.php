@@ -54,7 +54,7 @@ class ActividadTest extends TestCase
     }
 
     /**
-     * Obtiene la actividad de un usuario por su ID sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener la actividad de un usuario por su ID sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -99,7 +99,7 @@ class ActividadTest extends TestCase
     }
 
     /**
-     * Obtiene la actividad de los amigos del usuario actual sin que un usuario tenga iniciada la sesión.
+     * Intenta obtener la actividad de los amigos del usuario actual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
@@ -145,7 +145,7 @@ class ActividadTest extends TestCase
     }
 
     /**
-     * Borra una actividad por su ID sin que un usuario tenga iniciada la sesión.
+     * Intenta borrar una actividad por su ID sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
