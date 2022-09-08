@@ -18,7 +18,7 @@ const actions = {
             axios.post('/api/inicio-sesion', formData).then((response) => {
                 window.location.replace("/home");
             }).catch((errors) => {
-                commit('setErrors', errors.response.data)
+                commit('setErrors', errors.response.data.errors)
             })
         });
     },
