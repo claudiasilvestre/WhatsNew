@@ -18,6 +18,7 @@ use App\Models\VisualizacionCapitulo;
 use App\Models\VisualizacionTemporada;
 use App\Models\Genero;
 use App\Models\Idioma;
+use App\Models\Actividad;
 use Tests\TestCase;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -26,17 +27,17 @@ class AudiovisualTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected $user, $tipoAudiovisual, $pelicula;
+    protected $usuario, $tipoAudiovisual, $pelicula;
     
     /**
-     * Set up the test
+     * Inicializa el test
      */
     public function setUp(): void
     {
         parent::setUp();
 
         TipoPersona::factory()->create();
-        $this->user = Persona::factory()->create();
+        $this->usuario = Persona::factory()->create();
 
         $this->tipoAudiovisual = TipoAudiovisual::create([
             'nombre' => 'Pelicula',
@@ -50,13 +51,13 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get tv shows and movies with logged in user.
+     * Obtiene películas y series.
      *
      * @return void
      */
-    public function test_get_tv_shows_and_movies_logged_in_user()
+    public function test_obtener_peliculas_series()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoSerie = TipoAudiovisual::create([
             'nombre' => 'Serie',
@@ -83,11 +84,11 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get tv shows and movies without logged in user.
+     * Intenta obtener películas y series sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_tv_shows_and_movies_not_logged_in_user()
+    public function test_obtener_peliculas_series_usuario_sin_sesion_iniciada()
     {
         $response = $this->getJson('/api/audiovisuales');
 
@@ -95,13 +96,13 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get audiovisual with logged in user.
+     * Obtiene un audiovisual por su ID.
      *
      * @return void
      */
-    public function test_get_audiovisual_logged_in_user()
+    public function test_obtener_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $response = $this->getJson('/api/audiovisuales/'.$this->pelicula->id);
 
@@ -116,11 +117,11 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get audiovisual without logged in user.
+     * Intenta obtener un audiovisual por su ID sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_audiovisual_not_logged_in_user()
+    public function test_obtener_audiovisual_usuario_sin_sesion_iniciada()
     {
         $response = $this->getJson('/api/audiovisuales/'.$this->pelicula->id);
 
@@ -128,13 +129,13 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get participation with logged in user.
+     * Obtiene las participaciones en audiovisuales de una persona por su ID.
      *
      * @return void
      */
-    public function test_get_participation_logged_in_user()
+    public function test_obtener_participaciones()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $tipoPersona = TipoPersona::create([
             'nombre' => 'Participante'
@@ -168,11 +169,11 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get participation without logged in user.
+     * Intenta obtener las participaciones en audiovisuales de una persona por su ID sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_participation_not_logged_in_user()
+    public function test_obtener_participaciones_usuario_sin_sesion_iniciada()
     {
         $tipoPersona = TipoPersona::create([
             'nombre' => 'Participante'
@@ -194,22 +195,22 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get audiovisual tracking with audiovisual tracking existing.
+     * Obtiene el estado de un seguimiento de un audiovisual para un usuario.
      *
      * @return void
      */
-    public function test_get_audiovisual_tracking_with_audiovisual_tracking_existing()
+    public function test_obtener_estado_seguimiento_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 1,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
         ];
 
@@ -220,16 +221,16 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get audiovisual tracking without audiovisual tracking existing.
+     * Obtiene 0 como estado de seguimiento de un audiovisual para un usuario debido a que no existe el seguimiento.
      *
      * @return void
      */
-    public function test_get_audiovisual_tracking_without_audiovisual_tracking_existing()
+    public function test_obtener_estado_seguimiento_audiovisual_seguimiento_no_existe()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
         ];
 
@@ -240,14 +241,14 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get audiovisual tracking without logged in user.
+     * Intenta obtener el estado de un seguimiento de un audiovisual para un usuario sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_audiovisual_tracking_not_logged_in_user()
+    public function test_obtener_estado_seguimiento_audiovisual_usuario_sin_sesion_iniciada()
     {
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
         ];
 
@@ -257,22 +258,22 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Audiovisual tracking with audiovisual tracking existing.
+     * Borra un seguimiento de un audiovisual para un usuario al ser del mismo tipo.
      *
      * @return void
      */
-    public function test_audiovisual_tracking_with_audiovisual_tracking_existing()
+    public function test_borrar_seguimiento_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 3,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
             'tipo' => 3,
         ];
@@ -281,21 +282,21 @@ class AudiovisualTest extends TestCase
 
         $response->assertOk();
         $this->assertFalse(SeguimientoAudiovisual::where('audiovisual_id', $this->pelicula->id)
-                                                 ->where('persona_id', $this->user->id)
+                                                 ->where('persona_id', $this->usuario->id)
                                                  ->where('estado', 3)->exists());
     }
 
     /**
-     * Audiovisual tracking without audiovisual tracking existing.
+     * Crea un seguimiento de un audiovisual para un usuario y la actividad correspondiente.
      *
      * @return void
      */
-    public function test_audiovisual_tracking_without_audiovisual_tracking_existing()
+    public function test_crear_seguimiento_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
             'tipo' => 3,
         ];
@@ -304,18 +305,23 @@ class AudiovisualTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(SeguimientoAudiovisual::where('audiovisual_id', $this->pelicula->id)
-                                                 ->where('persona_id', $this->user->id)
-                                                 ->where('estado', 3)->exists());
+                                                ->where('persona_id', $this->usuario->id)
+                                                ->where('estado', 3)->exists());
+        $this->assertTrue(Actividad::where('persona_id', $this->usuario->id)
+                                   ->where('tipo', 3)
+                                   ->where('audiovisual_id', $this->pelicula->id)
+                                   ->exists());
     }
 
     /**
-     * Audiovisual tracking with type 1.
+     * Actualiza un seguimiento de un audiovisual para un usuario a un seguimiento de tipo 1,
+     * borra todas las visualizaciones de ese audiovisual para el usuario y crea la actividad correspondiente.
      *
      * @return void
      */
-    public function test_audiovisual_tracking_with_type_1()
+    public function test_actualizar_seguimiento_audiovisual_a_tipo_1()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $serie = Audiovisual::create([
             'id' => 2,
@@ -336,17 +342,17 @@ class AudiovisualTest extends TestCase
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $serie->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 2,
         ]);
 
         VisualizacionCapitulo::create([
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'capitulo_id' => $capitulo->id
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $serie->id,
             'tipo' => 1,
         ];
@@ -355,22 +361,27 @@ class AudiovisualTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(SeguimientoAudiovisual::where('audiovisual_id', $serie->id)
-                                                 ->where('persona_id', $this->user->id)
+                                                 ->where('persona_id', $this->usuario->id)
                                                  ->where('estado', 1)
                                                  ->exists());
-        $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->user->id)
+        $this->assertFalse(VisualizacionCapitulo::where('persona_id', $this->usuario->id)
                                                  ->where('capitulo_id', $capitulo->id)
                                                  ->exists());
+        $this->assertTrue(Actividad::where('persona_id', $this->usuario->id)
+                                   ->where('tipo', 1)
+                                   ->where('audiovisual_id', $serie->id)
+                                   ->exists());
     }
 
     /**
-     * Audiovisual tracking with type 3.
+     * Actualiza un seguimiento de un audiovisual para un usuario a un seguimiento de tipo 3 
+     * y crea las visualizaciones y actividad correspondientes.
      *
      * @return void
      */
-    public function test_audiovisual_tracking_with_type_3()
+    public function test_actualizar_seguimiento_audiovisual_a_tipo_3()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $serie = Audiovisual::create([
             'id' => 2,
@@ -391,12 +402,12 @@ class AudiovisualTest extends TestCase
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $serie->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 2,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $serie->id,
             'tipo' => 3,
         ];
@@ -405,26 +416,30 @@ class AudiovisualTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(SeguimientoAudiovisual::where('audiovisual_id', $serie->id)
-                                                 ->where('persona_id', $this->user->id)
+                                                 ->where('persona_id', $this->usuario->id)
                                                  ->where('estado', 3)
                                                  ->exists());
-        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->user->id)
+        $this->assertTrue(VisualizacionCapitulo::where('persona_id', $this->usuario->id)
                                                  ->where('capitulo_id', $capitulo->id)
                                                  ->exists());
-        $this->assertTrue(VisualizacionTemporada::where('persona_id', $this->user->id)
+        $this->assertTrue(VisualizacionTemporada::where('persona_id', $this->usuario->id)
                                                  ->where('temporada_id', $temporada->id)
                                                  ->exists());
+        $this->assertTrue(Actividad::where('persona_id', $this->usuario->id)
+                                   ->where('tipo', 3)
+                                   ->where('audiovisual_id', $serie->id)
+                                   ->exists());
     }
 
     /**
-     * Audiovisual tracking without logged in user.
+     * Intenta crear un seguimiento de un audiovisual para un usuario sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_audiovisual_tracking_not_logged_in_user()
+    public function test_crear_seguimiento_audiovisual_usuario_sin_sesion_iniciada()
     {
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
             'tipo' => 3,
         ];
@@ -435,13 +450,14 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get providers with logged in user.
+     * Obtiene los proveedores de un audiovisual divididos por la condición que ofrece 
+     * cada proveedor para visualizarlos.
      *
      * @return void
      */
-    public function test_get_providers_logged_in_user()
+    public function test_obtener_proveedores_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $proveedor = Proveedor::create([
             'nombre' => 'Amazon Prime Video'
@@ -483,11 +499,11 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get providers without logged in user.
+     * Intenta obtener los proveedores de un audiovisual sin que un usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_providers_not_logged_in_user()
+    public function test_obtener_proveedores_audiovisual_usuario_sin_sesion_iniciada()
     {
         $response = $this->getJson('/api/proveedores/'.$this->pelicula->id);
 
@@ -495,17 +511,17 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get user colection with logged in user.
+     * Obtiene la colección de audiovisuales de un usuario.
      *
      * @return void
      */
-    public function test_get_user_colection_logged_in_user()
+    public function test_obtener_coleccion_audiovisuales_usuario()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 3,
         ]);
 
@@ -521,11 +537,11 @@ class AudiovisualTest extends TestCase
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $serie->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 2,
         ]);
 
-        $response = $this->getJson('/api/coleccion-usuario/'.$this->user->id);
+        $response = $this->getJson('/api/coleccion-usuario/'.$this->usuario->id);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
@@ -541,34 +557,35 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get user colection without logged in user.
+     * Intenta obtener la colección de audiovisuales de un usuario.
      *
      * @return void
      */
-    public function test_get_user_colection_not_logged_in_user()
+    public function test_obtener_coleccion_audiovisuales_usuario_sin_sesion_iniciada()
     {
-        $response = $this->getJson('/api/coleccion-usuario/'.$this->user->id);
+        $response = $this->getJson('/api/coleccion-usuario/'.$this->usuario->id);
 
         $response->assertUnauthorized();
     }
 
     /**
-     * Audiovisual rating with audiovisual rating existing.
+     * Borra valoración existente, crea una nueva valoración de un usuario para un audiovisual 
+     * y actualiza la puntuación del audiovisual y los puntos del usuario.
      *
      * @return void
      */
-    public function test_audiovisual_rating_with_audiovisual_rating_existing()
+    public function test_borrar_y_crear_valoracion_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         Valoracion::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'puntuacion' => 5,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
             'puntuacion' => 4,
         ];
@@ -577,29 +594,33 @@ class AudiovisualTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(Valoracion::where('audiovisual_id', $this->pelicula->id)
-                                    ->where('persona_id', $this->user->id)
+                                    ->where('persona_id', $this->usuario->id)
                                     ->where('puntuacion', 4)
                                     ->exists());
         $this->assertFalse(Valoracion::where('audiovisual_id', $this->pelicula->id)
-                                    ->where('persona_id', $this->user->id)
-                                    ->where('puntuacion', 5)
-                                    ->exists());
+                                     ->where('persona_id', $this->usuario->id)
+                                     ->where('puntuacion', 5)
+                                     ->exists());
         $this->assertTrue(Audiovisual::where('id', $this->pelicula->id)
                                      ->where('puntuacion', 4)
                                      ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 0)
+                                 ->exists());
     }
 
     /**
-     * Audiovisual rating without audiovisual rating existing.
+     * Crea una nueva valoración de un usuario para un audiovisual y actualiza la puntuación del audiovisual
+     * y los puntos del usuario.
      *
      * @return void
      */
-    public function test_audiovisual_rating_without_audiovisual_rating_existing()
+    public function test_crear_valoracion_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
             'puntuacion' => 5,
         ];
@@ -608,23 +629,26 @@ class AudiovisualTest extends TestCase
 
         $response->assertOk();
         $this->assertTrue(Valoracion::where('audiovisual_id', $this->pelicula->id)
-                                    ->where('persona_id', $this->user->id)
+                                    ->where('persona_id', $this->usuario->id)
                                     ->where('puntuacion', 5)
                                     ->exists());
         $this->assertTrue(Audiovisual::where('id', $this->pelicula->id)
                                      ->where('puntuacion', 5)
                                      ->exists());
+        $this->assertTrue(Persona::where('id', $this->usuario->id)
+                                 ->where('puntos', 5)
+                                 ->exists());
     }
 
     /**
-     * Audiovisual rating without logged in user.
+     * Intenta crear una nueva valoración de un usuario para un audiovisual sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_audiovisual_rating_not_logged_in_user()
+    public function test_crear_valoracion_audiovisual_usuario_sin_sesion_iniciada()
     {
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
             'puntuacion' => 5,
         ];
@@ -635,22 +659,22 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get audiovisual rating with audiovisual rating existing.
+     * Comprueba la valoración de un usuario a un audiovisual.
      *
      * @return void
      */
-    public function test_get_audiovisual_rating_with_audiovisual_rating_existing()
+    public function test_comprobar_valoracion_audiovisual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         Valoracion::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'puntuacion' => 5,
         ]);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
         ];
 
@@ -661,16 +685,16 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get audiovisual rating without audiovisual rating existing.
+     * Comprueba que se obtiene 0 como valoración de un usuario a un audiovisual debido a que no existe ninguna valoración.
      *
      * @return void
      */
-    public function test_get_audiovisual_rating_without_audiovisual_rating_existing()
+    public function test_comprobar_valoracion_audiovisual_sin_que_exista_valoracion()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
         ];
 
@@ -681,14 +705,14 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get audiovisual rating without logged in user.
+     * Intenta comprobar la valoración de un usuario a un audiovisual.
      *
      * @return void
      */
-    public function test_get_audiovisual_rating_not_logged_in_user()
+    public function test_comprobar_valoracion_audiovisual_usuario_sin_sesion_iniciada()
     {
         $request = [
-            'usuario_id' => $this->user->id,
+            'usuario_id' => $this->usuario->id,
             'audiovisual_id' => $this->pelicula->id,
         ];
 
@@ -698,13 +722,13 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get my colection with logged in user.
+     * Obtiene la colección de audiovisuales del usuario actual.
      *
      * @return void
      */
-    public function test_get_my_colection_logged_in_user()
+    public function test_obtener_coleccion_audiovisuales_usuario_actual()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $peliculaVista = Audiovisual::create([
             'id' => 2,
@@ -714,13 +738,13 @@ class AudiovisualTest extends TestCase
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 1,
         ]);
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $peliculaVista->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 3,
         ]);
 
@@ -748,19 +772,19 @@ class AudiovisualTest extends TestCase
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $seriePendiente->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 1,
         ]);
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $serieSeguida->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 2,
         ]);
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $serieVista->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 3,
         ]);
 
@@ -790,11 +814,11 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get my colection without logged in user.
+     * Intenta obtener la colección de audiovisuales del usuario actual.
      *
      * @return void
      */
-    public function test_get_my_colection_not_logged_in_user()
+    public function test_obtener_coleccion_audiovisuales_usuario_actual_usuario_sin_sesion_iniciada()
     {
         $response = $this->getJson('/api/mi-coleccion');
 
@@ -802,13 +826,14 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get recommended audiovisuals with logged in user.
+     * Obtiene audiovisuales recomendados en base a audiovisuales 
+     * sobre los que tiene creado un seguimiento el usuario actual.
      *
      * @return void
      */
-    public function test_get_recommended_audiovisuals_logged_in_user()
+    public function test_obtener_audiovisuales_recomendados()
     {
-        $this->actingAs($this->user);
+        $this->actingAs($this->usuario);
 
         $generoAccion = Genero::create([
             'id' => 1,
@@ -864,7 +889,7 @@ class AudiovisualTest extends TestCase
 
         SeguimientoAudiovisual::create([
             'audiovisual_id' => $this->pelicula->id,
-            'persona_id' => $this->user->id,
+            'persona_id' => $this->usuario->id,
             'estado' => 3,
         ]);
 
@@ -881,11 +906,12 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Get recommended audiovisuals without logged in user.
+     * Intenta obtener audiovisuales recomendados en base a audiovisuales 
+     * sobre los que tiene creado un seguimiento el usuario actual sin que el usuario tenga iniciada la sesión.
      *
      * @return void
      */
-    public function test_get_recommended_audiovisuals_not_logged_in_user()
+    public function test_obtener_audiovisuales_recomendados_usuario_sin_sesion_iniciada()
     {
         $response = $this->getJson('/api/recomendaciones');
 

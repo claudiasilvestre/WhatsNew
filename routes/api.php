@@ -20,14 +20,14 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('/audiovisuales', AudiovisualController::class);
     Route::get('/audiovisuales-participacion/{persona_id}', [AudiovisualController::class, 'participacion']);
-    Route::get('/mi-coleccion', [AudiovisualController::class, 'mi_coleccion']);
+    Route::get('/mi-coleccion', [AudiovisualController::class, 'miColeccion']);
     Route::get('/recomendaciones', [AudiovisualController::class, 'recomendaciones']);
-    Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracion_audiovisual']);
-    Route::get('/saber-seguimiento-audiovisual', [AudiovisualController::class, 'saber_seguimiento_audiovisual']);
-    Route::post('/seguimiento-audiovisual', [AudiovisualController::class, 'seguimiento_audiovisual']);
+    Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracionAudiovisual']);
+    Route::get('/saber-seguimiento-audiovisual', [AudiovisualController::class, 'saberSeguimientoAudiovisual']);
+    Route::post('/seguimiento-audiovisual', [AudiovisualController::class, 'seguimientoAudiovisual']);
     Route::get('/proveedores/{audiovisual_id}', [AudiovisualController::class, 'proveedores']);
-    Route::get('/coleccion-usuario/{usuario_id}', [AudiovisualController::class, 'coleccion_usuario']);
-    Route::get('/saber-valoracion-audiovisual', [AudiovisualController::class, 'saber_valoracion_audiovisual']);
+    Route::get('/coleccion-usuario/{usuario_id}', [AudiovisualController::class, 'coleccionUsuario']);
+    Route::get('/saber-valoracion-audiovisual', [AudiovisualController::class, 'saberValoracionAudiovisual']);
 
     Route::post('/guardar-informacion', [PersonaController::class, 'guardarInformacion']);
     Route::put('/guardar-password', [PersonaController::class, 'guardarPassword']);

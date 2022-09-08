@@ -15,4 +15,14 @@ class Participacion extends Model
         'audiovisual_id',
         'persona_id',
     ];
+
+    public function participante()
+    {
+        return $this->belongsTo(Persona::class);
+    }
+
+    public function audiovisual()
+    {
+        return $this->belongsTo(Audiovisual::class);
+    }
 }

@@ -66,14 +66,14 @@ class AudiovisualController extends Controller
     }
 
     /**
-     * Si existe un seguimiento de un audiovisual para el usuario devuelve el estado, 
+     * Si existe un seguimiento del audiovisual para el usuario devuelve el estado, 
      * en caso de que no exista el seguimiento devuelve 0.
      * 
      * @param Request $request Contiene el ID del usuario actual y el ID del audiovisual.
      *
      * @return integer
      */
-    public function saber_seguimiento_audiovisual(Request $request) {
+    public function saberSeguimientoAudiovisual(Request $request) {
         if (SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->exists()) {
             $seguimiento = SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->first();
             return $seguimiento->estado;
@@ -84,7 +84,7 @@ class AudiovisualController extends Controller
 
     /**
      * Si el seguimiento del audiovisual existe para el usuario se borra o se actualiza el seguimiento 
-     * dependiendo del tipo de seguimiento recibido y sea crea su corresponte actividad si procede, si el seguimiento 
+     * dependiendo del tipo de seguimiento recibido y se crea su corresponte actividad si procede, si el seguimiento 
      * del audiovisual no existe para el usuario se crea el seguimiento y su corresponte actividad. 
      * Si el tipo de seguimiento recibido es 1 significa que el audiovisual está pendiente para el usuario y se borran todas
      * las visualizaciones de este usuario con respecto al audiovisual. 
@@ -95,7 +95,7 @@ class AudiovisualController extends Controller
      *
      * @return boolean
      */
-    public function seguimiento_audiovisual(Request $request) {
+    public function seguimientoAudiovisual(Request $request) {
         if (SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->exists()) {            
             $seguimiento = SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->first();
             if ($seguimiento->estado == $request->tipo) {
@@ -217,7 +217,7 @@ class AudiovisualController extends Controller
      *
      * @return Response
      */
-    public function coleccion_usuario($usuario_id) {
+    public function coleccionUsuario($usuario_id) {
         $todo = DB::table('audiovisual')
                                 ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
                                 ->where('persona_id', $usuario_id)
@@ -248,17 +248,15 @@ class AudiovisualController extends Controller
      * En cualquier caso, crea una valoración nueva, actualiza la puntuación del audiovisual e incrementa los puntos
      * del usuario.
      * 
-     * @param Request $request Contiene el ID del audiovisual, el ID del usuario actual y la puntuación que da el usuario.
+     * @param Request $request Contiene el ID del audiovisual, el ID del usuario actual y la puntuación que da el usuario actual.
      *
      * @return void
      */
-    public function valoracion_audiovisual(Request $request) {
-        $usuario_id = Auth::id();
-
+    public function valoracionAudiovisual(Request $request) {
         if (Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->exists()) {
             Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->delete();
 
-            Persona::where('id', $usuario_id)->decrement('puntos', 5);
+            Persona::where('id', $request->usuario_id)->decrement('puntos', 5);
         }
         
         Valoracion::create([
@@ -273,18 +271,18 @@ class AudiovisualController extends Controller
         $puntuacion = $suma_valoraciones/$num_valoraciones;
         Audiovisual::where('id', $request->audiovisual_id)->update(['puntuacion' => $puntuacion]);
 
-        Persona::where('id', $usuario_id)->increment('puntos', 5);
+        Persona::where('id', $request->usuario_id)->increment('puntos', 5);
     }
 
     /**
-     * Si existe una valoración del usuario a un audiovisual devuelve la puntuación dada, 
+     * Si existe una valoración del usuario al audiovisual devuelve la puntuación dada, 
      * en caso de que no exista la valoración devuelve 0.
      * 
      * @param Request $request Contiene el ID del audiovisual y el ID del usuario actual.
      *
      * @return integer
      */
-    public function saber_valoracion_audiovisual(Request $request) {
+    public function saberValoracionAudiovisual(Request $request) {
         if (Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->exists()) {
             $valoracion = Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->first();
             return $valoracion->puntuacion;
@@ -299,7 +297,7 @@ class AudiovisualController extends Controller
      *
      * @return Response
      */
-    public function mi_coleccion() {
+    public function miColeccion() {
         $usuario_id = Auth::id();
         
         $series = DB::table('audiovisual')
@@ -360,6 +358,12 @@ class AudiovisualController extends Controller
         ]);
     }
 
+    /**
+     * Consulta los audiovisuales sobre los que existe un seguimiento por parte del usuario actual
+     * y devuelve 10 audiovisuales como recomendación en base a estos.
+     *
+     * @return Response
+     */
     public function recomendaciones() {
         $usuario_id = Auth::id();
 
