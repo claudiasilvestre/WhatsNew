@@ -244,9 +244,9 @@ class AudiovisualController extends Controller
     }
 
     /**
-     * Si ya existe una valoración del usuario para el audiovisual, la borra y decrementa los puntos del usuario. 
-     * En cualquier caso, crea una valoración nueva, actualiza la puntuación del audiovisual e incrementa los puntos
-     * del usuario.
+     * Si ya existe una valoración del usuario para el audiovisual, la actualiza con la nueva puntuación.
+     * Sino, crea una valoración nueva e incrementa los puntos del usuario.
+     * En cualquier caso actualiza la puntuación del audiovisual.
      * 
      * @param Request $request Contiene el ID del audiovisual, el ID del usuario actual y la puntuación que da el usuario actual.
      *
@@ -254,24 +254,25 @@ class AudiovisualController extends Controller
      */
     public function valoracionAudiovisual(Request $request) {
         if (Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->exists()) {
-            Valoracion::where('audiovisual_id', $request->audiovisual_id)->where('persona_id', $request->usuario_id)->delete();
+            Valoracion::where('audiovisual_id', $request->audiovisual_id)
+                      ->where('persona_id', $request->usuario_id)
+                      ->update(['puntuacion' => $request->puntuacion]);
 
-            Persona::where('id', $request->usuario_id)->decrement('puntos', 5);
+        } else {
+            Valoracion::create([
+                'audiovisual_id' => $request->audiovisual_id,
+                'persona_id' => $request->usuario_id,
+                'puntuacion' => $request->puntuacion,
+            ]);
+
+            Persona::where('id', $request->usuario_id)->increment('puntos', 5);
         }
-        
-        Valoracion::create([
-            'audiovisual_id' => $request->audiovisual_id,
-            'persona_id' => $request->usuario_id,
-            'puntuacion' => $request->puntuacion,
-        ]);
 
         // Media de las valoraciones
         $num_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->count();
         $suma_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->sum('puntuacion');
         $puntuacion = $suma_valoraciones/$num_valoraciones;
         Audiovisual::where('id', $request->audiovisual_id)->update(['puntuacion' => $puntuacion]);
-
-        Persona::where('id', $request->usuario_id)->increment('puntos', 5);
     }
 
     /**
@@ -370,6 +371,7 @@ class AudiovisualController extends Controller
         $audiovisuales = DB::table('audiovisual')
                             ->join('seguimiento_audiovisual', 'audiovisual.id', 'seguimiento_audiovisual.audiovisual_id')
                             ->where('persona_id', $usuario_id)
+                            ->where('seguimiento_audiovisual.estado', '!=', 1)
                             ->get();
 
         $audiovisualesObject = [];

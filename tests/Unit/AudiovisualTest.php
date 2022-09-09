@@ -569,12 +569,11 @@ class AudiovisualTest extends TestCase
     }
 
     /**
-     * Borra valoración existente, crea una nueva valoración de un usuario para un audiovisual 
-     * y actualiza la puntuación del audiovisual y los puntos del usuario.
+     * Actualiza una valoración existente de un usuario para un audiovisual y la puntuación del audiovisual.
      *
      * @return void
      */
-    public function test_borrar_y_crear_valoracion_audiovisual()
+    public function test_actualiza_valoracion_audiovisual()
     {
         $this->actingAs($this->usuario);
 
@@ -604,9 +603,6 @@ class AudiovisualTest extends TestCase
         $this->assertTrue(Audiovisual::where('id', $this->pelicula->id)
                                      ->where('puntuacion', 4)
                                      ->exists());
-        $this->assertTrue(Persona::where('id', $this->usuario->id)
-                                 ->where('puntos', 0)
-                                 ->exists());
     }
 
     /**

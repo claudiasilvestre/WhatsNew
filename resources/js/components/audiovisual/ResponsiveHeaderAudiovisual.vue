@@ -1,8 +1,7 @@
 <template>
-    <div class="aside-visibility">
-        <img class="rounded" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="190" height="290">
-        <star-rating v-model="rating" :increment="0.5" :star-size="29" text-class="custom-text" class="m-2"></star-rating>
-        <div v-if="!loading" class="buttons width">
+    <div>
+        <star-rating v-model="rating" :increment="0.5" :star-size="25" text-class="custom-text" class="m-2"></star-rating>
+        <div>
             <button v-bind:class="{'btn btn-danger': !clicked1, 'btn btn-outline-danger': clicked1}" @click="seguimiento(1)" class="m-1"><b-icon icon="clock"></b-icon>
                 {{ pendiente }}
             </button>
@@ -28,7 +27,6 @@ export default {
             pendiente: "Pendiente",
             seguir: "Seguir",
             vista: "Vista",
-            loading: true,
             clicked1: false,
             clicked2: false,
             clicked3: false,

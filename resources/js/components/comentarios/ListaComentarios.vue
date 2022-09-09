@@ -5,7 +5,7 @@
             <img class="roundedPerfil m-3" v-bind:src="comentario.foto" v-bind:alt="comentario.nombre" width="50" height="50">
             <div class="width">
                 <div d-flex flex-row>
-                    <span>{{ comentario.nombre }}</span>
+                    <span class="title-color">{{ comentario.nombre }}</span>
                     <span class="p-letra">{{ moment(comentario.created_at).format('LL') }}</span>
                 </div>
                 <span>{{ comentario.texto }}</span>

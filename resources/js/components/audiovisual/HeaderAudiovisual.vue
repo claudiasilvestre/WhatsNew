@@ -1,6 +1,7 @@
 <template>
     <div class="width">
         <div class="headerMedia">
+            <img class="rounded img-fluid responsive-header-visibility mb-2" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="150" height="250">
             <h1 class="mr-4" style="width: 100%">{{ audiovisual.titulo }}</h1>
             <div class="itemsHeaderMedia">
                 <div style="padding-right: 20px">
@@ -17,19 +18,40 @@
                     <span class="item" v-else-if="audiovisual.tipoAudiovisual_id === 2 && audiovisual.numeroTemporadas > 1">{{ audiovisual.numeroTemporadas }} temporadas</span>
                     <span class="item">{{ audiovisual.anno }}</span>
                 </div>
+                <responsive-header class="responsive-header-visibility" :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
             </div>
+
         </div>
     </div>
 </template>
 
 <script>
+import ResponsiveHeader from './ResponsiveHeaderAudiovisual.vue'
 
 export default {
+    components: {
+        ResponsiveHeader,
+    },
     props: {
       audiovisual: {
         required: true,
         type: Object
+      },
+      usuarioActual: {
+        required: true,
+        type: Object
+      },
+      cambioAside: {
+        type: Boolean
       }
+    },
+    methods: {
+      comprobarCambioAside() {
+        this.$emit('comprobarCambioAside');
+      },
+      actualizarValoracion() {
+        this.$emit('actualizarValoracion');
+      },
     }
 }
 </script>

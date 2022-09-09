@@ -219,6 +219,10 @@ a {
     color: #0dcaf0 !important;
 }
 
+.title-color {
+    color: #0dcaf0;
+}
+
 .v-select__selections input {
     display: none;
 }
@@ -283,6 +287,10 @@ a {
     justify-content: space-between;
 }
 
+.responsive-header-visibility {
+    display: none;
+}
+
 @media screen and (max-width: 633px) {
     .content {
         margin-top: 90px;
@@ -312,6 +320,14 @@ a {
 
     .item {
         font-size: 14px;
+    }
+
+    .aside-visibility {
+        display: none;
+    }
+
+    .responsive-header-visibility {
+        display: block;
     }
 }
 

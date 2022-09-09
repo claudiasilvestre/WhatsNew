@@ -11,7 +11,7 @@
             <div v-else-if="!loading" class="content header">
                 <aside-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
                 <div class="width">
-                    <header-audiovisual :audiovisual="audiovisual" />
+                    <header-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
                     <menu-audiovisual :audiovisual="audiovisual" :cambioAside="cambioAside" />
                 </div>
             </div>
