@@ -2,7 +2,7 @@
     <div class="width">
         <div class="headerMedia">
             <img class="rounded img-fluid responsive-header-visibility mb-2" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="150" height="250">
-            <h1 class="mr-4" style="width: 100%">{{ audiovisual.titulo }}</h1>
+            <h1 class="mr-4 title-style" style="width: 100%">{{ audiovisual.titulo }}</h1>
             <div class="itemsHeaderMedia">
                 <div style="padding-right: 20px">
                     <span v-if="audiovisual.puntuacion" class="item">{{ audiovisual.puntuacion }} / 5.0</span>

@@ -219,7 +219,7 @@ a {
     color: #0dcaf0 !important;
 }
 
-.title-color {
+.secundary-color {
     color: #0dcaf0;
 }
 
@@ -257,9 +257,13 @@ a {
     margin-bottom: 30px;
 }
 
-.home-title {
+.title-style {
     font-size: 2.3em;
-    font-weight: 300;
+    font-weight: 350;
+}
+
+body {
+    font-weight: 350 !important;
 }
 
 .modal-backdrop

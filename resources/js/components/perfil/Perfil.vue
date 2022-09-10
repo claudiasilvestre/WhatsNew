@@ -12,7 +12,7 @@
                 <img class="roundedPerfil" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="100" height="100">
                 <div class="d-flex flex-column mb-3">
                     <span class="titlePerfil">{{ usuario.nombre }}</span>
-                    <span>{{ usuario.usuario }}</span>
+                    <span style="color:#d4d4d4">{{ usuario.usuario }}</span>
                 </div>
                 <span>{{ usuario.puntos }} puntos</span>
                 <div>

@@ -9,28 +9,28 @@
                 ></b-spinner>
             </div>
             <div v-else-if="!loading" class="content header">
-                <aside-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" />
+                <aside-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion" />
                 <div class="width">
-                    <header-audiovisual :audiovisual="audiovisual" />
+                    <header-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion" />
                     <div class="list">
-                        <p class="pointer" @click="retroceder()"><b-icon icon="arrow-left"></b-icon> Capítulos</p>
+                        <p class="pointer color-a" @click="retroceder()"><b-icon icon="arrow-left"></b-icon> Capítulos</p>
                         <p v-if="!anteriorCapitulo_id && siguienteCapitulo_id" class="d-flex justify-content-end">
-                            <span v-if="anteriorCapitulo_id" class="pointer" @click="anteriorCapitulo()"><b-icon icon="arrow-left-short"></b-icon>Anterior capítulo</span>
-                            <span v-if="siguienteCapitulo_id" class="pointer" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
+                            <span v-if="anteriorCapitulo_id" class="pointer color-a" @click="anteriorCapitulo()"><b-icon icon="arrow-left-short"></b-icon>Anterior capítulo</span>
+                            <span v-if="siguienteCapitulo_id" class="pointer color-a" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
                         </p>
                         <p v-else class="d-flex justify-content-between">
-                            <span v-if="anteriorCapitulo_id" class="pointer" @click="anteriorCapitulo()"><b-icon icon="arrow-left-short"></b-icon>Anterior capítulo</span>
-                            <span v-if="siguienteCapitulo_id" class="pointer" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
+                            <span v-if="anteriorCapitulo_id" class="pointer color-a" @click="anteriorCapitulo()"><b-icon icon="arrow-left-short"></b-icon>Anterior capítulo</span>
+                            <span v-if="siguienteCapitulo_id" class="pointer color-a" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
                         </p>
                         <div class="d-flex justify-content-between">
-                            <h3>{{ capitulo.nombre }}</h3>
+                            <h3 style="font-weight: 300;">{{ capitulo.nombre }}</h3>
                             <button v-bind:class="{'btn btn-info': !clicked, 'btn btn-outline-info': clicked}" @click="seguimiento()" class="m-1"><b-icon icon="check2"></b-icon>
                                 Visto
                             </button>
                         </div>
-                        <h5>Sinopsis</h5>
+                        <h5 class="secundary-color">Sinopsis</h5>
                         <p>{{ capitulo.sinopsis }}</p>
-                        <h5>Comentarios</h5>
+                        <h5 class="secundary-color">Comentarios</h5>
                     </div>
                     <comentarios :capitulo="capitulo" />
                 </div>
@@ -65,6 +65,7 @@ export default {
             anteriorCapitulo_id: '',
             siguienteCapitulo_id: '',
             clicked: false,
+            cambioAside: false,
         }
     },
     computed: {
@@ -120,7 +121,15 @@ export default {
                 this.clicked = response.data['estado'];
             })
             .catch(error => console.log(error.response));
-        }
+        },
+        comprobarCambioAside() {
+            this.cambioAside = !this.cambioAside;
+        },
+        actualizarValoracion() {
+            axios.get('/api/audiovisuales/'+this.idAudiovisual)
+                .then(response => this.audiovisual = response.data[0])
+                .catch(error => { console.log(error.response) });
+        },
     }
 }
 </script>

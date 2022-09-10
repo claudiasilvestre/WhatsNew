@@ -3,7 +3,7 @@
         <div>
             <app-header />
             <div class="content list">
-                <h3>Resultados para la búsqueda "{{ busqueda }}"</h3>
+                <h3 class="title-style" style="font-size:xx-large">Resultados para la búsqueda "{{ busqueda }}"</h3>
                 <div class="d-flex flex-wrap">
                     <div v-for="usuario in usuarios" :key="usuario.id" class="mr-2">
                         <router-link :to="{ name: 'perfil', params: { idPersona: usuario.id }}">

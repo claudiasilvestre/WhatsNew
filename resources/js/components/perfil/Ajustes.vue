@@ -1,5 +1,5 @@
 <template>
-    <div class="row justify-content-center align-items-center" style="height:80vh;">
+    <div class="row justify-content-center align-items-center m-4" style="height:80vh;">
         <div class="col-md-4">
             <div class="card background2">
                 <div class="card-header">Información personal</div>

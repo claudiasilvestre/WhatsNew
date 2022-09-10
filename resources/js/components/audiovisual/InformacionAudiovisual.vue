@@ -9,15 +9,15 @@
       <div v-else>
         <div class="row-between">
           <div class="width-info mr-4">
-            <h5 class="title-color">Título original</h5>
+            <h5 class="secundary-color">Título original</h5>
             <p>{{ audiovisual.tituloOriginal }}</p>
-            <h5 class="title-color">Estreno</h5>
+            <h5 class="secundary-color">Estreno</h5>
             <p>{{ moment(audiovisual.fechaLanzamiento).format('LL') }}</p>
-            <h5 class="title-color">Sinopsis</h5>
+            <h5 class="secundary-color">Sinopsis</h5>
             <p>{{ audiovisual.sinopsis }}</p>
           </div>
           <div class="width-platforms">
-            <h5 v-if="stream.length > 0 || alquilar.length > 0 || comprar.length > 0" class="title-color">Ver ahora</h5>
+            <h5 v-if="stream.length > 0 || alquilar.length > 0 || comprar.length > 0" class="secundary-color">Ver ahora</h5>
             <div v-if="stream.length > 0" class="mt-2 mb-2">
               <span>Stream</span>
               <div class="d-flex flex-wrap">
@@ -45,7 +45,7 @@
           </div>
         </div>
 
-        <h5 v-if="personas_reparto.length > 0" class="title-color">Reparto</h5>
+        <h5 v-if="personas_reparto.length > 0" class="secundary-color">Reparto</h5>
         <div v-if="!readMoreActivatedReparto && personas_reparto.length > 5" class="d-flex flex-column mb-4">
           <div class="d-flex flex-wrap">
             <div v-for="i in 5" :key="i" class="mr-2">
@@ -78,7 +78,7 @@
           </div>
         </div>
 
-        <h5 v-if="personas_equipo.length > 0" class="title-color">Equipo</h5>
+        <h5 v-if="personas_equipo.length > 0" class="secundary-color">Equipo</h5>
         <div v-if="!readMoreActivatedEquipo && personas_equipo.length > 5" class="d-flex flex-column mb-4">
           <div class="d-flex flex-wrap">
             <div v-for="i in 5" :key="i" class="mr-2">
