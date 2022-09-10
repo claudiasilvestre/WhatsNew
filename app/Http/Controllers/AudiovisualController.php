@@ -246,7 +246,7 @@ class AudiovisualController extends Controller
     /**
      * Si ya existe una valoración del usuario para el audiovisual, la actualiza con la nueva puntuación.
      * Sino, crea una valoración nueva e incrementa los puntos del usuario.
-     * En cualquier caso actualiza la puntuación del audiovisual.
+     * En cualquier caso, actualiza la puntuación del audiovisual.
      * 
      * @param Request $request Contiene el ID del audiovisual, el ID del usuario actual y la puntuación que da el usuario actual.
      *

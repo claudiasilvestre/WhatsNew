@@ -144,21 +144,21 @@ export default {
     created() {
       moment.locale('es');
 
-        axios.get('/api/personas-participacion/'+this.audiovisual.id)
-            .then(response => {
-              this.personas_reparto = response.data['personas_reparto']
-              this.personas_equipo = response.data['personas_equipo']
-            })
-            .catch(error => { console.log(error.response) });
+      axios.get('/api/personas-participacion/'+this.audiovisual.id)
+          .then(response => {
+            this.personas_reparto = response.data['personas_reparto']
+            this.personas_equipo = response.data['personas_equipo']
+          })
+          .catch(error => { console.log(error.response) });
 
-        axios.get('/api/proveedores/'+this.audiovisual.id)
-            .then(response => { 
-              this.stream = response.data['stream'];
-              this.alquilar = response.data['alquilar'];
-              this.comprar = response.data['comprar'];
-            })
-            .catch(error => { console.log(error.response) })
-            .finally(() => this.loading = false);
+      axios.get('/api/proveedores/'+this.audiovisual.id)
+          .then(response => { 
+            this.stream = response.data['stream'];
+            this.alquilar = response.data['alquilar'];
+            this.comprar = response.data['comprar'];
+          })
+          .catch(error => { console.log(error.response) })
+          .finally(() => this.loading = false);
     },
     methods: {    
       activateReadMoreReparto() {

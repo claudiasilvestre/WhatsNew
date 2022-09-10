@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Audiovisual;
-use App\Models\Participacion;
-use App\Models\Persona;
 
 class ContentBasedRecommenderSystem
 {
@@ -26,9 +24,9 @@ class ContentBasedRecommenderSystem
             array_push($generos, $audiovisual->genero);
             array_push($idiomas, $audiovisual->idioma);
 
-            $participacionesConsulta = Participacion::where('audiovisual_id', $audiovisual->id)->get();
-            foreach ($participacionesConsulta as $participacionConsulta) {
-                array_push($participantes, Persona::where('id', $participacionConsulta->persona_id)->first());
+            $participaciones = $audiovisual->participaciones;
+            foreach ($participaciones as $participacion) {
+                array_push($participantes, $participacion->persona);
             }
             $this->addParticipacionScores($participantes, $audiovisualScores);
         }
@@ -42,7 +40,7 @@ class ContentBasedRecommenderSystem
             unset($audiovisualScores[$audiovisual->id]);
         }
 
-        // Array de Audiovisual
+        // Array de Audiovisuales
         $audiovisualesOrdered = [];
         foreach ($audiovisualScores as $key => $value) {
             $audiovisualesOrdered[$key] = Audiovisual::find($key);

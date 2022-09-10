@@ -16,7 +16,7 @@ class Participacion extends Model
         'persona_id',
     ];
 
-    public function participante()
+    public function persona()
     {
         return $this->belongsTo(Persona::class);
     }

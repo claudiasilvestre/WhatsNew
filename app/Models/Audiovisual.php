@@ -31,4 +31,9 @@ class Audiovisual extends Model
     {
         return $this->belongsTo(Idioma::class);
     }
+
+    public function participaciones()
+    {
+        return $this->hasMany(Participacion::class);
+    }
 }

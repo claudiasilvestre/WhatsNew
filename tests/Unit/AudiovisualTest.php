@@ -573,7 +573,7 @@ class AudiovisualTest extends TestCase
      *
      * @return void
      */
-    public function test_actualiza_valoracion_audiovisual()
+    public function test_actualizar_valoracion_audiovisual()
     {
         $this->actingAs($this->usuario);
 

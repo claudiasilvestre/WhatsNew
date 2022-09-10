@@ -20,7 +20,6 @@
                 </div>
                 <responsive-header class="responsive-header-visibility" :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
             </div>
-
         </div>
     </div>
 </template>
