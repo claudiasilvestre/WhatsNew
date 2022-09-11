@@ -25,6 +25,7 @@ class ActividadController extends Controller
                                 ->leftJoin('temporada as temporada_actividad', 'actividad.temporada_id', 'temporada_actividad.id')
                                 ->leftJoin('audiovisual as audiovisual_temporada', 'temporada_actividad.audiovisual_id', 'audiovisual_temporada.id')
                                 ->where('persona_id', $usuario_id)
+                                ->where('actividad.created_at', '>', date('Y-m-d H:i:s', strtotime('-3 months')))
                                 ->select('actividad.id', 'tipo', 'audiovisual.tipoAudiovisual_id', 'audiovisual.titulo as titulo_audiovisual', 
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
@@ -32,7 +33,7 @@ class ActividadController extends Controller
                                 'audiovisual.id as id_audiovisual', 'audiovisual_capitulo.id as id_audiovisual_capitulo', 
                                 'audiovisual_temporada.id as id_audiovisual_temporada', 'audiovisual.cartel as audiovisual_cartel', 
                                 'audiovisual_capitulo.cartel as capitulo_cartel', 'audiovisual_temporada.cartel as temporada_cartel', 
-                                'actividad.created_at', 'actividad.persona_id as usuario_id')
+                                'actividad.created_at', 'actividad.persona_id as usuario_id', 'capitulo.id as id_capitulo')
                                 ->orderBy('actividad.created_at', 'desc')
                                 ->get();
 
@@ -57,6 +58,7 @@ class ActividadController extends Controller
                                 ->leftJoin('seguimiento_persona', 'actividad.persona_id', 'seguimiento_persona.persona_id')
                                 ->leftJoin('persona', 'actividad.persona_id', 'persona.id')
                                 ->where('seguimiento_persona.personaActual_id', $usuario_id)
+                                ->where('actividad.created_at', '>', date('Y-m-d H:i:s', strtotime('-3 months')))
                                 ->select('tipo', 'audiovisual.tipoAudiovisual_id', 'audiovisual.titulo as titulo_audiovisual', 
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
@@ -64,7 +66,8 @@ class ActividadController extends Controller
                                 'persona.nombre as usuario_nombre', 'persona.foto', 'audiovisual.id as id_audiovisual', 
                                 'audiovisual_capitulo.id as id_audiovisual_capitulo', 'audiovisual_temporada.id as id_audiovisual_temporada', 
                                 'audiovisual.cartel as audiovisual_cartel', 'audiovisual_capitulo.cartel as capitulo_cartel', 
-                                'audiovisual_temporada.cartel as temporada_cartel', 'persona.id as usuario_id', 'actividad.created_at')
+                                'audiovisual_temporada.cartel as temporada_cartel', 'persona.id as usuario_id', 'actividad.created_at',
+                                'capitulo.id as id_capitulo')
                                 ->orderBy('actividad.created_at', 'desc')
                                 ->get();
 

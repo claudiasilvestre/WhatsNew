@@ -54,6 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/temporadas/{idSerie}', [TemporadaController::class, 'index']);
     Route::get('/saber-visualizacion-temporada', [TemporadaController::class, 'saberVisualizacion']);
+    Route::get('/temporada/{idCapitulo}', [TemporadaController::class, 'temporada']);
     Route::post('/visualizacion-temporada', [TemporadaController::class, 'visualizacion']);
 
     Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarAudiovisual']);

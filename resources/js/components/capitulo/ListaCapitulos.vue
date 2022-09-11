@@ -7,7 +7,7 @@
             <div class="w-100 p-4 d-flex flex-row justify-content-between">
                 <div>
                     <router-link :to="{ name: 'capitulo', params: { idAudiovisual: idAudiovisual, idCapitulo: capitulo.id }}">
-                        <h5>{{ capitulo.nombre }}</h5>
+                        <h5>{{ temporada.numero }}x{{ capitulo.numero }} - {{ capitulo.nombre }}</h5>
                     </router-link>
                     <p>{{ capitulo.sinopsis }}</p>
                 </div>
@@ -31,6 +31,10 @@ export default {
       idAudiovisual: {
         required: true,
         type: Number
+      },
+      temporada: {
+        required: true,
+        type: Object
       },
       vista: {
         required: true,

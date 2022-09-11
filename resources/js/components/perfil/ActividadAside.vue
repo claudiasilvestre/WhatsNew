@@ -11,23 +11,23 @@
         <div v-else v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mt-2 mb-2 rounded">
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex justify-content-between">
                 <div class="d-flex flex-column">
-                    <div>
-                        <img v-if="actividad.usuario_id === usuarioActual.id" class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
-                        <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                    <div class="d-flex flex-row">
+                        <router-link :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
                             <img class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
                         </router-link>
-                        <span v-if="actividad.usuario_id === usuarioActual.id">{{ actividad.usuario_nombre }}</span>
-                        <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
-                            {{ actividad.usuario_nombre }}
-                        </router-link>
-                        <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
-                        <span v-else-if="actividad.tipo === 2"> sigue </span>
-                        <span v-else-if="actividad.tipo === 3"> ha visto </span>
-                        <span v-if="actividad.tipoAudiovisual_id === 1">la película </span>
-                        <span v-else-if="actividad.tipoAudiovisual_id === 2">la serie </span>
-                        <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
-                            <span>{{ actividad.titulo_audiovisual }}</span>
-                        </router-link>
+                        <div class="m-2">
+                            <router-link :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                                {{ actividad.usuario_nombre }}
+                            </router-link>
+                            <span v-if="actividad.tipo === 1"> ha marcado como pendiente </span>
+                            <span v-else-if="actividad.tipo === 2"> sigue </span>
+                            <span v-else-if="actividad.tipo === 3"> ha visto </span>
+                            <span v-if="actividad.tipoAudiovisual_id === 1">la película </span>
+                            <span v-else-if="actividad.tipoAudiovisual_id === 2">la serie </span>
+                            <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
+                                <span>{{ actividad.titulo_audiovisual }}</span>
+                            </router-link>
+                        </div>
                     </div>
                     <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
                 </div>
@@ -38,17 +38,22 @@
             <div v-else-if="actividad.numero_capitulo">
                 <span class="d-flex justify-content-between">
                     <div class="d-flex flex-column">
-                        <div>
-                            <img class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
-                            <span v-if="actividad.usuario_id === usuarioActual.id">{{ actividad.usuario_nombre }}</span>
-                            <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
-                                {{ actividad.usuario_nombre }}
+                        <div class="d-flex flex-row">
+                            <router-link :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                                <img class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
                             </router-link>
-                            ha visto el capítulo {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} 
-                            - {{ actividad.nombre }} de 
-                            <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
-                                {{ actividad.titulo_audiovisual_capitulo }}
-                            </router-link>
+                            <div class="m-2">
+                                <router-link :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                                    {{ actividad.usuario_nombre }}
+                                </router-link>
+                                ha visto el capítulo 
+                                <router-link :to="{ name: 'capitulo', params: { idAudiovisual: actividad.id_audiovisual_capitulo, idCapitulo: actividad.id_capitulo }}">
+                                    {{ actividad.numero_temporada }}x{{ actividad.numero_capitulo }} - {{ actividad.nombre }}
+                                </router-link> de 
+                                <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
+                                    {{ actividad.titulo_audiovisual_capitulo }}
+                                </router-link>
+                            </div>
                         </div>
                         <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
                     </div>
@@ -60,16 +65,19 @@
             <div v-else-if="actividad.numero_temporada_actividad">
                 <span class="d-flex justify-content-between">
                     <div class="d-flex flex-column">
-                        <div>
-                            <img class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
-                            <span v-if="actividad.usuario_id === usuarioActual.id">{{ actividad.usuario_nombre }}</span>
-                            <router-link v-else :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
-                                {{ actividad.usuario_nombre }}
+                        <div class="d-flex flex-row">
+                            <router-link :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                                <img class="roundedPerfil m-2" v-bind:src="actividad.foto" v-bind:alt="actividad.usuario_nombre" width="45" height="45">
                             </router-link>
-                            ha visto la temporada {{ actividad.numero_temporada_actividad }} de 
-                            <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
-                                {{ actividad.titulo_audiovisual_temporada }}
-                            </router-link>
+                            <div class="m-2">
+                                <router-link :to="{ name: 'perfil', params: { idPersona: actividad.usuario_id }}">
+                                    {{ actividad.usuario_nombre }}
+                                </router-link>
+                                ha visto la temporada {{ actividad.numero_temporada_actividad }} de 
+                                <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
+                                    {{ actividad.titulo_audiovisual_temporada }}
+                                </router-link>
+                            </div>
                         </div>
                         <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
                     </div>
@@ -91,13 +99,6 @@ export default {
             actividadTotal: [],
             loading: true,
             moment: moment,
-        }
-    },
-    computed: {
-        usuarioActual: {
-            get() {
-                return this.$store.state.usuarioActual.usuario;
-            }
         }
     },
     created() {

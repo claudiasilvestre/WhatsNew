@@ -7,6 +7,7 @@ use App\Models\Temporada;
 use App\Models\VisualizacionTemporada;
 use App\Models\VisualizacionCapitulo;
 use App\Models\Actividad;
+use App\Models\Capitulo;
 
 class TemporadaController extends Controller
 {
@@ -21,6 +22,20 @@ class TemporadaController extends Controller
         $temporadas = Temporada::where('audiovisual_id', $idSerie)->get();
 
         return response()->json($temporadas);
+    }
+
+    /**
+     * Consulta y devuelve una temporada de una serie por el ID de un capítulo.
+     * 
+     * @param integer $idCapitulo ID del capítulo cuya temporada se quiere consultar.
+     *
+     * @return Response
+     */
+    public function temporada($idCapitulo) {
+        $capitulo = Capitulo::where('id', $idCapitulo)->first();
+        $temporada = $capitulo->temporada;
+
+        return response()->json($temporada);
     }
 
     /**

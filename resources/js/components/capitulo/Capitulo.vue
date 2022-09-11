@@ -23,7 +23,7 @@
                             <span v-if="siguienteCapitulo_id" class="pointer color-a" @click="siguienteCapitulo()">Siguiente capítulo<b-icon icon="arrow-right-short"></b-icon></span>
                         </p>
                         <div class="d-flex justify-content-between">
-                            <h3 style="font-weight: 300;">{{ capitulo.nombre }}</h3>
+                            <h3 style="font-weight:350">{{ temporada.numero }}x{{ capitulo.numero }} - {{ capitulo.nombre }}</h3>
                             <button v-bind:class="{'btn btn-info': !clicked, 'btn btn-outline-info': clicked}" @click="seguimiento()" class="m-1"><b-icon icon="check2"></b-icon>
                                 Visto
                             </button>
@@ -66,6 +66,7 @@ export default {
             siguienteCapitulo_id: '',
             clicked: false,
             cambioAside: false,
+            temporada: {},
         }
     },
     computed: {
@@ -80,12 +81,17 @@ export default {
             .then(response => this.audiovisual = response.data[0])
             .catch(error => { console.log(error.response) })
             .finally(() => {
-                this.loading = false
+                axios.get('/api/temporada/'+this.idCapitulo)
+                    .then(response => this.temporada = response.data)
+                    .catch(error => { console.log(error.response) });
 
                 axios.get('/api/capitulo/'+this.idCapitulo)
                     .then(response => this.capitulo = response.data[0])
                     .catch(error => { console.log(error.response) })
-                    .finally(() => document.title = this.audiovisual.titulo + ": " + this.capitulo.nombre + " - What's new");
+                    .finally(() => {
+                        document.title = this.audiovisual.titulo + ": " + this.capitulo.nombre + " - What's new"
+                        this.loading = false
+                    });
             });
 
         axios.get('/api/capitulos-anterior-siguiente/', {
