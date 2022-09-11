@@ -17,7 +17,7 @@ use App\Models\Temporada;
 use App\Models\Capitulo;
 use App\Models\Persona;
 use Illuminate\Support\Facades\Auth;
-use App\Services\ContentBasedRecommenderSystem;
+use App\Services\SistemaRecomendacionBasadoContenido;
 
 class AudiovisualController extends Controller
 {
@@ -381,7 +381,7 @@ class AudiovisualController extends Controller
             array_push($audiovisualesObject, $av);
         }
 
-        $content_engine = new ContentBasedRecommenderSystem;
+        $content_engine = new SistemaRecomendacionBasadoContenido;
 
         $sugerencias = $content_engine->sugerenciasAudiovisuales($audiovisualesObject);
 

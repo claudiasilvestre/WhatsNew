@@ -82,6 +82,59 @@ class TemporadaTest extends TestCase
     }
 
     /**
+     * Obtiene temporada por el ID de un capítulo.
+     *
+     * @return void
+     */
+    public function test_obtener_temporada()
+    {
+        $this->actingAs($this->usuario);
+
+        $temporada = Temporada::create([
+            'audiovisual_id' => $this->serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+        
+        $response = $this->getJson('/api/temporada/'.$capitulo->id);
+
+        $response->assertOk()
+                 ->assertJson(fn (AssertableJson $json) =>
+                    $json->has(7)
+                         ->where('id', $temporada->id)
+                         ->etc()
+                 );
+    }
+
+    /**
+     * Intenta obtener una temporada por el ID de un capítulo sin que un usuario tenga iniciada la sesión.
+     *
+     * @return void
+     */
+    public function test_obtener_temporada_usuario_sin_sesion_iniciada()
+    { 
+        $temporada = Temporada::create([
+            'audiovisual_id' => $this->serie->id,
+            'numero' => 1,
+            'nombre' => 'Temporada 1',
+        ]);
+
+        $capitulo = Capitulo::create([
+            'temporada_id' => $temporada->id,
+            'numero' => 1,
+        ]);
+
+        $response = $this->getJson('/api/temporada/'.$capitulo->id);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
      * Comprueba que la visualización de temporada existe para el usuario actual.
      *
      * @return void

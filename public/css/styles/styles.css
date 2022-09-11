@@ -295,6 +295,14 @@ body {
     display: none;
 }
 
+.activity-perfil {
+    width: 80%;
+}
+
+.activity-aside {
+    width: 40%;
+}
+
 @media screen and (max-width: 633px) {
     .content {
         margin-top: 90px;
@@ -333,6 +341,14 @@ body {
     .responsive-header-visibility {
         display: block;
     }
+
+    .activity-perfil {
+        width: 100%;
+    }
+
+    .activity-aside {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 790px) {
@@ -359,5 +375,9 @@ body {
 
     .item {
         font-size: 14px;
+    }
+
+    .activity-aside {
+        width: 60%;
     }
 }

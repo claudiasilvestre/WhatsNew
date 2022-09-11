@@ -1,5 +1,5 @@
 <template>
-    <div class="pr-2 mt-4">
+    <div class="p-2 mt-4 activity-perfil">
         <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mt-2 mb-2 rounded background2 d-flex justify-content-between">
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex flex-column">
                 <div class="d-flex flex-row">
