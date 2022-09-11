@@ -7,7 +7,7 @@
                 <h1 class="content-inicio title-style">Encuentra películas y series para ver online en distintas plataformas y haz un seguimiento de ellas.</h1>
                 <button class="btn btn-outline-info btn-lg m-1" @click="inicioSesionShow = !inicioSesionShow">Entra</button>
                 <p class="m-1">¿No tienes una cuenta? <a class="color-registro" @click="registroShow = !registroShow">Regístrate</a></p>
-                <img class="content-inicio" src="img/bg.jpg" alt="Plataformas">
+                <img class="content-inicio rounded" src="img/bg.jpg" alt="Plataformas">
             </div>
 
             <b-modal 

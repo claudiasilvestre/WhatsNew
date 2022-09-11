@@ -5,10 +5,10 @@
             :key="'light'"
         ></b-spinner>
     </div>
-    <div v-else class="p-2 mt-4 background2 aside-activity">
-        <h3 class="title-style titlePerfil">Actividad amigos</h3>
+    <div v-else class="p-2 mt-4 rounded background2 aside-activity">
+        <h3 class="title-style titlePerfil pl-2 pt-1">Actividad amigos</h3>
         <p v-if="actividadTotal.length === 0">Comienza a seguir a un amigo para ver su actividad.</p>
-        <div v-else v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mt-2 mb-2 rounded">
+        <div v-else v-for="actividad in actividadTotal" :key="actividad.id" class="p-2 mt-2 mb-2">
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex justify-content-between">
                 <div class="d-flex flex-column">
                     <div class="d-flex flex-row">

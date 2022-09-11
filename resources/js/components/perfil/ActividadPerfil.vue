@@ -1,6 +1,6 @@
 <template>
-    <div class="p-2 mt-4 perfil-activity">
-        <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-1 mt-2 mb-2 rounded background2 d-flex justify-content-between">
+    <div class="mt-4 perfil-activity">
+        <div v-for="actividad in actividadTotal" :key="actividad.id" class="p-2 mt-2 mb-2 rounded background2 d-flex justify-content-between">
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex flex-column">
                 <div class="d-flex flex-row">
                     <img class="roundedPerfil m-2" v-bind:src="usuario.foto" v-bind:alt="usuario.nombre" width="45" height="45">
