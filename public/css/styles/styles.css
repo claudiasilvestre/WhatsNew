@@ -295,11 +295,11 @@ body {
     display: none;
 }
 
-.activity-perfil {
+.perfil-activity {
     width: 80%;
 }
 
-.activity-aside {
+.aside-activity {
     width: 40%;
 }
 
@@ -342,11 +342,11 @@ body {
         display: block;
     }
 
-    .activity-perfil {
+    .perfil-activity {
         width: 100%;
     }
 
-    .activity-aside {
+    .aside-activity {
         width: 100%;
     }
 }
@@ -377,7 +377,7 @@ body {
         font-size: 14px;
     }
 
-    .activity-aside {
+    .aside-activity {
         width: 60%;
     }
 }
