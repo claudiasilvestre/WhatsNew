@@ -5,11 +5,14 @@
                 <img class="rounded ml-4" v-bind:src="capitulo.cartel" v-bind:alt="capitulo.nombre" width="250" height="140">
             </router-link>
             <div class="w-100 p-4 d-flex flex-row justify-content-between">
-                <div>
-                    <router-link :to="{ name: 'capitulo', params: { idAudiovisual: idAudiovisual, idCapitulo: capitulo.id }}">
-                        <h5>{{ temporada.numero }}x{{ capitulo.numero }} - {{ capitulo.nombre }}</h5>
-                    </router-link>
-                    <p>{{ capitulo.sinopsis }}</p>
+                <div class="w-100 d-flex flex-column justify-content-between">
+                    <div>
+                        <router-link :to="{ name: 'capitulo', params: { idAudiovisual: idAudiovisual, idCapitulo: capitulo.id }}">
+                            <h5>{{ temporada.numero }}x{{ capitulo.numero }} - {{ capitulo.nombre }}</h5>
+                        </router-link>
+                        <p>{{ capitulo.sinopsis }}</p>
+                    </div>
+                    <span style="color:#d4d4d4; font-size:14px">{{ moment(capitulo.fechaLanzamiento).format('LL') }}</span>
                 </div>
                 <div class="pl-4 d-flex align-items-center">
                     <button v-if="!loading" v-bind:class="{'btn btn-light': !clicked[index], 'btn btn-danger': clicked[index]}" @click="visto(capitulo.id, index)" class="m-1">
@@ -22,6 +25,8 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
     props: {
       capitulos: {
@@ -57,7 +62,11 @@ export default {
         return {
             clicked: [],
             loading: false,
+            moment: moment,
         }
+    },
+    created() {
+        moment.locale('es');
     },
     computed: {
         usuarioActual: {
