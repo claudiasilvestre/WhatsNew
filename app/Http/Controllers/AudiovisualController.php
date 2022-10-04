@@ -317,7 +317,8 @@ class AudiovisualController extends Controller
             $suma_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->sum('puntuacion');
             $puntuacion = $suma_valoraciones/$num_valoraciones;
             Audiovisual::where('id', $request->audiovisual_id)->update(['puntuacion' => $puntuacion]);
-        }
+        } else
+            Audiovisual::where('id', $request->audiovisual_id)->update(['puntuacion' => NULL]);
     }
 
     /**
