@@ -89,7 +89,7 @@ export default {
                     .then(response => this.capitulo = response.data[0])
                     .catch(error => { console.log(error.response) })
                     .finally(() => {
-                        document.title = this.audiovisual.titulo + ": " + this.capitulo.nombre + " - What's new"
+                        document.title = this.audiovisual.titulo + ": " + this.capitulo.nombre + " - WhatsNew"
                         this.loading = false
                     });
             });

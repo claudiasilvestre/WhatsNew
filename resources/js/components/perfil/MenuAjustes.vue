@@ -27,7 +27,7 @@ export default {
         Contraseña,
     },
     mounted() {
-        document.title = "Editar perfil - What's new"
+        document.title = "Editar perfil - WhatsNew"
     },
 }
 </script>

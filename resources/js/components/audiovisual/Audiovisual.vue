@@ -56,7 +56,7 @@ export default {
             .catch(error => { console.log(error.response) })
             .finally(() => {
                 this.loading = false
-                document.title = this.audiovisual.titulo + " - What's new"
+                document.title = this.audiovisual.titulo + " - WhatsNew"
             });
     },
     methods: {

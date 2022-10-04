@@ -21,7 +21,7 @@ export default {
       Audiovisuales,
     },
     mounted() {
-        document.title = "Home - What's new"
+        document.title = "Home - WhatsNew"
     }
 }
 </script>

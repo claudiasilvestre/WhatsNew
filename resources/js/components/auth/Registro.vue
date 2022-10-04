@@ -55,7 +55,7 @@ export default {
         }
     },
     mounted() {
-        document.title = "Registro - What's new"
+        document.title = "Registro - WhatsNew"
     },
     methods: {
         registroUsuarioBtn() {

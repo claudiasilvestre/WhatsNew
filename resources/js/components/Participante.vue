@@ -43,7 +43,7 @@ export default {
         axios.get('/api/personas/'+this.idParticipante)
             .then(response => this.participante = response.data[0])
             .catch(error => { console.log(error.response) })
-            .finally(() => document.title = this.participante.nombre + " - What's new")
+            .finally(() => document.title = this.participante.nombre + " - WhatsNew")
 
         axios.get('/api/audiovisuales-participacion/'+this.idParticipante)
             .then(response => this.audiovisuales = response.data)

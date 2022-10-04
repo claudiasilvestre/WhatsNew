@@ -8,11 +8,11 @@
 export default {
     data() {
         return {
-            title: "What's New",
+            title: "WhatsNew",
         }
     },
     mounted() {
-        document.title = "What's new"
+        document.title = "WhatsNew"
     }
 }
 </script>

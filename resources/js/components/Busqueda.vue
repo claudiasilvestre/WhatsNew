@@ -69,7 +69,7 @@ export default {
             .catch(error => console.log(error.response))
     },
     mounted() {
-        document.title = "“" + this.busqueda + "”" + " - What's new"
+        document.title = "“" + this.busqueda + "”" + " - WhatsNew"
     }
 }
 </script>

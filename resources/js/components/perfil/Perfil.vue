@@ -100,7 +100,7 @@ export default {
         axios.get('/api/personas/'+this.usuario_id)
             .then(response => this.usuario = response.data[0])
             .catch(error => { console.log(error.response) })
-            .finally(() => document.title = this.usuario.nombre + " - What's new");
+            .finally(() => document.title = this.usuario.nombre + " - WhatsNew");
     },
     beforeUpdate() {
         axios.get('/api/saber-seguimiento-usuario/', {

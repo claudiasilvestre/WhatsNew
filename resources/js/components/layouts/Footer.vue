@@ -8,7 +8,7 @@
 export default {
     data() {
         return {
-            title: "What's New",
+            title: "WhatsNew",
             year: new Date().getFullYear(),
         }
     },

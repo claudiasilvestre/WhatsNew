@@ -38,7 +38,7 @@ export default {
         }
     },
     mounted() {
-        document.title = "Inicio sesión - What's new"
+        document.title = "Inicio sesión - WhatsNew"
     },
     computed: {
         errors: {

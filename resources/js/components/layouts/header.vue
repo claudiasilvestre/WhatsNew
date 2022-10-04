@@ -27,7 +27,7 @@
 export default {
     data() {
         return {
-            title: "What's New",
+            title: "WhatsNew",
             busqueda: ''
         }
     },

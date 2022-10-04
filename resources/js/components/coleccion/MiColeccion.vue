@@ -25,7 +25,7 @@ export default {
         MenuColeccion,
     },
     mounted() {
-        document.title = "Mi colección - What's new"
+        document.title = "Mi colección - WhatsNew"
     }
 }
 </script>
