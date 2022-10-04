@@ -7,7 +7,7 @@
     </div>
     <div v-else class="p-2 mt-4 rounded background2 aside-activity">
         <h3 class="title-style titlePerfil pl-2 pt-1">Actividad amigos</h3>
-        <p v-if="actividadTotal.length === 0">Comienza a seguir a un amigo para ver su actividad.</p>
+        <p v-if="actividadTotal.length === 0" class="pl-2">Comienza a seguir a un amigo para ver su actividad.</p>
         <div v-else v-for="actividad in actividadTotal" :key="actividad.id" class="p-2 mt-2 mb-2">
             <div v-if="actividad.tipoAudiovisual_id" class="d-flex justify-content-between">
                 <div class="d-flex flex-column">
@@ -32,7 +32,7 @@
                     <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
                 </div>
                 <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual }}">
-                    <img class="rounded p-2" v-bind:src="actividad.audiovisual_cartel" v-bind:alt="actividad.titulo_audiovisual" width="55" height="80">
+                    <img class="rounded p-2" v-bind:src="actividad.audiovisual_cartel" v-bind:alt="actividad.titulo_audiovisual" width="55" height="75">
                 </router-link>
             </div>
             <div v-else-if="actividad.numero_capitulo">
@@ -58,7 +58,7 @@
                         <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
                     </div>
                     <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_capitulo }}">
-                        <img class="rounded p-2" v-bind:src="actividad.capitulo_cartel" v-bind:alt="actividad.titulo_audiovisual_capitulo" width="55" height="80">
+                        <img class="rounded p-2" v-bind:src="actividad.capitulo_cartel" v-bind:alt="actividad.titulo_audiovisual_capitulo" width="55" height="75">
                     </router-link>
                 </span>
             </div>
@@ -82,7 +82,7 @@
                         <span class="p-letra">{{ moment(actividad.created_at).format('LL') }}</span>
                     </div>
                     <router-link :to="{ name: 'audiovisual', params: { id: actividad.id_audiovisual_temporada }}">
-                        <img class="rounded p-2" v-bind:src="actividad.temporada_cartel" v-bind:alt="actividad.titulo_audiovisual_temporada" width="55" height="80">
+                        <img class="rounded p-2" v-bind:src="actividad.temporada_cartel" v-bind:alt="actividad.titulo_audiovisual_temporada" width="55" height="75">
                     </router-link>
                 </span>
             </div>

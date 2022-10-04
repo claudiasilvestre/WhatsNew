@@ -235,18 +235,6 @@ a {
     overflow: visible !important;
 }
 
-.contenedor {
-    position: relative;
-    white-space: initial;
-}
-
-.capa {
-    position: absolute;
-    bottom: 0;
-    padding: 10px;
-    font-weight: bold;
-}
-
 .p-letra {
     font-size: 13px;
 }

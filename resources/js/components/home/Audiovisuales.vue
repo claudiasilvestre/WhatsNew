@@ -17,10 +17,11 @@
                 :audiovisuales="audiovisualesPopulares['series']"
             />
 
-            <h5 v-if="this.audiovisualesRecomendados.length > 0" class="titleAudiovisuales"> Recomendaciones </h5>
+            <h5 class="titleAudiovisuales"> Recomendaciones </h5>
             <lista-audiovisuales v-if="this.audiovisualesRecomendados.length > 0"
                 :audiovisuales="audiovisualesRecomendados"
             />
+            <p v-else class="pl-5 pb-5">Marca alguna visualización para obtener recomendaciones.</p>
         </div>
     </div>
 </template>

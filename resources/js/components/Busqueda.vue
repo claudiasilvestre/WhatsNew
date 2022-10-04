@@ -33,6 +33,9 @@
                         </router-link>
                     </div>
                 </div>
+                <p v-if="this.usuarios.length === 0 && this.participantes.length === 0 && this.audiovisuales.length === 0"> 
+                    No se han encontrado resultados para la búsqueda.
+                </p>
             </div>
             <app-footer />
         </div>

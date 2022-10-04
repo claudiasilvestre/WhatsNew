@@ -119,7 +119,7 @@ class PersonaController extends Controller
 
         if($request->hasFile('imagen')) {
             $file = $request->file('imagen');
-            $file_name = time(). '.' . $file->getClientOriginalName();
+            $file_name = time().$file->getClientOriginalName();
             $file->move(public_path('img'), $file_name);
             $ruta = '/img/'.$file_name;
 /*             $ruta = '/'.$file->storeAs(

@@ -1,7 +1,10 @@
 <template>
     <div class="aside-visibility">
         <img class="rounded" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="190" height="290">
-        <star-rating v-model="rating" :increment="0.5" :star-size="29" text-class="custom-text" class="m-2"></star-rating>
+        <div class="d-flex align-items-center">
+            <star-rating v-model="rating" :increment="0.5" :star-size="29" :show-rating="false" text-class="custom-text" class="m-2"></star-rating>
+            <b-icon v-if="rating !== 0" icon="x-circle" variant="danger" @click="borrarValoracion()" class="pointer"></b-icon>
+        </div>
         <div v-if="!loading" class="buttons width">
             <button v-bind:class="{'btn btn-danger': !clicked1, 'btn btn-outline-danger': clicked1}" @click="seguimiento(1)" class="m-1"><b-icon icon="clock"></b-icon>
                 {{ pendiente }}
@@ -117,21 +120,35 @@ export default {
             })
             .catch(error => console.log(error.response));
         },
-    },
-    watch: {
-        rating: function () {
-            if (this.watcher) {
-                axios.post('/api/valoracion-audiovisual/', 
+        borrarValoracion() {
+            axios.post('/api/borrar-valoracion-audiovisual/', 
                 { 
                     audiovisual_id: this.audiovisual.id, 
-                    usuario_id: this.usuarioActual.id, 
-                    puntuacion: this.rating 
+                    usuario_id: this.usuarioActual.id
                 })
                 .catch(error => console.log(error.response));
 
-                this.$emit('actualizarValoracion');
-            } else
-                this.watcher = true;
+            this.rating = 0;
+
+            this.$emit('actualizarValoracion');
+        }
+    },
+    watch: {
+        rating: function () {
+            if (this.rating !== 0) {
+                if (this.watcher) {
+                    axios.post('/api/valoracion-audiovisual/', 
+                    { 
+                        audiovisual_id: this.audiovisual.id, 
+                        usuario_id: this.usuarioActual.id, 
+                        puntuacion: this.rating 
+                    })
+                    .catch(error => console.log(error.response));
+
+                    this.$emit('actualizarValoracion');
+                } else
+                    this.watcher = true;
+            }
         }
     }
 }

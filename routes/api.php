@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/mi-coleccion', [AudiovisualController::class, 'miColeccion']);
     Route::get('/recomendaciones', [AudiovisualController::class, 'recomendaciones']);
     Route::post('/valoracion-audiovisual', [AudiovisualController::class, 'valoracionAudiovisual']);
+    Route::post('/borrar-valoracion-audiovisual', [AudiovisualController::class, 'borrarValoracionAudiovisual']);
     Route::get('/saber-seguimiento-audiovisual', [AudiovisualController::class, 'saberSeguimientoAudiovisual']);
     Route::post('/seguimiento-audiovisual', [AudiovisualController::class, 'seguimientoAudiovisual']);
     Route::get('/proveedores/{audiovisual_id}', [AudiovisualController::class, 'proveedores']);
@@ -55,6 +56,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/temporadas/{idSerie}', [TemporadaController::class, 'index']);
     Route::get('/saber-visualizacion-temporada', [TemporadaController::class, 'saberVisualizacion']);
     Route::get('/temporada/{idCapitulo}', [TemporadaController::class, 'temporada']);
+    Route::get('/primera-temporada/{idSerie}', [TemporadaController::class, 'primeraTemporada']);
     Route::post('/visualizacion-temporada', [TemporadaController::class, 'visualizacion']);
 
     Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarAudiovisual']);

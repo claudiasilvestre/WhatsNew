@@ -39,6 +39,19 @@ class TemporadaController extends Controller
     }
 
     /**
+     * Consulta y devuelve la primera temporada de una serie por el ID de la serie.
+     * 
+     * @param integer $idSerie ID de la serie cuya temporada se quiere consultar.
+     *
+     * @return Response
+     */
+    public function primeraTemporada($idSerie) {
+        $temporada = Temporada::where('audiovisual_id', $idSerie)->first();
+
+        return response()->json($temporada);
+    }
+
+    /**
      * Comprueba si el usuario actual ha visualizado una temporada o no.
      * 
      * @param Request $request Contiene el ID del usuario actual y el ID de la temporada.

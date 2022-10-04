@@ -260,11 +260,13 @@ class PersonaTest extends TestCase
     {
         $this->actingAs($this->usuario);
 
+        $file_name = 'avatar.jpg';
+
         $request = [
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => $this->usuario->email,
-            'imagen' => UploadedFile::fake()->image('avatar.jpg'),
+            'imagen' => UploadedFile::fake()->image($file_name),
         ];
         
         $response = $this->postJson('/api/guardar-informacion', $request);
@@ -273,6 +275,7 @@ class PersonaTest extends TestCase
         $this->assertTrue(Persona::where('nombre', 'Claudia')
                                  ->where('usuario', 'claudia')
                                  ->where('email', $this->usuario->email)
+                                 ->where('foto', 'LIKE', "%{$file_name}")
                                  ->exists());
     }
 
@@ -283,10 +286,13 @@ class PersonaTest extends TestCase
      */
     public function test_cambiar_informacion_usuario_actual_sin_sesion_iniciada()
     {
+        $file_name = 'avatar.jpg';
+        
         $request = [
             'nombre' => 'Claudia',
             'usuario' => 'claudia',
             'email' => $this->usuario->email,
+            'imagen' => UploadedFile::fake()->image($file_name),
         ];
         
         $response = $this->postJson('/api/guardar-informacion', $request);

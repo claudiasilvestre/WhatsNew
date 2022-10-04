@@ -655,6 +655,58 @@ class AudiovisualTest extends TestCase
     }
 
     /**
+     * Borra una valoración existente de un usuario para un audiovisual y actualiza la puntuación del audiovisual.
+     *
+     * @return void
+     */
+    public function test_borrar_valoracion_audiovisual()
+    {
+        $this->actingAs($this->usuario);
+
+        Valoracion::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->usuario->id,
+            'puntuacion' => 5,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->usuario->id,
+            'audiovisual_id' => $this->pelicula->id,
+        ];
+
+        $response = $this->call('POST', '/api/borrar-valoracion-audiovisual', $request);
+
+        $response->assertOk();
+        $this->assertFalse(Valoracion::where('audiovisual_id', $this->pelicula->id)
+                                     ->where('persona_id', $this->usuario->id)
+                                     ->where('puntuacion', 5)
+                                     ->exists());
+    }
+
+    /**
+     * Intenta borrar una valoración de un usuario para un audiovisual sin que el usuario tenga iniciada la sesión.
+     *
+     * @return void
+     */
+    public function test_borrar_valoracion_audiovisual_usuario_sin_sesion_iniciada()
+    {
+        Valoracion::create([
+            'audiovisual_id' => $this->pelicula->id,
+            'persona_id' => $this->usuario->id,
+            'puntuacion' => 5,
+        ]);
+
+        $request = [
+            'usuario_id' => $this->usuario->id,
+            'audiovisual_id' => $this->pelicula->id,
+        ];
+
+        $response = $this->call('POST', '/api/borrar-valoracion-audiovisual', $request);
+
+        $response->assertUnauthorized();
+    }
+
+    /**
      * Comprueba la valoración de un usuario a un audiovisual.
      *
      * @return void

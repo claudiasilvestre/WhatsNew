@@ -7,7 +7,7 @@
                     <div class="form-group">
                         <label id="imagen_perfil">Imagen de perfil</label>
                         <p>
-                            <img class="roundedPerfil" v-bind:src="formData.foto" width="125" height="125" v-bind:alt="formData.nombre">
+                            <img class="roundedPerfil m-1" v-bind:src="formData.foto" width="125" height="125" v-bind:alt="formData.nombre">
                             <input type="file" @change="previewFile" accept="image/png, image/jpeg, image/jpg">
                         </p>
                     </div>

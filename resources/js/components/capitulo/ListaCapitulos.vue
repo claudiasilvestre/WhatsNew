@@ -15,7 +15,7 @@
                     <span style="color:#d4d4d4; font-size:14px">{{ moment(capitulo.fechaLanzamiento).format('LL') }}</span>
                 </div>
                 <div class="pl-4 d-flex align-items-center">
-                    <button v-if="!loading" v-bind:class="{'btn btn-light': !clicked[index], 'btn btn-danger': clicked[index]}" @click="visto(capitulo.id, index)" class="m-1">
+                    <button v-if="!loading" v-bind:class="{'btn btn-light': !clicked[index], 'btn btn-info': clicked[index]}" @click="visto(capitulo.id, index)" class="m-1">
                         <b-icon icon="check-circle"></b-icon>
                     </button>
                 </div>

@@ -15,17 +15,14 @@
           :key="audiovisual.id"
         >
           <router-link :to="{ name: 'audiovisual', params: { id: audiovisual.id }}">
-            <div class="contenedor">
-              <v-img
-                class="rounded"
-                :src="audiovisual.cartel"
-                :alt="audiovisual.titulo"
-                :width="185"
-                :height="270"
-              >
-              </v-img>
-              <span class="capa">{{ audiovisual.titulo }}</span>
-            </div>
+            <v-img
+              class="rounded"
+              :src="audiovisual.cartel"
+              :alt="audiovisual.titulo"
+              :width="185"
+              :height="270"
+            >
+            </v-img>
           </router-link>
         </v-slide-item>
       </v-slide-group>

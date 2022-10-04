@@ -86,10 +86,11 @@ class AudiovisualController extends Controller
      * Si el seguimiento del audiovisual existe para el usuario se borra o se actualiza el seguimiento 
      * dependiendo del tipo de seguimiento recibido y se crea su corresponte actividad si procede, si el seguimiento 
      * del audiovisual no existe para el usuario se crea el seguimiento y su corresponte actividad. 
-     * Si el tipo de seguimiento recibido es 1 significa que el audiovisual está pendiente para el usuario y se borran todas
+     * Si el tipo de seguimiento recibido es 1, significa que el audiovisual está pendiente para el usuario y se borran todas
      * las visualizaciones de este usuario con respecto al audiovisual. 
-     * Si el tipo de seguimiento recibido es 3 significa que el audiovisual se ha visualizado al completo y se crea una 
-     * visualización para cada capítulo y para cada temporada.
+     * Si el tipo de seguimiento recibido es 3, significa que el audiovisual se ha visualizado al completo y se crea una 
+     * visualización para cada capítulo y para cada temporada. Si se quita la visualización del audiovisual se borran las
+     * visualizaciones de temporadas y capítulos.
      * 
      * @param Request $request Contiene el ID del usuario actual, el ID del audiovisual y el tipo de seguimiento.
      *
@@ -98,6 +99,30 @@ class AudiovisualController extends Controller
     public function seguimientoAudiovisual(Request $request) {
         if (SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->exists()) {            
             $seguimiento = SeguimientoAudiovisual::where('persona_id', $request->usuario_id)->where('audiovisual_id', $request->audiovisual_id)->first();
+
+            // Si tipo es 3 y el estado del seguimiento actualmente es 3, se borra toda VisualizacionTemporada y VisualizacionCapitulo de esa serie para ese usuario.
+            if ($seguimiento->estado == $request->tipo && $request->tipo == 3) {
+                $temporadas = Temporada::where('audiovisual_id', $request->audiovisual_id)->get();
+
+                foreach ($temporadas as $temporada) {
+                    if (VisualizacionTemporada::where('persona_id', $request->usuario_id)->where('temporada_id', $temporada->id)->exists()) { 
+                        VisualizacionTemporada::where('persona_id', $request->usuario_id)
+                        ->where('temporada_id', $temporada->id)
+                        ->delete();
+                    }
+
+                    $capitulos = Capitulo::where('temporada_id', $temporada->id)->get();
+
+                    foreach ($capitulos as $capitulo) {
+                        if (VisualizacionCapitulo::where('persona_id', $request->usuario_id)->where('capitulo_id', $capitulo->id)->exists()) { 
+                            VisualizacionCapitulo::where('persona_id', $request->usuario_id)
+                            ->where('capitulo_id', $capitulo->id)
+                            ->delete();
+                        }
+                    }
+                }
+            }
+
             if ($seguimiento->estado == $request->tipo) {
                 $seguimiento->delete();
                 return false;
@@ -126,7 +151,7 @@ class AudiovisualController extends Controller
             ]);
         }
 
-        // Si tipo es 1 se borran los VisualizaciónTemporada y VisualizaciónCapitulo que existan de la serie para ese usuario
+        // Si tipo es 1 se borran los VisualizaciónTemporada y VisualizaciónCapitulo que existan de la serie para ese usuario.
         if ($request->tipo === 1) {
             $temporadas = Temporada::where('audiovisual_id', $request->audiovisual_id)->get();
 
@@ -149,7 +174,7 @@ class AudiovisualController extends Controller
             }
         }
 
-        // Si tipo es 3 se crea VisualizacionTemporada y VisualizacionCapitulo de todos los capítulos de la serie que no existan para ese usuario
+        // Si tipo es 3 se crea VisualizacionTemporada y VisualizacionCapitulo de todos los capítulos de la serie que no existan para ese usuario.
         if ($request->tipo === 3) {
             $temporadas = Temporada::where('audiovisual_id', $request->audiovisual_id)->get();
 
@@ -273,6 +298,26 @@ class AudiovisualController extends Controller
         $suma_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->sum('puntuacion');
         $puntuacion = $suma_valoraciones/$num_valoraciones;
         Audiovisual::where('id', $request->audiovisual_id)->update(['puntuacion' => $puntuacion]);
+    }
+
+    /**
+     * Borra una valoración de un usuario para un audiovisual y actualiza la puntuación del audiovisual.
+     * 
+     * @param Request $request Contiene el ID del audiovisual y el ID del usuario actual.
+     *
+     * @return void
+     */
+    public function borrarValoracionAudiovisual(Request $request) {
+        Valoracion::where('audiovisual_id', $request->audiovisual_id)
+                  ->where('persona_id', $request->usuario_id)
+                  ->delete();
+
+        // Media de las valoraciones
+        if ($num_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->count() > 0) {
+            $suma_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->sum('puntuacion');
+            $puntuacion = $suma_valoraciones/$num_valoraciones;
+            Audiovisual::where('id', $request->audiovisual_id)->update(['puntuacion' => $puntuacion]);
+        }
     }
 
     /**

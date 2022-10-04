@@ -19,7 +19,7 @@
                 />
             </div>
             <div>
-                <button v-bind:class="{'btn btn-light': !state, 'btn btn-danger': state}" @click="vista(selected.id)" class="m-1">
+                <button v-bind:class="{'btn btn-light': !state, 'btn btn-info': state}" @click="vista(selected.id)" class="m-1">
                     Marcar temporada como vista
                 <b-icon icon="check-circle"></b-icon></button>
             </div>
@@ -79,19 +79,17 @@ export default {
                             this.clicked = false;
                         }
                     })
-                    .catch(error => console.log(error.response));
+                    .catch(error => console.log(error.response))
         }
     },
     created() {
-        axios.get('/api/temporadas/'+this.audiovisual.id)
-            .then(response => this.temporadas = response.data)
+        axios.get('/api/primera-temporada/'+this.audiovisual.id)
+            .then(response => this.selected = response.data)
             .catch(error => { console.log(error.response) })
-            .finally(() => { 
-                this.selected = this.temporadas[0];
-
+            .finally(() => {
                 axios.get('/api/capitulos/'+this.selected.id)
                     .then(response => this.capitulos = response.data)
-                    .catch(error => { console.log(error.response) });
+                    .catch(error => { console.log(error.response) })
 
                 axios.get('/api/saber-visualizacion-temporada/', {
                     params: { 
@@ -105,8 +103,12 @@ export default {
                         }
                     })
                     .catch(error => console.log(error.response))
-                    .finally(() => this.loading = false); 
-            });
+                    .finally(() => this.loading = false)
+            }); 
+
+        axios.get('/api/temporadas/'+this.audiovisual.id)
+            .then(response => this.temporadas = response.data)
+            .catch(error => { console.log(error.response) })
     },
     methods: {
       updateCapitulos(temporada) {
