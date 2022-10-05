@@ -6,7 +6,7 @@
         </div>
         <div class="card-body">
             <p class="form-group">
-                <input type="email" @keydown.enter="handleInicioSesion()" ref="email" class="p-2" placeholder="Email" v-model="formData.email">
+                <input type="email" @keydown.enter="handleInicioSesion()" ref="email" class="p-2" placeholder="Correo" v-model="formData.email">
             </p>
             <p class="form-group">
                 <input type="password" @keydown.enter="handleInicioSesion()" ref="password" class="p-2" placeholder="Contraseña" v-model="formData.password">

@@ -20,7 +20,7 @@
                         <span v-if="errors.usuario" class="text-danger">{{ errors.usuario.toString() }}</span>
                     </p>
                     <p class="form-group">
-                        <input type="email" @keydown.enter="guardarCambios()" ref="email" class="p-2" placeholder="Email" v-model="formData.email">
+                        <input type="email" @keydown.enter="guardarCambios()" ref="email" class="p-2" placeholder="Correo" v-model="formData.email">
                         <span v-if="errors.email" class="text-danger">{{ errors.email.toString() }}</span>
                     </p>
 

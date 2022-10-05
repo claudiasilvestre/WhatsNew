@@ -12,7 +12,7 @@
             <button v-if="audiovisual.tipoAudiovisual_id === 2" v-bind:class="{'btn btn-warning': !clicked2, 'btn btn-outline-warning': clicked2}" @click="seguimiento(2)" class="m-1"><b-icon icon="eye"></b-icon>
                 {{ seguir }}
             </button>
-            <button v-bind:class="{'btn btn-info': !clicked3, 'btn btn-outline-info': clicked3}" @click="seguimiento(3)" class="m-1"><b-icon icon="check2"></b-icon>
+            <button v-bind:class="{'btn btn-light': !clicked3, 'btn btn-outline-light': clicked3}" @click="seguimiento(3)" class="m-1"><b-icon icon="check2"></b-icon>
                 {{ vista }}
             </button>
         </div>

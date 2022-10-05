@@ -19,7 +19,7 @@
                 />
             </div>
             <div>
-                <button v-bind:class="{'btn btn-light': !state, 'btn btn-info': state}" @click="vista(selected.id)" class="m-1">
+                <button v-bind:class="{'btn btn-light': !state, 'btn btn-outline-light': state}" @click="vista(selected.id)" class="m-1">
                     Marcar temporada como vista
                 <b-icon icon="check-circle"></b-icon></button>
             </div>

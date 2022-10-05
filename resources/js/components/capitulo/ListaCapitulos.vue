@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div v-for="(capitulo, index) in capitulos" :key="capitulo.id" class="list-capitulos background2 mb-2">
+        <div v-for="(capitulo, index) in capitulos" :key="capitulo.id" class="list-capitulos rounded background2 mb-2">
             <router-link :to="{ name: 'capitulo', params: { idAudiovisual: idAudiovisual, idCapitulo: capitulo.id }}">
                 <img class="rounded ml-4" v-bind:src="capitulo.cartel" v-bind:alt="capitulo.nombre" width="250" height="140">
             </router-link>
@@ -15,7 +15,7 @@
                     <span style="color:#d4d4d4; font-size:14px">{{ moment(capitulo.fechaLanzamiento).format('LL') }}</span>
                 </div>
                 <div class="pl-4 d-flex align-items-center">
-                    <button v-if="!loading" v-bind:class="{'btn btn-light': !clicked[index], 'btn btn-info': clicked[index]}" @click="visto(capitulo.id, index)" class="m-1">
+                    <button v-if="!loading" v-bind:class="{'btn btn-light': !clicked[index], 'btn btn-outline-light': clicked[index]}" @click="visto(capitulo.id, index)" class="m-1">
                         <b-icon icon="check-circle"></b-icon>
                     </button>
                 </div>
