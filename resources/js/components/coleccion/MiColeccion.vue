@@ -3,6 +3,7 @@
         <div>
             <app-header />
             <div class="content">
+                <h3 class="titleMiColeccion">Mi colección</h3>
                 <b-tabs>
                     <b-tab title="Series" active><menu-coleccion :tipo="2"/></b-tab>
                     <b-tab title="Peliculas"><menu-coleccion :tipo="1"/></b-tab>
