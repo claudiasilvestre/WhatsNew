@@ -335,7 +335,7 @@ class AudiovisualesSeeder extends Seeder
             foreach ($temporadas as $temporada) {
                 $temporadaApi = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/season/'.$temporada->numero.'?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')->json();
 
-                if(array_key_exists("episodes", $temporadaApi)) {
+                if ($temporadaApi != null && array_key_exists("episodes", $temporadaApi)) {
                     for ($i = 0; $i < sizeof($temporadaApi['episodes']); $i++) {
 
                         // Equipo

@@ -94,12 +94,12 @@ router.beforeEach(async (to, from, next) => {
         next(home)
         
     } else if (to.matched.some(rec => rec.meta.requiresAuth)) {  
-        // Si no se ha iniciado sesión se redirecciona al login
         if (Object.keys(usuario).length > 0) {
             next()
         } else {
-            const login = router.push('/')
-            next(login)
+            // Se redirecciona al inicio
+            const home = router.push('/')
+            next(home)
         }
     }
     next()
