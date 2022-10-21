@@ -28,6 +28,7 @@ class PersonaController extends Controller
             'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required',
         ], [], [
+            'email' => 'correo',
             'password' => 'contraseña',
             'password_confirmation' => 'confirmar contraseña'
         ]);
@@ -122,9 +123,6 @@ class PersonaController extends Controller
             $file_name = time().$file->getClientOriginalName();
             $file->move(public_path('img'), $file_name);
             $ruta = '/img/'.$file_name;
-/*             $ruta = '/'.$file->storeAs(
-                'img', $file_name
-            ); */
 
             Persona::where('id', $usuario->id)->update([
                 'nombre' => $request->nombre,

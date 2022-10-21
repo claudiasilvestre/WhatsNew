@@ -30,6 +30,7 @@ class BusquedaController extends Controller
 
         $audiovisuales = Audiovisual::query()
             ->where(DB::raw('lower(titulo)'), "LIKE", "%".strtolower($busqueda)."%")
+            ->orWhere(DB::raw('lower(tituloOriginal)'), "LIKE", "%".strtolower($busqueda)."%")
             ->get();
 
         return response()->json([

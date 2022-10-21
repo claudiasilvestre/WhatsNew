@@ -23,7 +23,7 @@ class AuthController extends Controller
     public function inicioSesion(Request $request) {
         if (!Auth::attempt($request->only('email', 'password'))) {
             throw ValidationException::withMessages([
-                'credenciales' => 'Email o contraseña incorrectos. Vuelve a intentarlo.',
+                'credenciales' => 'Correo o contraseña incorrectos. Vuelve a intentarlo.',
             ]);
         }
 

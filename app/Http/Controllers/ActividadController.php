@@ -25,7 +25,7 @@ class ActividadController extends Controller
                                 ->leftJoin('temporada as temporada_actividad', 'actividad.temporada_id', 'temporada_actividad.id')
                                 ->leftJoin('audiovisual as audiovisual_temporada', 'temporada_actividad.audiovisual_id', 'audiovisual_temporada.id')
                                 ->where('persona_id', $usuario_id)
-                                ->where('actividad.created_at', '>', date('Y-m-d H:i:s', strtotime('-2 months')))
+                                ->where('actividad.created_at', '>', date('Y-m-d H:i:s', strtotime('-1 month')))
                                 ->select('actividad.id', 'tipo', 'audiovisual.tipoAudiovisual_id', 'audiovisual.titulo as titulo_audiovisual', 
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
@@ -58,7 +58,7 @@ class ActividadController extends Controller
                                 ->leftJoin('seguimiento_persona', 'actividad.persona_id', 'seguimiento_persona.persona_id')
                                 ->leftJoin('persona', 'actividad.persona_id', 'persona.id')
                                 ->where('seguimiento_persona.personaActual_id', $usuario_id)
-                                ->where('actividad.created_at', '>', date('Y-m-d H:i:s', strtotime('-2 months')))
+                                ->where('actividad.created_at', '>', date('Y-m-d H:i:s', strtotime('-1 month')))
                                 ->select('tipo', 'audiovisual.tipoAudiovisual_id', 'audiovisual.titulo as titulo_audiovisual', 
                                 'capitulo.nombre','temporada.numero as numero_temporada', 'capitulo.numero as numero_capitulo', 
                                 'audiovisual_capitulo.titulo as titulo_audiovisual_capitulo', 'temporada_actividad.numero as 
