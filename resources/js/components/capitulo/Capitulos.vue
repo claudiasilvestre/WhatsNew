@@ -19,7 +19,7 @@
                 />
             </div>
             <div>
-                <button v-bind:class="{'btn btn-light': !state, 'btn btn-outline-light': state}" @click="vista(selected.id)" class="m-1">
+                <button v-bind:class="{'btn btn-outline-light': !state, 'btn btn-light': state}" @click="vista(selected.id)" class="m-1">
                     Marcar temporada como vista
                 <b-icon icon="check-circle"></b-icon></button>
             </div>
@@ -115,6 +115,22 @@ export default {
         axios.get('/api/capitulos/'+temporada.id)
             .then(response => this.capitulos = response.data)
             .catch(error => { console.log(error.response) });
+
+        axios.get('/api/saber-visualizacion-temporada/', {
+                params: { 
+                    temporada_id: this.selected.id, 
+                    usuario_id: this.usuarioActual.id,
+                }})
+                .then(response => {
+                    if (response.data) {
+                        this.state = true;
+                        this.clicked = true;
+                    } else {
+                        this.state = false;
+                        this.clicked = false;
+                    }
+                })
+                .catch(error => console.log(error.response))
       },
       vista(temporada_id) {
         axios.post('/api/visualizacion-temporada/', 

@@ -15,7 +15,7 @@
                     <span style="color:#d4d4d4; font-size:14px">{{ moment(capitulo.fechaLanzamiento).format('LL') }}</span>
                 </div>
                 <div class="pl-4 d-flex align-items-center">
-                    <button v-if="!loading" v-bind:class="{'btn btn-light': !clicked[index], 'btn btn-outline-light': clicked[index]}" @click="visto(capitulo.id, index)" class="m-1">
+                    <button v-if="!loading" v-bind:class="{'btn btn-outline-light': !clicked[index], 'btn btn-light': clicked[index]}" @click="visto(capitulo.id, index)" class="m-1">
                         <b-icon icon="check-circle"></b-icon>
                     </button>
                 </div>
@@ -77,7 +77,6 @@ export default {
     },
     watch: {
         capitulos: function () {
-            this.loading = true;
             axios.get('/api/visualizaciones/', {
                 params: { 
                     capitulos: this.capitulos,
@@ -87,7 +86,6 @@ export default {
                     this.clicked = response.data;
                 })
                 .catch(error => console.log(error.response))
-                .finally(() => this.loading = false);
         },
         vista: function () {
             if (this.vista)

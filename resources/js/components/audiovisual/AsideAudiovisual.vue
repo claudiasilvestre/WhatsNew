@@ -6,13 +6,13 @@
             <b-icon v-if="rating !== 0" icon="x-circle" variant="danger" @click="borrarValoracion()" class="pointer"></b-icon>
         </div>
         <div v-if="!loading" class="buttons width">
-            <button v-bind:class="{'btn btn-danger': !clicked1, 'btn btn-outline-danger': clicked1}" @click="seguimiento(1)" class="m-1"><b-icon icon="clock"></b-icon>
+            <button v-bind:class="{'btn btn-outline-danger': !clicked1, 'btn btn-danger': clicked1}" @click="seguimiento(1)" class="m-1"><b-icon icon="clock"></b-icon>
                 {{ pendiente }}
             </button>
-            <button v-if="audiovisual.tipoAudiovisual_id === 2" v-bind:class="{'btn btn-warning': !clicked2, 'btn btn-outline-warning': clicked2}" @click="seguimiento(2)" class="m-1"><b-icon icon="eye"></b-icon>
+            <button v-if="audiovisual.tipoAudiovisual_id === 2" v-bind:class="{'btn btn-outline-warning': !clicked2, 'btn btn-warning': clicked2}" @click="seguimiento(2)" class="m-1"><b-icon icon="eye"></b-icon>
                 {{ seguir }}
             </button>
-            <button v-bind:class="{'btn btn-light': !clicked3, 'btn btn-outline-light': clicked3}" @click="seguimiento(3)" class="m-1"><b-icon icon="check2"></b-icon>
+            <button v-bind:class="{'btn btn-outline-light': !clicked3, 'btn btn-light': clicked3}" @click="seguimiento(3)" class="m-1"><b-icon icon="check2"></b-icon>
                 {{ vista }}
             </button>
         </div>

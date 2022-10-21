@@ -72,7 +72,7 @@ export default {
                     if (this.formInicio.email.length > 0 && this.formInicio.password.length > 0)
                         axios.get('/sanctum/csrf-cookie').then(response => {
                             axios.post('/api/inicio-sesion', this.formInicio).then((response) => {
-                                window.location.replace("/home");
+                                this.$router.push('/home')
                             });
                         });
                 });

@@ -93,7 +93,9 @@ class AudiovisualesSeeder extends Seeder
         }
 
         // TipoParticipante
-        if (!TipoParticipante::where('nombre', '=', "Actor")->exists() && !TipoParticipante::where('nombre', '=', "Director")->exists()) {
+        if (!TipoParticipante::where('nombre', '=', "Actor")->exists() 
+            && !TipoParticipante::where('nombre', '=', "Director")->exists()
+            && !TipoParticipante::where('nombre', '=', "Guionista")->exists()) {
             $tipoParticipante = new TipoParticipante;
             $tipoParticipante->nombre = "Actor";
             $tipoParticipante->save();
@@ -181,11 +183,16 @@ class AudiovisualesSeeder extends Seeder
                         } else {
                             $participante = Persona::where('nombre', '=', $cast_equipo['cast'][$i]['name'])->first();
 
-                            $participacion = new Participacion;
-                            $participacion->audiovisual_id = $pelicula->id;
-                            $participacion->persona_id = $participante->id;
-                            $participacion->personaje = $cast_equipo['cast'][$i]['character'];
-                            $participacion->save();
+                            if (!Participacion::where('audiovisual_id', $pelicula->id)
+                                              ->where('persona_id', $participante->id)
+                                              ->where('personaje', $cast_equipo['cast'][$i]['character'])
+                                              ->exists()) {
+                                $participacion = new Participacion;
+                                $participacion->audiovisual_id = $pelicula->id;
+                                $participacion->persona_id = $participante->id;
+                                $participacion->personaje = $cast_equipo['cast'][$i]['character'];
+                                $participacion->save();
+                            }
                         }
                     }
 
@@ -211,10 +218,14 @@ class AudiovisualesSeeder extends Seeder
                             } else {
                                 $participante = Persona::where('nombre', '=', $cast_equipo['crew'][$i]['name'])->first();
     
-                                $participacion = new Participacion;
-                                $participacion->audiovisual_id = $pelicula->id;
-                                $participacion->persona_id = $participante->id;
-                                $participacion->save();
+                                if (!Participacion::where('audiovisual_id', $pelicula->id)
+                                                  ->where('persona_id', $participante->id)
+                                                  ->exists()) {
+                                    $participacion = new Participacion;
+                                    $participacion->audiovisual_id = $pelicula->id;
+                                    $participacion->persona_id = $participante->id;
+                                    $participacion->save();
+                                }
                             }
                         }
                     }
@@ -226,29 +237,44 @@ class AudiovisualesSeeder extends Seeder
                         if (array_key_exists("ES", $proveedores)) {
                             if (array_key_exists("flatrate", $proveedores['ES'])) {
                                 foreach ($proveedores['ES']['flatrate'] as $proveedor) {
-                                    $p_a = new ProveedorAudiovisual;
-                                    $p_a->proveedor_id = $proveedor['provider_id'];
-                                    $p_a->audiovisual_id = $pelicula->id;
-                                    $p_a->disponibilidad = 1;
-                                    $p_a->save();
+                                    if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
+                                                             ->where('audiovisual_id', $pelicula->id)
+                                                             ->where('disponibilidad', 1)
+                                                             ->exists()) {
+                                        $p_a = new ProveedorAudiovisual;
+                                        $p_a->proveedor_id = $proveedor['provider_id'];
+                                        $p_a->audiovisual_id = $pelicula->id;
+                                        $p_a->disponibilidad = 1;
+                                        $p_a->save();
+                                    }
                                 }
                             }
                             if (array_key_exists("rent", $proveedores['ES'])) {
                                 foreach ($proveedores['ES']['rent'] as $proveedor) {
-                                    $p_a = new ProveedorAudiovisual;
-                                    $p_a->proveedor_id = $proveedor['provider_id'];
-                                    $p_a->audiovisual_id = $pelicula->id;
-                                    $p_a->disponibilidad = 2;
-                                    $p_a->save();
+                                    if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
+                                                             ->where('audiovisual_id', $pelicula->id)
+                                                             ->where('disponibilidad', 2)
+                                                             ->exists()) {
+                                        $p_a = new ProveedorAudiovisual;
+                                        $p_a->proveedor_id = $proveedor['provider_id'];
+                                        $p_a->audiovisual_id = $pelicula->id;
+                                        $p_a->disponibilidad = 2;
+                                        $p_a->save();
+                                    }
                                 }
                             }
                             if (array_key_exists("buy", $proveedores['ES'])) {
                                 foreach ($proveedores['ES']['buy'] as $proveedor) {
-                                    $p_a = new ProveedorAudiovisual;
-                                    $p_a->proveedor_id = $proveedor['provider_id'];
-                                    $p_a->audiovisual_id = $pelicula->id;
-                                    $p_a->disponibilidad = 3;
-                                    $p_a->save();
+                                    if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
+                                                             ->where('audiovisual_id', $pelicula->id)
+                                                             ->where('disponibilidad', 3)
+                                                             ->exists()) {
+                                        $p_a = new ProveedorAudiovisual;
+                                        $p_a->proveedor_id = $proveedor['provider_id'];
+                                        $p_a->audiovisual_id = $pelicula->id;
+                                        $p_a->disponibilidad = 3;
+                                        $p_a->save();
+                                    }
                                 }
                             }
                         }
@@ -292,11 +318,16 @@ class AudiovisualesSeeder extends Seeder
                         if (array_key_exists("ES", $proveedores)) {
                             if (array_key_exists("flatrate", $proveedores['ES'])) {
                                 foreach ($proveedores['ES']['flatrate'] as $proveedor) {
-                                    $p_a = new ProveedorAudiovisual;
-                                    $p_a->proveedor_id = $proveedor['provider_id'];
-                                    $p_a->audiovisual_id = $serie->id;
-                                    $p_a->disponibilidad = 1;
-                                    $p_a->save();
+                                    if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
+                                                             ->where('audiovisual_id', $serie->id)
+                                                             ->where('disponibilidad', 1)
+                                                             ->exists()) {
+                                        $p_a = new ProveedorAudiovisual;
+                                        $p_a->proveedor_id = $proveedor['provider_id'];
+                                        $p_a->audiovisual_id = $serie->id;
+                                        $p_a->disponibilidad = 1;
+                                        $p_a->save();
+                                    }
                                 }
                             }
                         }
