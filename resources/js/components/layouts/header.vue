@@ -16,7 +16,7 @@
             <router-link :to="{ name: 'perfil', params: { idPersona: usuarioActual.id }}">
                 <b-icon icon="person" class="h3 pointer m-2"></b-icon>
             </router-link>
-            <button type="button" @click="handleCierreSesion">
+            <button @click="handleCierreSesion">
                 <b-icon icon="box-arrow-left" class="h3 pointer m-2"></b-icon>
             </button>
         </div>
