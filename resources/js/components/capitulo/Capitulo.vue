@@ -24,7 +24,7 @@
                         </p>
                         <div class="d-flex justify-content-between">
                             <h3 style="font-weight:350">{{ temporada.numero }}x{{ capitulo.numero }} - {{ capitulo.nombre }}</h3>
-                            <button v-bind:class="{'btn btn-light': !clicked, 'btn btn-outline-light': clicked}" @click="seguimiento()" class="m-1"><b-icon icon="check2"></b-icon>
+                            <button type="button" v-bind:class="{'color-a': clicked}" @click="seguimiento()" class="p-2 rounded" style="background:#303134"><b-icon icon="check-circle" class="icon-style"></b-icon>
                                 Visto
                             </button>
                         </div>

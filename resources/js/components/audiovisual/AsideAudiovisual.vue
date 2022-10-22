@@ -1,18 +1,21 @@
 <template>
     <div class="aside-visibility">
         <img class="rounded" v-bind:src="audiovisual.cartel" v-bind:alt="audiovisual.titulo" width="190" height="290">
-        <div class="d-flex align-items-center">
-            <star-rating v-model="rating" :increment="0.5" :star-size="29" :show-rating="false" text-class="custom-text" class="m-2"></star-rating>
-            <b-icon v-if="rating !== 0" icon="x-circle" variant="danger" @click="borrarValoracion()" class="pointer"></b-icon>
+        <div class="d-flex flex-column background2 mt-2 rounded p-1">
+            <span class="ml-2">Puntúa</span>
+            <div class="d-flex align-items-center">
+                <star-rating v-model="rating" :increment="0.5" :star-size="29" :show-rating="false" text-class="custom-text" class="m-2"></star-rating>
+                <b-icon v-if="rating !== 0" icon="x-circle" variant="danger" @click="borrarValoracion()" class="pointer"></b-icon>
+            </div>
         </div>
-        <div v-if="!loading" class="buttons width">
-            <button v-bind:class="{'btn btn-outline-danger': !clicked1, 'btn btn-danger': clicked1}" @click="seguimiento(1)" class="m-1"><b-icon icon="clock"></b-icon>
+        <div v-if="!loading" class="buttons width background2 mt-2 rounded">
+            <button type="button" v-bind:class="{'color-a': clicked1}" @click="seguimiento(1)" class="p-2"><b-icon icon="clock" class="icon-style"></b-icon>
                 {{ pendiente }}
             </button>
-            <button v-if="audiovisual.tipoAudiovisual_id === 2" v-bind:class="{'btn btn-outline-warning': !clicked2, 'btn btn-warning': clicked2}" @click="seguimiento(2)" class="m-1"><b-icon icon="eye"></b-icon>
+            <button type="button" v-if="audiovisual.tipoAudiovisual_id === 2" v-bind:class="{'color-a': clicked2}" @click="seguimiento(2)" class="p-2"><b-icon icon="eye" class="icon-style"></b-icon>
                 {{ seguir }}
             </button>
-            <button v-bind:class="{'btn btn-outline-light': !clicked3, 'btn btn-light': clicked3}" @click="seguimiento(3)" class="m-1"><b-icon icon="check2"></b-icon>
+            <button type="button" v-bind:class="{'color-a': clicked3}" @click="seguimiento(3)" class="p-2"><b-icon icon="check-circle" class="icon-style"></b-icon>
                 {{ vista }}
             </button>
         </div>
@@ -63,6 +66,7 @@ export default {
                     this.clicked1 = true;
                 } else if (response.data === 2) {
                     this.clicked2 = true;
+                    this.seguir = "Siguiendo";
                 } else if (response.data === 3) {
                     this.clicked3 = true;
                 }
@@ -95,6 +99,7 @@ export default {
                     if (response.data) {
                         this.clicked1 = true;
                         this.clicked2 = false;
+                        this.seguir = "Seguir";
                         this.clicked3 = false;
                     } else
                         this.clicked1 = false;
@@ -103,13 +108,17 @@ export default {
                     if (response.data) {
                         this.clicked1 = false;
                         this.clicked2 = true;
+                        this.seguir = "Siguiendo";
                         this.clicked3 = false;
-                    } else
+                    } else {
                         this.clicked2 = false;
+                        this.seguir = "Seguir";
+                    }
                 } else if (tipo === 3) {
                     if (response.data) {
                         this.clicked1 = false;
                         this.clicked2 = false;
+                        this.seguir = "Seguir";
                         this.clicked3 = true;
                     } else
                         this.clicked3 = false;

@@ -77,6 +77,22 @@ input:focus {
     outline: none;
 }
 
+button[type="button"] {
+    font-size: 1.1rem;
+}
+
+button[type="button"]:hover {
+    color: #0dcaf0 !important;
+}
+
+.icon-caps {
+    font-size: 1.5rem;
+}
+
+.icon-style {
+    font-size: 1.3rem;
+}
+
 .row-between {
     display: flex;
     justify-content: space-between;
@@ -166,7 +182,7 @@ body {
 .buttons {
     display: flex;
     flex-direction: column;
-    padding-top: 20px;
+    padding: 5px;
 }
 
 /* Tabs de Bootstrap */
@@ -176,14 +192,15 @@ body {
 
 .nav-link.active {
     background-color: transparent !important;
-    border: 2px solid transparent !important;
-    border-bottom-color: red !important;
+    border: 3px solid transparent !important;
+    border-bottom-color: #0dcaf0 !important;
 }
 
 .nav-link {
     color: #fff !important;
     border: none !important;
     transition: none !important;
+    font-size: 1.2rem;
 }
 /* Fin tabs de Bootstrap */
 

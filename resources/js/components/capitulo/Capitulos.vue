@@ -19,9 +19,9 @@
                 />
             </div>
             <div>
-                <button v-bind:class="{'btn btn-outline-light': !state, 'btn btn-light': state}" @click="vista(selected.id)" class="m-1">
-                    Marcar temporada como vista
-                <b-icon icon="check-circle"></b-icon></button>
+                <button type="button" v-bind:class="{'color-a': state}" @click="vista(selected.id)" class="m-1">
+                    {{ temporadaMsg }}
+                <b-icon icon="check-circle" class="icon-style"></b-icon></button>
             </div>
         </div>
         <lista-capitulos :capitulos="capitulos" :idAudiovisual="audiovisual.id" :temporada="selected" :vista="clicked" :cambio="cambio" :noCambio="noCambio" :cambioAside="cambioAside" @comprobarVista="comprobarVista" />
@@ -54,6 +54,7 @@ export default {
             state: false,
             cambio: true,
             noCambio: true,
+            temporadaMsg: "Marcar temporada como vista",
         }
     },
     computed: {
@@ -73,9 +74,11 @@ export default {
                     .then(response => {
                         if (response.data) {
                             this.state = true;
+                            this.temporadaMsg = "Desmarcar temporada como vista";
                             this.clicked = true;
                         } else {
                             this.state = false;
+                            this.temporadaMsg = "Marcar temporada como vista";
                             this.clicked = false;
                         }
                     })
@@ -99,6 +102,7 @@ export default {
                     .then(response => {
                         if (response.data) {
                             this.state = true;
+                            this.temporadaMsg = "Desmarcar temporada como vista";
                             this.clicked = true;
                         }
                     })
@@ -124,9 +128,11 @@ export default {
                 .then(response => {
                     if (response.data) {
                         this.state = true;
+                        this.temporadaMsg = "Desmarcar temporada como vista";
                         this.clicked = true;
                     } else {
                         this.state = false;
+                        this.temporadaMsg = "Marcar temporada como vista";
                         this.clicked = false;
                     }
                 })
@@ -142,9 +148,11 @@ export default {
             .then(response => {
                 if (response.data) {
                     this.state = true;
+                    this.temporadaMsg = "Desmarcar temporada como vista";
                     this.clicked = true;
                 } else {
                     this.state = false;
+                    this.temporadaMsg = "Marcar temporada como vista";
                     this.clicked = false;
                 }
                 this.noCambio = true;
