@@ -20,7 +20,7 @@ class ComentarioController extends Controller
      *
      * @return void
      */
-    public function guardarAudiovisual(Request $request) {
+    public function guardarComentarioAudiovisual(Request $request) {
         $request->validate([
             'tipo_id' => 'required',
             'usuario_id' => 'required',
@@ -45,7 +45,7 @@ class ComentarioController extends Controller
      *
      * @return void
      */
-    public function guardarCapitulo(Request $request) {
+    public function guardarComentarioCapitulo(Request $request) {
         $request->validate([
             'tipo_id' => 'required',
             'usuario_id' => 'required',
@@ -71,7 +71,7 @@ class ComentarioController extends Controller
      *
      * @return Response
      */
-    public function audiovisual(Request $request) {
+    public function comentariosAudiovisual(Request $request) {
         $usuario_id = Auth::id();
 
         if ($request->tipo == 1)
@@ -125,7 +125,7 @@ class ComentarioController extends Controller
      *
      * @return Response
      */
-    public function capitulo(Request $request) {
+    public function comentariosCapitulo(Request $request) {
         $usuario_id = Auth::id();
 
         if ($request->tipo == 1)
@@ -177,7 +177,7 @@ class ComentarioController extends Controller
      *
      * @return void
      */
-    public function borrarAudiovisual($comentario_id) {
+    public function borrarComentarioAudiovisual($comentario_id) {
         ComentarioAudiovisual::where('id', $comentario_id)
                                 ->delete();
 
@@ -193,7 +193,7 @@ class ComentarioController extends Controller
      *
      * @return void
      */
-    public function borrarCapitulo($comentario_id) {
+    public function borrarComentarioCapitulo($comentario_id) {
         ComentarioCapitulo::where('id', $comentario_id)
                             ->delete();
 
@@ -211,7 +211,7 @@ class ComentarioController extends Controller
      *
      * @return void
      */
-    public function opinionPositivaAudiovisual(Request $request) {
+    public function opinionPositivaComentarioAudiovisual(Request $request) {
         $usuario_id = Auth::id();
 
         if (!OpinionComentarioAudiovisual::where('persona_id', $request->usuario_id)->where('comentarioAudiovisual_id', $request->comentario_id)->exists()) {
@@ -259,7 +259,7 @@ class ComentarioController extends Controller
      *
      * @return void
      */
-    public function opinionNegativaAudiovisual(Request $request) {
+    public function opinionNegativaComentarioAudiovisual(Request $request) {
         $usuario_id = Auth::id();
 
         if (!OpinionComentarioAudiovisual::where('persona_id', $request->usuario_id)->where('comentarioAudiovisual_id', $request->comentario_id)->exists()) {
@@ -307,7 +307,7 @@ class ComentarioController extends Controller
      *
      * @return void
      */
-    public function opinionPositivaCapitulo(Request $request) {
+    public function opinionPositivaComentarioCapitulo(Request $request) {
         $usuario_id = Auth::id();
 
         if (!OpinionComentarioCapitulo::where('persona_id', $request->usuario_id)->where('comentarioCapitulo_id', $request->comentario_id)->exists()) {
@@ -355,7 +355,7 @@ class ComentarioController extends Controller
      *
      * @return void
      */
-    public function opinionNegativaCapitulo(Request $request) {
+    public function opinionNegativaComentarioCapitulo(Request $request) {
         $usuario_id = Auth::id();
 
         if (!OpinionComentarioCapitulo::where('persona_id', $request->usuario_id)->where('comentarioCapitulo_id', $request->comentario_id)->exists()) {

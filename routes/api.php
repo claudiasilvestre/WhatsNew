@@ -59,14 +59,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/primera-temporada/{idSerie}', [TemporadaController::class, 'primeraTemporada']);
     Route::post('/visualizacion-temporada', [TemporadaController::class, 'visualizacion']);
 
-    Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarAudiovisual']);
-    Route::post('/guardar-comentario-capitulo', [ComentarioController::class, 'guardarCapitulo']);
-    Route::post('/borrar-comentario-audiovisual/{comentario_id}', [ComentarioController::class, 'borrarAudiovisual']);
-    Route::post('/borrar-comentario-capitulo/{comentario_id}', [ComentarioController::class, 'borrarCapitulo']);
-    Route::post('/opinion-positiva-audiovisual', [ComentarioController::class, 'opinionPositivaAudiovisual']);
-    Route::post('/opinion-negativa-audiovisual', [ComentarioController::class, 'opinionNegativaAudiovisual']);
-    Route::post('/opinion-positiva-capitulo', [ComentarioController::class, 'opinionPositivaCapitulo']);
-    Route::post('/opinion-negativa-capitulo', [ComentarioController::class, 'opinionNegativaCapitulo']);
-    Route::get('/comentario-audiovisual', [ComentarioController::class, 'audiovisual']);
-    Route::get('/comentario-capitulo', [ComentarioController::class, 'capitulo']);
+    Route::post('/guardar-comentario-audiovisual', [ComentarioController::class, 'guardarComentarioAudiovisual']);
+    Route::post('/guardar-comentario-capitulo', [ComentarioController::class, 'guardarComentarioCapitulo']);
+    Route::post('/borrar-comentario-audiovisual/{comentario_id}', [ComentarioController::class, 'borrarComentarioAudiovisual']);
+    Route::post('/borrar-comentario-capitulo/{comentario_id}', [ComentarioController::class, 'borrarComentarioCapitulo']);
+    Route::post('/opinion-positiva-comentario-audiovisual', [ComentarioController::class, 'opinionPositivaComentarioAudiovisual']);
+    Route::post('/opinion-negativa-comentario-audiovisual', [ComentarioController::class, 'opinionNegativaComentarioAudiovisual']);
+    Route::post('/opinion-positiva-comentario-capitulo', [ComentarioController::class, 'opinionPositivaComentarioCapitulo']);
+    Route::post('/opinion-negativa-comentario-capitulo', [ComentarioController::class, 'opinionNegativaComentarioCapitulo']);
+    Route::get('/comentarios-audiovisual', [ComentarioController::class, 'comentariosAudiovisual']);
+    Route::get('/comentarios-capitulo', [ComentarioController::class, 'comentariosCapitulo']);
 });

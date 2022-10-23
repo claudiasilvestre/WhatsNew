@@ -202,7 +202,7 @@ class ComentarioTest extends TestCase
             'audiovisual_id' => $this->pelicula->id,
         ];
 
-        $response = $this->call('GET', '/api/comentario-audiovisual', $request);
+        $response = $this->call('GET', '/api/comentarios-audiovisual', $request);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
@@ -240,7 +240,7 @@ class ComentarioTest extends TestCase
             'audiovisual_id' => $this->pelicula->id,
         ];
 
-        $response = $this->call('GET', '/api/comentario-audiovisual', $request);
+        $response = $this->call('GET', '/api/comentarios-audiovisual', $request);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
@@ -263,7 +263,7 @@ class ComentarioTest extends TestCase
             'audiovisual_id' => $this->pelicula->id,
         ];
 
-        $response = $this->call('GET', '/api/comentario-audiovisual', $request);
+        $response = $this->call('GET', '/api/comentarios-audiovisual', $request);
 
         $response->assertUnauthorized();
     }
@@ -316,7 +316,7 @@ class ComentarioTest extends TestCase
             'capitulo_id' => $capitulo->id,
         ];
 
-        $response = $this->call('GET', '/api/comentario-capitulo', $request);
+        $response = $this->call('GET', '/api/comentarios-capitulo', $request);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
@@ -375,7 +375,7 @@ class ComentarioTest extends TestCase
             'capitulo_id' => $capitulo->id,
         ];
 
-        $response = $this->call('GET', '/api/comentario-capitulo', $request);
+        $response = $this->call('GET', '/api/comentarios-capitulo', $request);
 
         $response->assertOk()
                  ->assertJson(fn (AssertableJson $json) =>
@@ -419,7 +419,7 @@ class ComentarioTest extends TestCase
             'capitulo_id' => $capitulo->id,
         ];
 
-        $response = $this->call('GET', '/api/comentario-capitulo', $request);
+        $response = $this->call('GET', '/api/comentarios-capitulo', $request);
 
         $response->assertUnauthorized();
     }
@@ -577,7 +577,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
+        $response = $this->call('POST', '/api/opinion-positiva-comentario-audiovisual', $request);
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioAudiovisual::where('persona_id', $this->usuario->id)
@@ -620,7 +620,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
+        $response = $this->call('POST', '/api/opinion-positiva-comentario-audiovisual', $request);
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioAudiovisual::where('id', $opinion->id)
@@ -662,7 +662,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
+        $response = $this->call('POST', '/api/opinion-positiva-comentario-audiovisual', $request);
 
         $response->assertOk();
         $this->assertFalse(OpinionComentarioAudiovisual::where('id', $opinion->id)
@@ -693,7 +693,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-positiva-audiovisual', $request);
+        $response = $this->call('POST', '/api/opinion-positiva-comentario-audiovisual', $request);
 
         $response->assertUnauthorized();
     }
@@ -719,7 +719,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
+        $response = $this->call('POST', '/api/opinion-negativa-comentario-audiovisual', $request);
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioAudiovisual::where('persona_id', $this->usuario->id)
@@ -762,7 +762,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
+        $response = $this->call('POST', '/api/opinion-negativa-comentario-audiovisual', $request);
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioAudiovisual::where('id', $opinion->id)
@@ -804,7 +804,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
+        $response = $this->call('POST', '/api/opinion-negativa-comentario-audiovisual', $request);
 
         $response->assertOk();
         $this->assertFalse(OpinionComentarioAudiovisual::where('id', $opinion->id)
@@ -835,7 +835,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-negativa-audiovisual', $request);
+        $response = $this->call('POST', '/api/opinion-negativa-comentario-audiovisual', $request);
 
         $response->assertUnauthorized();
     }
@@ -882,7 +882,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
+        $response = $this->call('POST', '/api/opinion-positiva-comentario-capitulo', $request);
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->usuario->id)
@@ -946,7 +946,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
+        $response = $this->call('POST', '/api/opinion-positiva-comentario-capitulo', $request);
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioCapitulo::where('id', $opinion->id)
@@ -1009,7 +1009,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
+        $response = $this->call('POST', '/api/opinion-positiva-comentario-capitulo', $request);
 
         $response->assertOk();
         $this->assertFalse(OpinionComentarioCapitulo::where('id', $opinion->id)
@@ -1061,7 +1061,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-positiva-capitulo', $request);
+        $response = $this->call('POST', '/api/opinion-positiva-comentario-capitulo', $request);
 
         $response->assertUnauthorized();
     }
@@ -1108,7 +1108,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
+        $response = $this->call('POST', '/api/opinion-negativa-comentario-capitulo', $request);
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioCapitulo::where('persona_id', $this->usuario->id)
@@ -1172,7 +1172,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
+        $response = $this->call('POST', '/api/opinion-negativa-comentario-capitulo', $request);
 
         $response->assertOk();
         $this->assertTrue(OpinionComentarioCapitulo::where('id', $opinion->id)
@@ -1235,7 +1235,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
+        $response = $this->call('POST', '/api/opinion-negativa-comentario-capitulo', $request);
 
         $response->assertOk();
         $this->assertFalse(OpinionComentarioCapitulo::where('id', $opinion->id)
@@ -1287,7 +1287,7 @@ class ComentarioTest extends TestCase
             'comentario_id' => $comentario->id,
         ];
 
-        $response = $this->call('POST', '/api/opinion-negativa-capitulo', $request);
+        $response = $this->call('POST', '/api/opinion-negativa-comentario-capitulo', $request);
 
         $response->assertUnauthorized();
     }

@@ -9,7 +9,7 @@
                 </p>
             </div>
             <div class="d-flex justify-content-end">
-                <b-button @click="guardarComentario" variant="info" class="mt-3">Comentar</b-button>
+                <button @click="guardarComentario" class="btn btn-info mt-3">Comentar</button>
             </div>
         </div>
         <b-tabs class="mt-8">

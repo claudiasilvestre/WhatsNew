@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         comentariosAudiovisual() {
-            axios.get('/api/comentario-audiovisual/', {
+            axios.get('/api/comentarios-audiovisual/', {
             params: { 
                 audiovisual_id: this.audiovisual.id, 
                 tipo: this.tipo,
@@ -100,7 +100,7 @@ export default {
             .catch(error => console.log(error.response));
         },
         comentariosCapitulo() {
-            axios.get('/api/comentario-capitulo/', {
+            axios.get('/api/comentarios-capitulo/', {
             params: { 
                 capitulo_id: this.capitulo.id, 
                 tipo: this.tipo,
@@ -130,7 +130,7 @@ export default {
             this.formData.comentario_id = comentario_id;
             this.formData.usuario_id = this.usuarioActual.id;
             if (this.audiovisual) {
-                axios.post('/api/opinion-positiva-audiovisual', this.formData)
+                axios.post('/api/opinion-positiva-comentario-audiovisual', this.formData)
                 .then(() => {
                     this.formData.comentario_id = ''
                 })
@@ -138,7 +138,7 @@ export default {
 
                 this.comentariosAudiovisual()
             } else {
-                axios.post('/api/opinion-positiva-capitulo', this.formData)
+                axios.post('/api/opinion-positiva-comentario-capitulo', this.formData)
                 .then(() => {
                     this.formData.comentario_id = ''
                 })
@@ -153,7 +153,7 @@ export default {
             this.formData.comentario_id = comentario_id;
             this.formData.usuario_id = this.usuarioActual.id;
             if (this.audiovisual) {
-                axios.post('/api/opinion-negativa-audiovisual', this.formData)
+                axios.post('/api/opinion-negativa-comentario-audiovisual', this.formData)
                 .then(() => {
                     this.formData.comentario_id = ''
                 })
@@ -161,7 +161,7 @@ export default {
 
                 this.comentariosAudiovisual();
             } else {
-                axios.post('/api/opinion-negativa-capitulo', this.formData)
+                axios.post('/api/opinion-negativa-comentario-capitulo', this.formData)
                 .then(() => {
                     this.formData.comentario_id = ''
                 })
