@@ -231,50 +231,47 @@ class AudiovisualesSeeder extends Seeder
                     }
 
                     // Proveedores
-                    $proveedoresPeticion = (array) Http::get('https://api.themoviedb.org/3/movie/'.$pelicula->id.'/watch/providers?api_key=38430b01858c3e78910493ba6a38a8b3');
-                    if (array_key_exists("results", $proveedoresPeticion)) {
-                        $proveedores = $proveedoresPeticion['results'];
-                        if (array_key_exists("ES", $proveedores)) {
-                            if (array_key_exists("flatrate", $proveedores['ES'])) {
-                                foreach ($proveedores['ES']['flatrate'] as $proveedor) {
-                                    if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
-                                                             ->where('audiovisual_id', $pelicula->id)
-                                                             ->where('disponibilidad', 1)
-                                                             ->exists()) {
-                                        $p_a = new ProveedorAudiovisual;
-                                        $p_a->proveedor_id = $proveedor['provider_id'];
-                                        $p_a->audiovisual_id = $pelicula->id;
-                                        $p_a->disponibilidad = 1;
-                                        $p_a->save();
-                                    }
+                    $proveedores = Http::get('https://api.themoviedb.org/3/movie/'.$pelicula->id.'/watch/providers?api_key=38430b01858c3e78910493ba6a38a8b3')['results'];
+                    if (array_key_exists("ES", $proveedores)) {
+                        if (array_key_exists("flatrate", $proveedores['ES'])) {
+                            foreach ($proveedores['ES']['flatrate'] as $proveedor) {
+                                if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
+                                                            ->where('audiovisual_id', $pelicula->id)
+                                                            ->where('disponibilidad', 1)
+                                                            ->exists()) {
+                                    $p_a = new ProveedorAudiovisual;
+                                    $p_a->proveedor_id = $proveedor['provider_id'];
+                                    $p_a->audiovisual_id = $pelicula->id;
+                                    $p_a->disponibilidad = 1;
+                                    $p_a->save();
                                 }
                             }
-                            if (array_key_exists("rent", $proveedores['ES'])) {
-                                foreach ($proveedores['ES']['rent'] as $proveedor) {
-                                    if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
-                                                             ->where('audiovisual_id', $pelicula->id)
-                                                             ->where('disponibilidad', 2)
-                                                             ->exists()) {
-                                        $p_a = new ProveedorAudiovisual;
-                                        $p_a->proveedor_id = $proveedor['provider_id'];
-                                        $p_a->audiovisual_id = $pelicula->id;
-                                        $p_a->disponibilidad = 2;
-                                        $p_a->save();
-                                    }
+                        }
+                        if (array_key_exists("rent", $proveedores['ES'])) {
+                            foreach ($proveedores['ES']['rent'] as $proveedor) {
+                                if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
+                                                            ->where('audiovisual_id', $pelicula->id)
+                                                            ->where('disponibilidad', 2)
+                                                            ->exists()) {
+                                    $p_a = new ProveedorAudiovisual;
+                                    $p_a->proveedor_id = $proveedor['provider_id'];
+                                    $p_a->audiovisual_id = $pelicula->id;
+                                    $p_a->disponibilidad = 2;
+                                    $p_a->save();
                                 }
                             }
-                            if (array_key_exists("buy", $proveedores['ES'])) {
-                                foreach ($proveedores['ES']['buy'] as $proveedor) {
-                                    if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
-                                                             ->where('audiovisual_id', $pelicula->id)
-                                                             ->where('disponibilidad', 3)
-                                                             ->exists()) {
-                                        $p_a = new ProveedorAudiovisual;
-                                        $p_a->proveedor_id = $proveedor['provider_id'];
-                                        $p_a->audiovisual_id = $pelicula->id;
-                                        $p_a->disponibilidad = 3;
-                                        $p_a->save();
-                                    }
+                        }
+                        if (array_key_exists("buy", $proveedores['ES'])) {
+                            foreach ($proveedores['ES']['buy'] as $proveedor) {
+                                if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
+                                                            ->where('audiovisual_id', $pelicula->id)
+                                                            ->where('disponibilidad', 3)
+                                                            ->exists()) {
+                                    $p_a = new ProveedorAudiovisual;
+                                    $p_a->proveedor_id = $proveedor['provider_id'];
+                                    $p_a->audiovisual_id = $pelicula->id;
+                                    $p_a->disponibilidad = 3;
+                                    $p_a->save();
                                 }
                             }
                         }
@@ -312,22 +309,19 @@ class AudiovisualesSeeder extends Seeder
                     $serie->save();
 
                     // Proveedores
-                    $proveedoresPeticion = (array) Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/watch/providers?api_key=38430b01858c3e78910493ba6a38a8b3');
-                    if (array_key_exists("results", $proveedoresPeticion)) {
-                        $proveedores = $proveedoresPeticion['results'];
-                        if (array_key_exists("ES", $proveedores)) {
-                            if (array_key_exists("flatrate", $proveedores['ES'])) {
-                                foreach ($proveedores['ES']['flatrate'] as $proveedor) {
-                                    if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
-                                                             ->where('audiovisual_id', $serie->id)
-                                                             ->where('disponibilidad', 1)
-                                                             ->exists()) {
-                                        $p_a = new ProveedorAudiovisual;
-                                        $p_a->proveedor_id = $proveedor['provider_id'];
-                                        $p_a->audiovisual_id = $serie->id;
-                                        $p_a->disponibilidad = 1;
-                                        $p_a->save();
-                                    }
+                    $proveedores = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/watch/providers?api_key=38430b01858c3e78910493ba6a38a8b3')['results'];
+                    if (array_key_exists("ES", $proveedores)) {
+                        if (array_key_exists("flatrate", $proveedores['ES'])) {
+                            foreach ($proveedores['ES']['flatrate'] as $proveedor) {
+                                if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
+                                                            ->where('audiovisual_id', $serie->id)
+                                                            ->where('disponibilidad', 1)
+                                                            ->exists()) {
+                                    $p_a = new ProveedorAudiovisual;
+                                    $p_a->proveedor_id = $proveedor['provider_id'];
+                                    $p_a->audiovisual_id = $serie->id;
+                                    $p_a->disponibilidad = 1;
+                                    $p_a->save();
                                 }
                             }
                         }
@@ -341,116 +335,120 @@ class AudiovisualesSeeder extends Seeder
         foreach ($series as $serie) {
             // Número de temporadas y capítulos
             $detalles = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES');
-            $serie->numeroTemporadas = $detalles['number_of_seasons'];
-            $serie->numeroCapitulos = $detalles['number_of_episodes'];
-
-            $serie->save();
-
-            // Temporadas
-            for ($i = 0; $i < sizeof($detalles['seasons']); $i++) {
-                if ($detalles['seasons'][$i]['season_number'] != 0) {
-                    $temporada = new Temporada;
-
-                    $temporada->audiovisual_id = $serie->id;
-                    $temporada->numero = $detalles['seasons'][$i]['season_number'];
-                    $temporada->nombre = $detalles['seasons'][$i]['name'];
-                    $temporada->numeroCapitulos = $detalles['seasons'][$i]['episode_count'];
-
-                    $temporada->save();
-                }
-            }
-
-            // Estado de la serie
-            if ($detalles['in_production'])
-                $serie->estado = 1;
-            else
-                $serie->estado = 2;
-            $serie->save();
-
-            // Equipo y capítulos
-            $temporadas = Temporada::where('audiovisual_id', '=', $serie->id)->get();
-            foreach ($temporadas as $temporada) {
-                $temporadaApi = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/season/'.$temporada->numero.'?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')->json();
-
-                if ($temporadaApi != null && array_key_exists("episodes", $temporadaApi)) {
-                    for ($i = 0; $i < sizeof($temporadaApi['episodes']); $i++) {
-
-                        // Equipo
-                        if ($temporada->numero === 1 && $i === 0) {
-                            for ($j = 0; $j < sizeof($temporadaApi['episodes'][$i]['crew']); $j++) {
-                                if ($temporadaApi['episodes'][$i]['crew'][$j]['job'] === "Director" || $temporadaApi['episodes'][$i]['crew'][$j]['job'] === "Writer") {
-                                    if (!Persona::where('nombre', '=', $temporadaApi['episodes'][$i]['crew'][$j]['name'])->exists()) {
-                                        $participante = new Persona;
-
-                                        $participante->tipoPersona_id = 2;
-                                        if ($temporadaApi['episodes'][$i]['crew'][$j]['job'] === "Director") $participante->tipoParticipante_id = 2;
-                                        else if ($temporadaApi['episodes'][$i]['crew'][$j]['job'] === "Writer") $participante->tipoParticipante_id = 3;
-                                        $participante->nombre = $temporadaApi['episodes'][$i]['crew'][$j]['name'];
-                                        if ($temporadaApi['episodes'][$i]['crew'][$j]['profile_path']) $participante->foto = "https://image.tmdb.org/t/p/w500".$temporadaApi['episodes'][$i]['crew'][$j]['profile_path'];
-
-                                        $participante->save();
-
-                                        $participacion = new Participacion;
-                                        $participacion->audiovisual_id = $serie->id;
-                                        $participacion->persona_id = $participante->id;
-                                        $participacion->save();
-                                    } else {
-                                        $participante = Persona::where('nombre', '=', $temporadaApi['episodes'][$i]['crew'][$j]['name'])->first();
             
-                                        $participacion = new Participacion;
-                                        $participacion->audiovisual_id = $serie->id;
-                                        $participacion->persona_id = $participante->id;
-                                        $participacion->save();
+            if ($detalles) {
+                $serie->numeroTemporadas = $detalles['number_of_seasons'];
+                $serie->numeroCapitulos = $detalles['number_of_episodes'];
+
+                $serie->save();
+
+                // Temporadas
+                for ($i = 0; $i < sizeof($detalles['seasons']); $i++) {
+                    if ($detalles['seasons'][$i]['season_number'] != 0) {
+                        $temporada = new Temporada;
+
+                        $temporada->audiovisual_id = $serie->id;
+                        $temporada->numero = $detalles['seasons'][$i]['season_number'];
+                        $temporada->nombre = $detalles['seasons'][$i]['name'];
+                        $temporada->numeroCapitulos = $detalles['seasons'][$i]['episode_count'];
+
+                        $temporada->save();
+                    }
+                }
+
+                // Estado de la serie
+                if ($detalles['in_production'])
+                    $serie->estado = 1;
+                else
+                    $serie->estado = 2;
+                $serie->save();
+
+                // Equipo y capítulos
+                $temporadas = Temporada::where('audiovisual_id', '=', $serie->id)->get();
+                foreach ($temporadas as $temporada) {
+                    $temporadaApi = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/season/'.$temporada->numero.'?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')->json();
+
+                    if ($temporadaApi != null && array_key_exists("episodes", $temporadaApi)) {
+                        for ($i = 0; $i < sizeof($temporadaApi['episodes']); $i++) {
+
+                            // Equipo
+                            if ($temporada->numero === 1 && $i === 0) {
+                                for ($j = 0; $j < sizeof($temporadaApi['episodes'][$i]['crew']); $j++) {
+                                    if ($temporadaApi['episodes'][$i]['crew'][$j]['job'] === "Director" || $temporadaApi['episodes'][$i]['crew'][$j]['job'] === "Writer") {
+                                        if (!Persona::where('nombre', '=', $temporadaApi['episodes'][$i]['crew'][$j]['name'])->exists()) {
+                                            $participante = new Persona;
+
+                                            $participante->tipoPersona_id = 2;
+                                            if ($temporadaApi['episodes'][$i]['crew'][$j]['job'] === "Director") $participante->tipoParticipante_id = 2;
+                                            else if ($temporadaApi['episodes'][$i]['crew'][$j]['job'] === "Writer") $participante->tipoParticipante_id = 3;
+                                            $participante->nombre = $temporadaApi['episodes'][$i]['crew'][$j]['name'];
+                                            if ($temporadaApi['episodes'][$i]['crew'][$j]['profile_path']) $participante->foto = "https://image.tmdb.org/t/p/w500".$temporadaApi['episodes'][$i]['crew'][$j]['profile_path'];
+
+                                            $participante->save();
+
+                                            $participacion = new Participacion;
+                                            $participacion->audiovisual_id = $serie->id;
+                                            $participacion->persona_id = $participante->id;
+                                            $participacion->save();
+                                        } else {
+                                            $participante = Persona::where('nombre', '=', $temporadaApi['episodes'][$i]['crew'][$j]['name'])->first();
+                                            if (!Participacion::where('audiovisual_id', $serie->id)->where('persona_id', $participante->id)->exists()) {
+                                                $participacion = new Participacion;
+                                                $participacion->audiovisual_id = $serie->id;
+                                                $participacion->persona_id = $participante->id;
+                                                $participacion->save();
+                                            }
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        // Capítulos
-                        $capitulo = new Capitulo;
-    
-                        $capitulo->temporada_id = $temporada->id;
-                        $capitulo->numero = $temporadaApi['episodes'][$i]['episode_number'];
-                        $capitulo->nombre = $temporadaApi['episodes'][$i]['name'];
-                        $capitulo->sinopsis = $temporadaApi['episodes'][$i]['overview'];
-                        $capitulo->cartel = "https://image.tmdb.org/t/p/w500".$temporadaApi['episodes'][$i]['still_path'];
-                        if ($temporadaApi['episodes'][$i]['air_date']) {
-                            $capitulo->fechaLanzamiento = $temporadaApi['episodes'][$i]['air_date'];
+                            // Capítulos
+                            $capitulo = new Capitulo;
+        
+                            $capitulo->temporada_id = $temporada->id;
+                            $capitulo->numero = $temporadaApi['episodes'][$i]['episode_number'];
+                            $capitulo->nombre = $temporadaApi['episodes'][$i]['name'];
+                            $capitulo->sinopsis = $temporadaApi['episodes'][$i]['overview'];
+                            $capitulo->cartel = "https://image.tmdb.org/t/p/w500".$temporadaApi['episodes'][$i]['still_path'];
+                            if ($temporadaApi['episodes'][$i]['air_date']) {
+                                $capitulo->fechaLanzamiento = $temporadaApi['episodes'][$i]['air_date'];
+                            }
+        
+                            $capitulo->save();
                         }
-    
-                        $capitulo->save();
                     }
                 }
-            }
 
-            // Cast
-            $cast = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/credits?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')->json();
+                // Cast
+                $cast = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/credits?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')->json();
 
-            for ($i = 0; $i < sizeof($cast['cast']); $i++) {
-                if (!Persona::where('nombre', '=', $cast['cast'][$i]['name'])->exists()) {
-                    $participante = new Persona;
+                for ($i = 0; $i < sizeof($cast['cast']); $i++) {
+                    if (!Persona::where('nombre', '=', $cast['cast'][$i]['name'])->exists()) {
+                        $participante = new Persona;
 
-                    $participante->tipoPersona_id = 2;
-                    $participante->tipoParticipante_id = 1;
+                        $participante->tipoPersona_id = 2;
+                        $participante->tipoParticipante_id = 1;
 
-                    $participante->nombre = $cast['cast'][$i]['name'];
-                    if ($cast['cast'][$i]['profile_path']) $participante->foto = "https://image.tmdb.org/t/p/w500".$cast['cast'][$i]['profile_path'];
+                        $participante->nombre = $cast['cast'][$i]['name'];
+                        if ($cast['cast'][$i]['profile_path']) $participante->foto = "https://image.tmdb.org/t/p/w500".$cast['cast'][$i]['profile_path'];
 
-                    $participante->save();
+                        $participante->save();
 
-                    $participacion = new Participacion;
-                    $participacion->audiovisual_id = $serie->id;
-                    $participacion->persona_id = $participante->id;
-                    $participacion->personaje = $cast['cast'][$i]['character'];
-                    $participacion->save();
-                } else {
-                    $participante = Persona::where('nombre', '=', $cast['cast'][$i]['name'])->first();
+                        $participacion = new Participacion;
+                        $participacion->audiovisual_id = $serie->id;
+                        $participacion->persona_id = $participante->id;
+                        $participacion->personaje = $cast['cast'][$i]['character'];
+                        $participacion->save();
+                    } else {
+                        $participante = Persona::where('nombre', '=', $cast['cast'][$i]['name'])->first();
 
-                    $participacion = new Participacion;
-                    $participacion->audiovisual_id = $serie->id;
-                    $participacion->persona_id = $participante->id;
-                    $participacion->personaje = $cast['cast'][$i]['character'];
-                    $participacion->save();
+                        $participacion = new Participacion;
+                        $participacion->audiovisual_id = $serie->id;
+                        $participacion->persona_id = $participante->id;
+                        $participacion->personaje = $cast['cast'][$i]['character'];
+                        $participacion->save();
+                    }
                 }
             }
         }
