@@ -312,6 +312,8 @@ class AudiovisualController extends Controller
                   ->where('persona_id', $request->usuario_id)
                   ->delete();
 
+        Persona::where('id', $request->usuario_id)->decrement('puntos', 5);
+
         // Media de las valoraciones
         if ($num_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->count() > 0) {
             $suma_valoraciones = Valoracion::where('audiovisual_id', $request->audiovisual_id)->sum('puntuacion');
