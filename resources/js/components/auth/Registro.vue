@@ -64,18 +64,18 @@ export default {
     methods: {
         registroUsuarioBtn() {
             axios.post('/api/registro', this.formData).then(() => {
-                    this.formInicio.email = this.formData.email
-                    this.formInicio.password = this.formData.password
-                }).catch((errors) => {
-                    this.errors = errors.response.data.errors
-                }).finally(() => {
-                    if (this.formInicio.email.length > 0 && this.formInicio.password.length > 0)
-                        axios.get('/sanctum/csrf-cookie').then(response => {
-                            axios.post('/api/inicio-sesion', this.formInicio).then((response) => {
-                                this.$router.push('/home')
-                            });
+                this.formInicio.email = this.formData.email
+                this.formInicio.password = this.formData.password
+            }).catch((errors) => {
+                this.errors = errors.response.data.errors
+            }).finally(() => {
+                if (this.formInicio.email.length > 0 && this.formInicio.password.length > 0)
+                    axios.get('/sanctum/csrf-cookie').then(response => {
+                        axios.post('/api/inicio-sesion', this.formInicio).then((response) => {
+                            this.$router.push('/home')
                         });
-                });
+                    });
+            });
         },
         registroUsuario() {
             if (!this.formData.nombre)
@@ -90,10 +90,17 @@ export default {
                 this.$refs.password_confirmation.focus()
             else
                 axios.post('/api/registro', this.formData).then(() => {
-                    this.formData.nombre = this.formData.usuario = this.formData.email = this.formData.password = this.formData.password_confirmation = ''
-                    this.$emit('inicioSesion');
+                    this.formInicio.email = this.formData.email
+                    this.formInicio.password = this.formData.password
                 }).catch((errors) => {
                     this.errors = errors.response.data.errors
+                }).finally(() => {
+                    if (this.formInicio.email.length > 0 && this.formInicio.password.length > 0)
+                        axios.get('/sanctum/csrf-cookie').then(response => {
+                            axios.post('/api/inicio-sesion', this.formInicio).then((response) => {
+                                this.$router.push('/home')
+                            });
+                        });
                 });
         },
         inicioSesion() {

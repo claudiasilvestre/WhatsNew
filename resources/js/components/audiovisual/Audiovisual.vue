@@ -9,9 +9,9 @@
                 ></b-spinner>
             </div>
             <div v-else-if="!loading" class="content header">
-                <aside-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
+                <aside-audiovisual :key="cambioResponsive" :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @comprobarCambioAside2="comprobarCambioAside2" @actualizarValoracion="actualizarValoracion"/>
                 <div class="width">
-                    <header-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
+                    <header-audiovisual :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" :cambioAside2="cambioAside2" @comprobarCambioAside="comprobarCambioAside" @comprobarCambioResponsive="comprobarCambioResponsive" @actualizarValoracion="actualizarValoracion"/>
                     <menu-audiovisual :audiovisual="audiovisual" :cambioAside="cambioAside" />
                 </div>
             </div>
@@ -41,6 +41,8 @@ export default {
             audiovisual: {},
             loading: true,
             cambioAside: false,
+            cambioAside2: false,
+            cambioResponsive: false,
         }
     },
     computed: {
@@ -62,6 +64,12 @@ export default {
     methods: {
       comprobarCambioAside() {
         this.cambioAside = !this.cambioAside;
+      },
+      comprobarCambioAside2() {
+        this.cambioAside2 = !this.cambioAside2;
+      },
+      comprobarCambioResponsive() {
+        this.cambioResponsive = !this.cambioResponsive;
       },
       actualizarValoracion() {
         axios.get('/api/audiovisuales/'+this.id)

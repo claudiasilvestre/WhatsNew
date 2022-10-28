@@ -128,6 +128,8 @@ export default {
                 this.clicked = true;
             })
             .catch(error => console.log(error.response));
+
+            this.$emit('comprobarCambioAside2');
         },
         borrarValoracion() {
             axios.post('/api/borrar-valoracion-audiovisual/', 
@@ -140,6 +142,7 @@ export default {
             this.rating = 0;
 
             this.$emit('actualizarValoracion');
+            this.$emit('comprobarCambioAside2');
         }
     },
     watch: {
@@ -155,6 +158,7 @@ export default {
                     .catch(error => console.log(error.response));
 
                     this.$emit('actualizarValoracion');
+                    this.$emit('comprobarCambioAside2');
                 } else
                     this.watcher = true;
             }

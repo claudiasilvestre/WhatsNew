@@ -3,6 +3,7 @@
         <div class="d-flex flex-row align-items-center mb-1">
             <span class="ml-2">Puntúa</span>
             <star-rating v-model="rating" :increment="0.5" :star-size="25" :show-rating="false" text-class="custom-text" class="m-2"></star-rating>
+            <b-icon v-if="rating !== 0" icon="x-circle" variant="danger" @click="borrarValoracion()" class="pointer"></b-icon>
         </div>
         <div>
             <button type="button" v-bind:class="{'color-a': clicked1}" @click="seguimiento(1)" class="p-2 background2 rounded"><b-icon icon="clock" class="icon-style"></b-icon>
@@ -123,7 +124,22 @@ export default {
                 this.clicked = true;
             })
             .catch(error => console.log(error.response));
+
+            this.$emit('comprobarCambioResponsive');
         },
+        borrarValoracion() {
+            axios.post('/api/borrar-valoracion-audiovisual/', 
+                { 
+                    audiovisual_id: this.audiovisual.id, 
+                    usuario_id: this.usuarioActual.id
+                })
+                .catch(error => console.log(error.response));
+
+            this.rating = 0;
+
+            this.$emit('actualizarValoracion');
+            this.$emit('comprobarCambioResponsive');
+        }
     },
     watch: {
         rating: function () {
@@ -137,6 +153,7 @@ export default {
                 .catch(error => console.log(error.response));
 
                 this.$emit('actualizarValoracion');
+                this.$emit('comprobarCambioResponsive');
             } else
                 this.watcher = true;
         }

@@ -18,7 +18,7 @@
                     <span class="item" v-else-if="audiovisual.tipoAudiovisual_id === 2 && audiovisual.numeroTemporadas > 1">{{ audiovisual.numeroTemporadas }} temporadas</span>
                     <span class="item">{{ audiovisual.anno }}</span>
                 </div>
-                <responsive-header class="responsive-header-visibility" :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @actualizarValoracion="actualizarValoracion"/>
+                <responsive-header :key="cambioAside2" class="responsive-header-visibility" :audiovisual="audiovisual" :usuarioActual="usuarioActual" :cambioAside="cambioAside" @comprobarCambioAside="comprobarCambioAside" @comprobarCambioResponsive="comprobarCambioResponsive" @actualizarValoracion="actualizarValoracion"/>
             </div>
         </div>
     </div>
@@ -31,6 +31,11 @@ export default {
     components: {
         ResponsiveHeader,
     },
+    data() {
+        return {
+          reloadResponsive: false,
+        }
+    },
     props: {
       audiovisual: {
         required: true,
@@ -42,11 +47,17 @@ export default {
       },
       cambioAside: {
         type: Boolean
+      },
+      cambioAside2: {
+        type: Boolean
       }
     },
     methods: {
       comprobarCambioAside() {
         this.$emit('comprobarCambioAside');
+      },
+      comprobarCambioResponsive() {
+        this.$emit('comprobarCambioResponsive');
       },
       actualizarValoracion() {
         this.$emit('actualizarValoracion');
