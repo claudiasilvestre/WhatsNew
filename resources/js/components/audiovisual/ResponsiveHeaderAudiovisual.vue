@@ -143,19 +143,21 @@ export default {
     },
     watch: {
         rating: function () {
-            if (this.watcher) {
-                axios.post('/api/valoracion-audiovisual/', 
-                { 
-                    audiovisual_id: this.audiovisual.id, 
-                    usuario_id: this.usuarioActual.id, 
-                    puntuacion: this.rating 
-                })
-                .catch(error => console.log(error.response));
+            if (this.rating !== 0) {
+                if (this.watcher) {
+                    axios.post('/api/valoracion-audiovisual/', 
+                    { 
+                        audiovisual_id: this.audiovisual.id, 
+                        usuario_id: this.usuarioActual.id, 
+                        puntuacion: this.rating 
+                    })
+                    .catch(error => console.log(error.response));
 
-                this.$emit('actualizarValoracion');
-                this.$emit('comprobarCambioResponsive');
-            } else
-                this.watcher = true;
+                    this.$emit('actualizarValoracion');
+                    this.$emit('comprobarCambioResponsive');
+                } else
+                    this.watcher = true;
+            }
         }
     }
 }
