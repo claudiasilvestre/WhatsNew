@@ -31,11 +31,6 @@ export default {
     components: {
         ResponsiveHeader,
     },
-    data() {
-        return {
-          reloadResponsive: false,
-        }
-    },
     props: {
       audiovisual: {
         required: true,
