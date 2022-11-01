@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('idioma', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 64);
+            $table->string('nombre', 64)->unique();
             $table->timestamps();
         });
     }

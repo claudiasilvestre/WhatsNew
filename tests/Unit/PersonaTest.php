@@ -232,7 +232,7 @@ class PersonaTest extends TestCase
      *
      * @return void
      */
-    public function test_cambiar_informacion_usuario_actual_sin_cambiar_foto_perfil()
+    public function test_cambiar_informacion_usuario_actual_sin_foto()
     {
         $this->actingAs($this->usuario);
 
@@ -325,7 +325,7 @@ class PersonaTest extends TestCase
      *
      * @return void
      */
-    public function test_cambiar_contraseña_usuario_actual_por_una_no_valida()
+    public function test_cambiar_contraseña_usuario_actual_por_invalida()
     {
         $this->actingAs($this->usuario);
 

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('genero', function (Blueprint $table) {
             $table->unsignedBigInteger('id')->primary();
-            $table->string('nombre', 64);
+            $table->string('nombre', 64)->unique();
             $table->timestamps();
         });
     }

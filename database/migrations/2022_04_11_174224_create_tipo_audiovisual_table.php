@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tipo_audiovisual', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre', 64);
+            $table->string('nombre', 64)->unique();
             $table->timestamps();
         });
     }
