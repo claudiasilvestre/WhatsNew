@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\SeguimientoPersona;
 
@@ -21,13 +22,19 @@ class PersonaController extends Controller
      * @return void
      */
     public function registro(Request $request) {
+        Validator::extend('without_spaces', function($attr, $value){
+            return preg_match('/^\S*$/u', $value);
+        });
+
         $request->validate([
             'nombre' => 'required',
-            'usuario' => 'required|unique:persona',
+            'usuario' => 'required|without_spaces|unique:persona',
             'email' => 'required|unique:persona',
             'password' => 'required|min:8|confirmed',
             'password_confirmation' => 'required',
-        ], [], [
+        ], [
+            'without_spaces' => 'El :attribute no puede contener espacios.'
+        ], [
             'email' => 'correo',
             'password' => 'contraseña',
             'password_confirmation' => 'confirmar contraseña'
