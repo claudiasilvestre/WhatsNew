@@ -113,16 +113,23 @@ class PersonaController extends Controller
     public function guardarInformacion(Request $request) {
         $usuario = Auth::user();
 
+        Validator::extend('without_spaces', function($attr, $value){
+            return preg_match('/^\S*$/u', $value);
+        });
+
         $request->validate([
             'nombre' => 'required',
             'usuario' => [
                 'required',
                 Rule::unique('persona')->ignore($usuario),
+                'without_spaces',
             ],
             'email' => [
                 'required',
                 Rule::unique('persona')->ignore($usuario),
             ],
+        ], [
+            'without_spaces' => 'El :attribute no puede contener espacios.'
         ]);
 
         if($request->hasFile('imagen')) {
