@@ -96,9 +96,9 @@ class SistemaRecomendacionBasadoContenido
      * Añade al array de puntuaciones un audiovisual candidato a ser recomendado en base a que
      * tiene el mismo actor o director que un audiovisual desde los que se parte y establece 0.5 o 1 
      * como puntuación de ese audiovisual dependiendo de si el participante se trata de un actor 
-     * o de un director.
+     * o de un director respectivamente.
      * En el caso de que ya exista el audiovisual en el array, suma 0.5 o 1 a la puntuación de ese 
-     * audiovisual dependiendo de si el participante se trata de un actor o de un director.
+     * audiovisual dependiendo del tipo de participante del que se trate.
      * 
      * @param Array $participantes Array que contiene los participaciones de un audiovisual.
      * @param Array $puntuacionAudiovisuales Array que contiene los audiovisuales candidatos a ser

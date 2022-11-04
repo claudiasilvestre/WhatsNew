@@ -28,8 +28,10 @@ class AudiovisualesSeeder extends Seeder
      */
     public function run()
     {
+        $APIKey = '38430b01858c3e78910493ba6a38a8b3';
+
         // Géneros películas
-        $generosPeliculas = Http::get('https://api.themoviedb.org/3/genre/movie/list?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')['genres'];
+        $generosPeliculas = Http::get('https://api.themoviedb.org/3/genre/movie/list?api_key='.$APIKey.'&language=es-ES')['genres'];
 
         foreach ($generosPeliculas as $generoPelicula) {
             if (!Genero::where('id', '=', $generoPelicula['id'])->exists()) {
@@ -43,7 +45,7 @@ class AudiovisualesSeeder extends Seeder
         }
 
         // Géneros series
-        $generosSeries = Http::get('https://api.themoviedb.org/3/genre/tv/list?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')['genres'];
+        $generosSeries = Http::get('https://api.themoviedb.org/3/genre/tv/list?api_key='.$APIKey.'&language=es-ES')['genres'];
 
         foreach ($generosSeries as $generoSerie) {
             if (!Genero::where('id', '=', $generoSerie['id'])->exists()) {
@@ -110,7 +112,7 @@ class AudiovisualesSeeder extends Seeder
         }
 
         // Proveedores
-        $proveedores = Http::get('https://api.themoviedb.org/3/watch/providers/movie?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')['results'];
+        $proveedores = Http::get('https://api.themoviedb.org/3/watch/providers/movie?api_key='.$APIKey.'&language=es-ES')['results'];
         foreach ($proveedores as $proveedor) {
             if (!Proveedor::where('id', $proveedor['provider_id'])->exists()) {
                 $pv = new Proveedor;
@@ -121,7 +123,7 @@ class AudiovisualesSeeder extends Seeder
             }
         }
 
-        $proveedores = Http::get('https://api.themoviedb.org/3/watch/providers/tv?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')['results'];
+        $proveedores = Http::get('https://api.themoviedb.org/3/watch/providers/tv?api_key='.$APIKey.'&language=es-ES')['results'];
         foreach ($proveedores as $proveedor) {
             if (!Proveedor::where('id', $proveedor['provider_id'])->exists()) {
                 $pv = new Proveedor;
@@ -133,8 +135,8 @@ class AudiovisualesSeeder extends Seeder
         }
 
         // Películas
-        for ($i = 1; $i <= 10; $i++) {
-            $peliculas = Http::get('https://api.themoviedb.org/3/movie/popular?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES&page='.$i)['results'];
+        for ($i = 1; $i <= 15; $i++) {
+            $peliculas = Http::get('https://api.themoviedb.org/3/movie/popular?api_key='.$APIKey.'&language=es-ES&page='.$i)['results'];
 
             foreach ($peliculas as $p) {
                 if (!Audiovisual::where('id', '=', $p['id'])->exists() &&
@@ -161,7 +163,7 @@ class AudiovisualesSeeder extends Seeder
                     $pelicula->save();
 
                     // Cast y equipo
-                    $cast_equipo = Http::get('https://api.themoviedb.org/3/movie/'.$pelicula->id.'/credits?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')->json();
+                    $cast_equipo = Http::get('https://api.themoviedb.org/3/movie/'.$pelicula->id.'/credits?api_key='.$APIKey.'&language=es-ES')->json();
 
                     for ($i = 0; $i < sizeof($cast_equipo['cast']); $i++) {
                         if (!Persona::where('nombre', '=', $cast_equipo['cast'][$i]['name'])->exists()) {
@@ -231,14 +233,14 @@ class AudiovisualesSeeder extends Seeder
                     }
 
                     // Proveedores
-                    $proveedores = Http::get('https://api.themoviedb.org/3/movie/'.$pelicula->id.'/watch/providers?api_key=38430b01858c3e78910493ba6a38a8b3')['results'];
+                    $proveedores = Http::get('https://api.themoviedb.org/3/movie/'.$pelicula->id.'/watch/providers?api_key='.$APIKey)['results'];
                     if (array_key_exists("ES", $proveedores)) {
                         if (array_key_exists("flatrate", $proveedores['ES'])) {
                             foreach ($proveedores['ES']['flatrate'] as $proveedor) {
                                 if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
                                                             ->where('audiovisual_id', $pelicula->id)
                                                             ->where('disponibilidad', 1)
-                                                            ->exists()) {
+                                                            ->exists() && Proveedor::where('id', $proveedor['provider_id'])->exists()) {
                                     $p_a = new ProveedorAudiovisual;
                                     $p_a->proveedor_id = $proveedor['provider_id'];
                                     $p_a->audiovisual_id = $pelicula->id;
@@ -252,7 +254,7 @@ class AudiovisualesSeeder extends Seeder
                                 if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
                                                             ->where('audiovisual_id', $pelicula->id)
                                                             ->where('disponibilidad', 2)
-                                                            ->exists()) {
+                                                            ->exists() && Proveedor::where('id', $proveedor['provider_id'])->exists()) {
                                     $p_a = new ProveedorAudiovisual;
                                     $p_a->proveedor_id = $proveedor['provider_id'];
                                     $p_a->audiovisual_id = $pelicula->id;
@@ -266,7 +268,7 @@ class AudiovisualesSeeder extends Seeder
                                 if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
                                                             ->where('audiovisual_id', $pelicula->id)
                                                             ->where('disponibilidad', 3)
-                                                            ->exists()) {
+                                                            ->exists() && Proveedor::where('id', $proveedor['provider_id'])->exists()) {
                                     $p_a = new ProveedorAudiovisual;
                                     $p_a->proveedor_id = $proveedor['provider_id'];
                                     $p_a->audiovisual_id = $pelicula->id;
@@ -282,7 +284,7 @@ class AudiovisualesSeeder extends Seeder
 
         // Series
         for ($i = 1; $i <= 5; $i++) {
-            $series = Http::get('https://api.themoviedb.org/3/tv/popular?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES&page='.$i)['results'];
+            $series = Http::get('https://api.themoviedb.org/3/tv/popular?api_key='.$APIKey.'&language=es-ES&page='.$i)['results'];
 
             foreach ($series as $s) {
                 if (!Audiovisual::where('id', '=', $s['id'])->exists() && 
@@ -309,14 +311,14 @@ class AudiovisualesSeeder extends Seeder
                     $serie->save();
 
                     // Proveedores
-                    $proveedores = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/watch/providers?api_key=38430b01858c3e78910493ba6a38a8b3')['results'];
+                    $proveedores = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/watch/providers?api_key='.$APIKey)['results'];
                     if (array_key_exists("ES", $proveedores)) {
                         if (array_key_exists("flatrate", $proveedores['ES'])) {
                             foreach ($proveedores['ES']['flatrate'] as $proveedor) {
                                 if (!ProveedorAudiovisual::where('proveedor_id', $proveedor['provider_id'])
                                                             ->where('audiovisual_id', $serie->id)
                                                             ->where('disponibilidad', 1)
-                                                            ->exists()) {
+                                                            ->exists() && Proveedor::where('id', $proveedor['provider_id'])->exists()) {
                                     $p_a = new ProveedorAudiovisual;
                                     $p_a->proveedor_id = $proveedor['provider_id'];
                                     $p_a->audiovisual_id = $serie->id;
@@ -334,7 +336,7 @@ class AudiovisualesSeeder extends Seeder
 
         foreach ($series as $serie) {
             // Número de temporadas y capítulos
-            $detalles = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES');
+            $detalles = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'?api_key='.$APIKey.'&language=es-ES');
             
             if ($detalles) {
                 $serie->numeroTemporadas = $detalles['number_of_seasons'];
@@ -366,7 +368,7 @@ class AudiovisualesSeeder extends Seeder
                 // Equipo y capítulos
                 $temporadas = Temporada::where('audiovisual_id', '=', $serie->id)->get();
                 foreach ($temporadas as $temporada) {
-                    $temporadaApi = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/season/'.$temporada->numero.'?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')->json();
+                    $temporadaApi = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/season/'.$temporada->numero.'?api_key='.$APIKey.'&language=es-ES')->json();
 
                     if ($temporadaApi != null && array_key_exists("episodes", $temporadaApi)) {
                         for ($i = 0; $i < sizeof($temporadaApi['episodes']); $i++) {
@@ -421,7 +423,7 @@ class AudiovisualesSeeder extends Seeder
                 }
 
                 // Cast
-                $cast = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/credits?api_key=38430b01858c3e78910493ba6a38a8b3&language=es-ES')->json();
+                $cast = Http::get('https://api.themoviedb.org/3/tv/'.$serie->id.'/credits?api_key='.$APIKey.'&language=es-ES')->json();
 
                 for ($i = 0; $i < sizeof($cast['cast']); $i++) {
                     if (!Persona::where('nombre', '=', $cast['cast'][$i]['name'])->exists()) {
